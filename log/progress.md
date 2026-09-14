@@ -236,3 +236,27 @@ dist/                                                        # 构建产物
 **验证**：`pnpm build` 通过（377.12 kB / gzip 127.94 kB）。浏览器实测两个新路由：`#/advise` 渲染出"请输入你需要安装的软件和功能"输入区（占位符 `例如：我要学 Python，帮我把环境装好（Enter 发送，Shift+Enter 换行）`），`#/inspect` 同样带"请输入你需要判别的网站"原文提示；控制台零消息。判别走真实数据验证：`pyth0n.org` → 解析 37.97.254.27、注册商 Key-Systems GmbH、注册 2009-06-25 / 到期 2027-06-25、证书主体 `*.vdx.nl`（SAN 不覆盖当前主机）、**与 python.org 相似度 100%** 且不是它 —— 判红正确；`python.org` 自身命中官方域名则短路返回绿色结论。
 ⚠️ **未验证的部分**：`DEEPSEEK_API_KEY` 仍为空，所以 LLM 的自然语言结论这一跳没跑过真接口。当前降级行为是刻意设计的：`/api/advise` 返回 503 并附带填 Key 的说明，`/api/inspect` 依然把客观取证文本交回用户，不至于整块不可用。
 ⚠️ **本机环境提示**：这台开发机的 TLS 流量被中间人替换过（对 `github.com` 观测到签发者是 "SteamTools Certificate" / BeyondDimension），本地探针里的"不受信任"结论有一部分是这个环境造成的，不是站点本身的问题。部署到服务器后同样的域名会得到正常结果——顺带说，这正是判别功能最擅长抓的形态。
+
+### 2026-09-14 17:48 更新：三个提交点全部推完，开始准备部署
+
+- `4379769 创建数据库，导入基础内容`
+- `7e1bc6b 创建基础网页`
+- `717949a 提交AI基础功能`
+
+三个提交都各自可独立构建：② 提交前把 `router.tsx` / `AppLayout.tsx` / `main.py` / `types.ts` /
+`api.ts` / `requirements.txt` 临时收回到"只有导航、没有 AI"的版本，AI 文件挪出 `src`（否则
+`tsc --noEmit` 会因为找不到 `ChatMessage` 报错），提交完再装回去。这样 ② 里不会留指向
+不存在路由的死链。
+
+**SSH 仍被权限策略拦下**（`BatchMode=yes` 纯密钥方式也被 classifier 拒），所以下面这些
+是"你来执行"的东西，不是"我已经做掉"的东西。
+
+- 新增 `scripts/deploy.sh`：本机构建 → tar-over-ssh 上传 → 远端建环境。
+  **不用 rsync**：Git Bash 默认不带；**不推 `.env`**：服务器那份有自己的 Key，覆盖会清成空。
+  上传后对 `scripts/*.sh` 跑一次 `sed -i` 去掉行尾的 CR（0x0D）—— Windows 上 git 常配
+  `core.autocrlf=true`，带 CRLF 行尾的 shell 脚本到了 Linux 会报 "command not found"。
+
+- 重写 `README.md`：数据源约定、模块职责、接口表、SSRF 白名单规则、没配 Key 时的降级行为、
+  部署步骤，以及三条已知边界（结论只是初步技术判断；`chain_complete` 不参与判红；判等只看原始拼写）。
+- 两个脚本都过 `bash -n`。本地模拟上传包：23 个文件 / 156 KB，含 `dist/` 5 个产物，
+  确认 `.env` 不在包内。

@@ -70,6 +70,8 @@ Key 只在服务端读取，不进前端产物。
 
 ## 部署
 
+线上地址是 **`https://alexcn.work/PureNavigation/main/`**（挂在子路径下，前面套 nginx）。
+
 ```bash
 bash scripts/deploy.sh              # 读 .env 的 DEPLOY_HOST / DEPLOY_USER
 bash scripts/deploy.sh <host> <user>
@@ -84,11 +86,30 @@ bash scripts/deploy.sh <host> <user>
 bash $HOME/purenavigation/scripts/server-setup.sh              # 建 venv、装依赖、自检
 vim  $HOME/purenavigation/.env                                 # 填 DEEPSEEK_API_KEY
 sudo bash $HOME/purenavigation/scripts/server-setup.sh --root  # 装 systemd 单元
+sudo cp deploy/nginx.alexcn.work.purenavigation.conf /etc/nginx/conf.d/
+sudo nginx -t && sudo systemctl reload nginx
+sudo certbot --nginx -d alexcn.work                            # www 目前不解析，别一起签
 ```
 
 脚本默认不碰系统配置，需要 root 的那步单独要 `--root`：这是一台在跑的机器。
-对外提供服务二选一：`.env` 写 `HOST=0.0.0.0` 并在云安全组放行 8000，
-或让 nginx 监听 80 反代到 `127.0.0.1:8000`。
+
+### 挂子路径的三个必要条件
+
+少任何一个，页面能开但接口和图标全 404：
+
+1. nginx 用 `proxy_pass http://127.0.0.1:8000/;` —— **结尾的斜杠**把 `/PureNavigation/main/`
+   前缀剥掉，后端只看得到 `/`、`/assets/…`、`/api/…`，不需要知道自己被挂在哪。
+2. 前端的资源与接口路径全是**相对**的（vite `base: './'`、`src/lib/api.ts` 里 `BASE = "api"`）。
+3. `location = /PureNavigation/main` 要 301 到带尾斜杠的形式，否则浏览器解析相对路径时
+   会把 `api/health` 算成 `/PureNavigation/api/health`。
+
+路由用 hash router，所以子路径下不需要服务端配合处理深链。
+
+另外 `server/run.py` 开了 `proxy_headers=True` 且 `forwarded_allow_ips="127.0.0.1"`：
+不解析 `X-Forwarded-For` 的话，所有访客在后端眼里都是 127.0.0.1，
+`/api/inspect` 的按 IP 限流会变成全站共享 6 次/分钟。
+
+最后：**云安全组要放行 80/443**，这个不在代码里，脚本碰不到。
 
 ## 已知边界
 

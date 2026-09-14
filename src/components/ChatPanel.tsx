@@ -126,7 +126,11 @@ function Bubble({ turn }: { turn: ChatTurn }) {
             : "panel border-cyan/22 text-muted",
         ].join(" ")}
       >
-        <p className="whitespace-pre-wrap text-[13.5px] leading-[1.8]">{turn.content}</p>
+        {mine ? (
+          <p className="whitespace-pre-wrap text-[13.5px] leading-[1.8]">{turn.content}</p>
+        ) : (
+          <RichText content={turn.content} />
+        )}
         {turn.note ? (
           <p className="mt-2 border-t border-line pt-2 font-mono text-[11px] text-faint">
             {turn.note}
@@ -135,4 +139,126 @@ function Bubble({ turn }: { turn: ChatTurn }) {
       </div>
     </div>
   );
+}
+
+const INLINE = /(\*\*[^*\n]+\*\*|`[^`\n]+`)/g;
+
+function RichText({ content }: { content: string }) {
+  return <div className="space-y-2 text-[13.5px] leading-[1.8]">{parseBlocks(content)}</div>;
+}
+
+/** 只输出 React 节点，不拼 HTML 字符串 —— 模型回复里出现什么都不会被当成标记执行。 */
+function parseBlocks(content: string): ReactNode[] {
+  const nodes: ReactNode[] = [];
+  let paragraph: string[] = [];
+  let list: { ordered: boolean; items: string[] } | null = null;
+  let fence: string[] | null = null;
+
+  const push = (node: ReactNode) => nodes.push(node);
+  const flushParagraph = () => {
+    if (paragraph.length) push(<p key={nodes.length}>{parseInline(paragraph.join(" "))}</p>);
+    paragraph = [];
+  };
+  const flushList = () => {
+    if (list) {
+      const items = list.items;
+      const className = list.ordered
+        ? "list-inside list-decimal space-y-1 pl-1"
+        : "list-inside list-disc space-y-1 pl-1";
+      push(
+        <ul key={nodes.length} className={className}>
+          {items.map((item, i) => (
+            <li key={i}>{parseInline(item)}</li>
+          ))}
+        </ul>,
+      );
+      list = null;
+    }
+  };
+
+  for (const raw of content.split("\n")) {
+    const line = raw.trim();
+
+    if (line.startsWith("```")) {
+      if (fence) {
+        push(
+          <pre key={nodes.length} className="overflow-x-auto rounded-lg bg-base-2 p-3 font-mono text-[12.5px] text-cyan">
+            {fence.join("\n")}
+          </pre>,
+        );
+        fence = null;
+      } else {
+        flushParagraph();
+        flushList();
+        fence = [];
+      }
+      continue;
+    }
+    if (fence) {
+      fence.push(raw);
+      continue;
+    }
+
+    const heading = /^(#{1,4})\s+(.*)$/.exec(line);
+    if (heading) {
+      flushParagraph();
+      flushList();
+      push(
+        <p key={nodes.length} className={heading[1].length > 2 ? "text-[13.5px] text-muted" : "pt-1 text-[14.5px] font-semibold text-ink"}>
+          {parseInline(heading[2])}
+        </p>,
+      );
+      continue;
+    }
+
+    const bullet = /^[-*]\s+(.*)$/.exec(line);
+    const numbered = /^\d+[.)]\s+(.*)$/.exec(line);
+    if (bullet || numbered) {
+      flushParagraph();
+      const ordered = Boolean(numbered);
+      const text = (bullet ?? numbered)![1];
+      if (!list || list.ordered !== ordered) {
+        flushList();
+        list = { ordered, items: [text] };
+      } else {
+        list.items.push(text);
+      }
+      continue;
+    }
+
+    if (!line) {
+      flushParagraph();
+      flushList();
+      continue;
+    }
+    paragraph.push(line);
+  }
+
+  flushParagraph();
+  flushList();
+  if (fence) push(<pre key={nodes.length} className="overflow-x-auto rounded-lg bg-base-2 p-3 font-mono text-[12.5px]">{fence.join("\n")}</pre>);
+  return nodes;
+}
+
+function parseInline(text: string): ReactNode[] {
+  return text
+    .split(INLINE)
+    .filter(Boolean)
+    .map((part, index) => {
+      if (part.startsWith("**") && part.endsWith("**")) {
+        return (
+          <strong key={index} className="font-semibold text-ink">
+            {part.slice(2, -2)}
+          </strong>
+        );
+      }
+      if (part.startsWith("`") && part.endsWith("`")) {
+        return (
+          <code key={index} className="rounded bg-base-2 px-1 py-0.5 font-mono text-[12.5px] text-cyan">
+            {part.slice(1, -1)}
+          </code>
+        );
+      }
+      return part;
+    });
 }

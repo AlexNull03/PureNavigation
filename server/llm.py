@@ -76,4 +76,7 @@ def chat(messages: list[dict[str, str]]) -> str:
     content = (choices[0].get("message") or {}).get("content", "")
     if not content:
         raise LlmError("DeepSeek 返回了空内容")
+    if choices[0].get("finish_reason") == "length":
+        # 不标出来的话，用户会以为建议本来就这么短。
+        content += "\n\n（这条回答被长度上限截断了，接着追问可以续上。）"
     return content.strip()

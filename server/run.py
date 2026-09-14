@@ -18,6 +18,10 @@ def main() -> None:
         "server.main:app",
         host=os.environ.get("HOST") or "127.0.0.1",
         port=int(os.environ.get("PORT") or 8000),
+        # 只信本机 nginx 反代传来的 X-Forwarded-For。不解析的话所有访客在
+        # _throttle 眼里都是 127.0.0.1，判别功能的限流会变成全站共享 6 次/分钟。
+        proxy_headers=True,
+        forwarded_allow_ips="127.0.0.1",
     )
 
 

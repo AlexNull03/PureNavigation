@@ -14,3 +14,6 @@ __pycache__
 venv
 *.egg-info
 .serverdata
+
+# deploy.sh 临时放待上传 env 片段的地方，里面可能有 Key
+.deploy-tmp

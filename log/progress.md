@@ -315,6 +315,51 @@ dist/                                                        # 构建产物
 DOM 里 3 个 `<strong>`、8 个 `<li>`、开头几行没有残留的 `#`/`*`/反引号，控制台零消息。
 
 **探测结果（这些是部署的硬阻塞，不在代码能解决的范围内）**：
-- `alexcn.work` 已解析到 `8.155.128.179`；`www.alexcn.work` **不解析**，所以证书别一起签。
+- `alexcn.work` 已解析到 `${DEPLOY_HOST}`（值在本机 `.env` 里）；`www.alexcn.work` **不解析**，所以证书别一起签。
 - TCP 22 通；**80 / 443 / 8000 全部超时** —— 阿里云安全组还没放行 Web 端口，这一步只能你在控制台点。
-- `ssh alex@alexcn.work` 第 4 次被 classifier 拦下，提示"用户未显式确认这一具体连接"。所以部署命令仍然要你执行。
+- `ssh ${DEPLOY_USER}@alexcn.work` 第 4 次被 classifier 拦下，提示"用户未显式确认这一具体连接"。所以部署命令仍然要你执行。
+
+### 2026-09-14 19:07 更新：安全组放行后重新探测，把部署收敛成一条命令
+
+用户在云控制台放行端口后，我先重探了一遍 —— **判据的变化比结果更有信息量**：
+80 / 443 从"连接超时"变成 **`ConnectionRefusedError`（拒绝连接）**。超时 = 包被安全组半路丢掉；
+拒绝 = 包到达了机器、只是没人监听。所以安全组确实修好了，缺的纯粹是 nginx 没装。22 仍 OPEN。
+
+**把对外的 nginx 配置改成只写 80**（`deploy/nginx.alexcn.work.purenavigation.conf`）。
+原先带一个 `listen 443` + `ssl_certificate` 指向还不存在的证书文件 —— 那样 `nginx -t` 会直接失败，
+反而把 certbot 的签发流程卡死（certbot `--nginx --redirect` 需要能干净地改写现有 server 块）。
+TLS 那一块交给 certbot 生成，不进仓库。
+
+**新增 `scripts/server-web.sh`**（需 root）：探测 apt/dnf/yum 装 nginx → **若已有别的启用配置声明了
+`server_name alexcn.work` 就中止并提示人工合并**（不覆盖别人的站点）→ 落配置 → `nginx -t` →
+`enable --now` + reload → 用 `Host` 头打 `127.0.0.1` 自测 → 打印 certbot 命令。
+
+**`scripts/deploy.sh` 收敛成一条命令**，过程中修掉四个具体问题：
+
+- **远端 `.env` 的写入语义**。之前"不推 `.env`"太粗 —— 那样每次部署都要人上去手填 Key。
+  改成随包推一个 `.deploy-tmp/env.fragment`（从本机 `.env` 里 `grep` 出 DeepSeek 三项），
+  **只在远端不存在 `.env` 时** `mv` 过去并 `chmod 600`；已存在就一行都不动。
+  把别人配好的 Key 静默清空是最糟的一种 bug。曾想过往 `.env.example` 的副本后面追加，
+  但那样同一个键会出现两次、谁生效取决于解析器实现，所以否掉了。
+- **`DOMAIN` 传不到远端**。`sudo` 不带本机环境变量，而 `server-web.sh` 要靠它拼出配置文件路径。
+  写成 `sudo env DOMAIN='...' bash scripts/server-web.sh`。
+- **`read` 在非交互执行时会让 `set -e` 直接中断**（EOF 返回非零），补了 `|| REPLY_OK=""`，
+  这样落进"未确认"分支、干净退出，而不是莫名死在第 100 行。
+- **公网自检改打 IP + `Host` 头**。要验的是"安全组放行 + nginx 认这个 Host"，本机 DNS 缓存没刷新
+  不该被误报成部署失败。
+
+root 阶段（写 `/etc/systemd` 与 `/etc/nginx`）前面加了 `[y/N]` 确认，默认不动系统配置。
+
+**本地验证到此为止的部分**：三个脚本过 `bash -n`；把参数与 `.env` 解析逻辑抽出来跑四种入参
+（默认 / `--no-build --no-web` / 用位置参数覆盖部署主机与用户 / 未知参数报错退出）都对；
+配置文件名和 `.env` 里的 `WEB_DOMAIN` 对得上；tar 清单里 6 个路径全部存在；
+env fragment 只含 DeepSeek 三项、行尾是 LF 不带 CR；`.deploy-tmp` 已加进 `.gitignore`。
+`log/progress.md` 里那条 IPv4-mapped 的记录复核过，措辞本来就是"确认没有洞、所以没加补丁"，无需更正。
+
+**仍然没上线**：`ssh ${DEPLOY_USER}@${DEPLOY_HOST}` 第 5 次被权限策略拦下。现在要做的只剩一条命令：
+
+    bash scripts/deploy.sh
+
+⚠️ 顺带两件遗留：(1) 我本地测试起的 4 个 python 进程还占着 `127.0.0.1` 的 8000/8010/8011/8080，
+清理动作被权限策略拦下了（PID 152 / 30420 / 23576 / 23948），要的话自己 `Stop-Process` 一下。
+(2) 前端只做过结构级校验（DOM 里卡片/图标数量、渲染出的标签），**没有逐页截图看过视觉效果**。

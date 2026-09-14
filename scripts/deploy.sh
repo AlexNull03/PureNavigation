@@ -3,11 +3,11 @@
 #
 #   bash scripts/deploy.sh                 # 用 .env 里的 DEPLOY_HOST / DEPLOY_USER
 #   bash scripts/deploy.sh 1.2.3.4 alex    # 显式指定
-#   bash scripts/deploy.sh --no-build      # 跳过前端构建，只推后端
+#   bash scripts/deploy.sh --no-build      # 跳过前端构建
+#   bash scripts/deploy.sh --no-web        # 只装应用，不动 systemd / nginx
 #
 # 用 tar-over-ssh 而不是 rsync：Git Bash 默认不带 rsync，tar 一定带。
-# 只推运行时需要的东西（dist / db / server / scripts），不推 .env ——
-# 服务器上的 .env 里有它自己的 DEEPSEEK_API_KEY，覆盖会把它清成空。
+# 除 .env 本体外的东西都推（远端 .env 由 fragment 单独生成，且只在它不存在时写）。
 set -euo pipefail
 
 HERE=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
@@ -15,9 +15,11 @@ REPO=$(cd "$HERE/.." && pwd)
 cd "$REPO"
 
 BUILD=1
+WEB=1
 while [[ ${1:-} == --* ]]; do
   case "$1" in
     --no-build) BUILD=0 ;;
+    --no-web) WEB=0 ;;
     *) echo "未知参数：$1" >&2; exit 1 ;;
   esac
   shift
@@ -27,15 +29,22 @@ HOST_ARG="${1:-}"
 USER_ARG="${2:-}"
 
 if [[ -f .env ]]; then
-  # 只取需要的两个键，不 source 整个文件（.env 里可能有会破坏本脚本的值）
+  # 只取需要的几个键，不 source 整个文件（.env 里可能有会破坏本脚本的值）
   DEPLOY_HOST=$(grep -m1 '^DEPLOY_HOST=' .env | cut -d= -f2)
   DEPLOY_USER=$(grep -m1 '^DEPLOY_USER=' .env | cut -d= -f2)
+  DEPLOY_DOMAIN=$(grep -m1 '^WEB_DOMAIN=' .env | cut -d= -f2)
 fi
 HOST="${HOST_ARG:-${DEPLOY_HOST:-}}"
 USER_NAME="${USER_ARG:-${DEPLOY_USER:-alex}}"
+DOMAIN="${DEPLOY_DOMAIN:-}"
 
 if [[ -z "$HOST" ]]; then
   echo "不知道要部署到哪台机器：给两个参数（bash scripts/deploy.sh <host> <user>），或在本机 .env 里写 DEPLOY_HOST。" >&2
+  exit 1
+fi
+if [[ $WEB == 1 && -z "$DOMAIN" ]]; then
+  echo "对外服务需要域名：在本机 .env 里写 WEB_DOMAIN=你的域名（deploy/nginx.<域名>.purenavigation.conf 要按它找文件）。" >&2
+  echo "只想先把应用装上：bash scripts/deploy.sh --no-web" >&2
   exit 1
 fi
 
@@ -56,26 +65,73 @@ fi
 echo "== 打包上传 $DEST:$REMOTE_DIR =="
 ssh -o ConnectTimeout=10 "$DEST" "mkdir -p '$REMOTE_DIR'"
 
+# 模型配置随包一起走：不放进命令行参数（会出现在远端 ps 里），也不交互式让用户再填一遍。
+rm -rf .deploy-tmp && mkdir -p .deploy-tmp
+if [[ -f .env ]]; then
+  grep -E '^(DEEPSEEK_(API_KEY|BASE_URL|MODEL)|HOST|PORT)=' .env > .deploy-tmp/env.fragment || true
+fi
+
 tar -czf - \
   --exclude='__pycache__' \
   --exclude='*.pyc' \
-  dist db server scripts .env.example \
+  dist db server scripts deploy .env.example .deploy-tmp \
   | ssh "$DEST" "tar -xzf - -C '$REMOTE_DIR' && sed -i 's/\r\$//' '$REMOTE_DIR'/scripts/*.sh"
 # 那个 sed 不是洁癖：Windows 上的 git 常配 core.autocrlf=true，签出的 .sh 带 CRLF，
 # 传过去 bash 会报 "bad interpreter / $'\r': command not found"。
 
-echo "== 远端装环境 =="
+rm -rf .deploy-tmp
+
+echo "== 远端 .env =="
+# 已有 .env 时绝不覆盖：把别人配好的 Key 静默清空是最糟的一种 bug。
+# 没有时整份写入 fragment，而不是往 .env.example 的副本后面追加 ——
+# 同一个键出现两次的话，谁生效取决于解析器实现，不该赌。
+ssh "$DEST" "cd '$REMOTE_DIR' && \
+  if [[ -f .env ]]; then \
+    echo '远端已有 .env，保持不动（要改：vim $REMOTE_DIR/.env）'; \
+  elif [[ -s .deploy-tmp/env.fragment ]]; then \
+    mv .deploy-tmp/env.fragment .env && chmod 600 .env && echo '已写入远端 .env（含 DeepSeek Key）'; \
+  else \
+    cp .env.example .env && echo '!! 本机没有可同步的 Key，已生成占位 .env，请手动填 DEEPSEEK_API_KEY'; \
+  fi; rm -rf .deploy-tmp"
+
+echo "== 远端装环境（无需 root）=="
 ssh -t "$DEST" "cd '$REMOTE_DIR' && bash scripts/server-setup.sh"
 
+if [[ $WEB == 0 ]]; then
+  echo
+  echo "已按 --no-web 跳过对外服务。要手工接管：sudo bash $REMOTE_DIR/scripts/server-setup.sh --root"
+  exit 0
+fi
+
+echo
+echo "接下来在服务器上执行需要 root 的操作："
+echo "  · 装 systemd 服务单元并启动 puruenavigation"
+echo "  · 装/配 nginx，把 $DOMAIN 的 /PureNavigation/main/ 反代到 127.0.0.1:8000"
+echo "它会在 $REMOTE_DIR 之外的地方动 /etc/systemd 与 /etc/nginx —— 确认继续？[y/N] "
+read -r REPLY_OK || REPLY_OK=""
+case "$REPLY_OK" in
+  y | Y) ;;
+  *) echo "已中止。前两步（上传 + 建虚拟环境）已经完成，随时可以重跑本脚本。"; exit 0 ;;
+esac
+
+# DOMAIN 必须显式传：sudo 不会把本机的环境变量带过去，而 server-web.sh 要靠它拼出
+# deploy/nginx.$DOMAIN.purenavigation.conf 的路径。
+ssh -t "$DEST" "cd '$REMOTE_DIR' && sudo bash scripts/server-setup.sh --root && sudo env DOMAIN='$DOMAIN' bash scripts/server-web.sh"
+
+echo
+echo "== 从公网验一遍 =="
+sleep 2
+# 打 IP 而不是域名：这里要验的是"安全组放行 + nginx 认这个 Host"，本机 DNS 缓存没刷新
+# 不该被误报成部署失败。
+curl -s --max-time 20 -H "Host: $DOMAIN" "http://$HOST/PureNavigation/main/api/health" \
+  || echo "外网没通：先确认云安全组放行了 80。"
+echo
 cat <<NEXT
 
-代码已就位。剩下两步要你在服务器上亲手做（脚本刻意不代替你动系统配置）：
+上面返回 {"status":"ok","items":24,"llm_configured":true} 就说明整条链路通了。
+最后签证书（交互式，会问邮箱）：
 
-  1. 填 Key：      vim $REMOTE_DIR/.env        # DEEPSEEK_API_KEY=sk-...
-  2. 装成服务：    sudo bash $REMOTE_DIR/scripts/server-setup.sh --root
-  3. 看日志：      journalctl -u puruenavigation -f
+  ssh -t $DEST 'sudo certbot --nginx -d $DOMAIN --redirect'
 
-再对外提供服务，二选一：
-  A) .env 里 HOST=0.0.0.0 && 阿里云安全组放行 8000
-  B) 让 nginx 监听 80 反代到 127.0.0.1:8000（安全组只开 80）
+然后就能开 https://$DOMAIN/PureNavigation/main/
 NEXT

@@ -1,0 +1,16 @@
+node_modules
+dist
+dist-ssr
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log
+.qoder
+
+__pycache__
+*.py[cod]
+.venv
+venv
+*.egg-info
+.serverdata

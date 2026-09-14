@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from functools import cache
 
 import httpx
 from dotenv import load_dotenv
@@ -21,8 +22,13 @@ class LlmError(RuntimeError):
     """上游返回异常。"""
 
 
-def _env(name: str, fallback: str) -> str:
+@cache
+def _load_env() -> None:
     load_dotenv(override=False)
+
+
+def _env(name: str, fallback: str) -> str:
+    _load_env()
     value = os.environ.get(name, "")
     return value if value else fallback
 

@@ -31,6 +31,7 @@ server/   FastAPI 后端
   scan.py        取证编排
   llm.py         DeepSeek chat completions
   prompts.py     两个入口的越界拒绝与注入防护
+  run.py         进程入口：部署时用，HOST/PORT 的默认值在这里
 db/       data.csv
 scripts/  部署脚本
 ```

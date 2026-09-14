@@ -27,9 +27,11 @@ After=network.target
 Type=simple
 User=$RUN_USER
 WorkingDirectory=$APP_DIR
-# 端口、监听地址、DEEPSEEK_API_KEY 都在 .env 里，不进 unit 文件
+# DEEPSEEK_API_KEY / HOST / PORT 都在 .env 里，不进 unit 文件
 EnvironmentFile=-$APP_DIR/.env
-ExecStart=$APP_DIR/.venv/bin/uvicorn server.main:app --host \${HOST:-127.0.0.1} --port \${PORT:-8000}
+# 监听地址的默认值写在 server/run.py 里 —— systemd 不展开 ${VAR:-...}，
+# 放在 ExecStart 上，遇到 .env 缺键就会传成空参数。
+ExecStart=$APP_DIR/.venv/bin/python -m server.run
 Restart=always
 RestartSec=3
 
@@ -54,8 +56,9 @@ echo "== 检查 Python 版本 =="
 "$PY_BIN" - <<'CHECK'
 import sys
 
-if sys.version_info < (3, 11):
-    sys.exit(f"需要 Python >= 3.11，当前 {sys.version.split()[0]}（用 PY_BIN=python3.12 重跑本脚本）")
+# 3.10 这个下限来自依赖自己声明的 Requires-Python（fastapi / starlette / uvicorn 都是 >=3.10）
+if sys.version_info < (3, 10):
+    sys.exit(f"需要 Python >= 3.10，当前 {sys.version.split()[0]}（用 PY_BIN=python3.12 重跑本脚本）")
 print(f"Python {sys.version.split()[0]} OK")
 CHECK
 

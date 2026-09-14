@@ -260,3 +260,24 @@ dist/                                                        # 构建产物
   部署步骤，以及三条已知边界（结论只是初步技术判断；`chain_complete` 不参与判红；判等只看原始拼写）。
 - 两个脚本都过 `bash -n`。本地模拟上传包：23 个文件 / 156 KB，含 `dist/` 5 个产物，
   确认 `.env` 不在包内。
+
+### 2026-09-14 17:55 更新：部署脚本本地能验的部分先验掉，修掉三个会在服务器上炸的问题
+
+跑不到服务器上，就把"能在本地证伪的东西"全部证伪一遍：
+
+- **systemd 的 `ExecStart` 不展开 `${VAR:-默认值}`**。原先 unit 里写的是
+  `uvicorn ... --host ${HOST:-127.0.0.1} --port ${PORT:-8000}`，`.env` 缺键时 systemd 会把它
+  替换成**空字符串**，进程直接起不来。改成新增 `server/run.py` 作为进程入口，默认值写进代码：
+  `ExecStart=.../python -m server.run`。本机实测 `PORT=8011 .venv/bin/python -m server.run`
+  起得来，`/api/health` 与 `/` 都是 200。
+- **Python 版本下限写错了**。`server-setup.sh` 原先卡 `>= 3.11`，但 `fastapi` / `starlette` /
+  `uvicorn` 自己声明的 `Requires-Python` 都是 `>=3.10`（本机 `importlib.metadata` 查的），
+  3.10 的机器会被我的脚本误拒。已改成 3.10，并在注释里写明这个下限的出处。
+- **`llm._env()` 每次取值都调一遍 `load_dotenv()`**，一次 `chat()` 要重复读盘解析 .env 四回。
+  套上 `@cache` 的空参函数，每进程只加载一次。
+
+另外确认了两件本来担心会有问题的：Python 的 `IPv6Address.is_private` **已经**把
+`::ffff:127.0.0.1` 这类 IPv4-mapped 地址算成私网，且 `normalize_target` 对 IP 字面量本来就直接拒绝，
+所以 SSRF 闸门在这条路上没有洞 —— 不用加"修复"（差点凭印象写了个多余的补丁）。
+
+上传包实测：23 个文件 / 156 KB，含 `dist/` 5 个产物，`.env` 不在包内；两个脚本过 `bash -n`。

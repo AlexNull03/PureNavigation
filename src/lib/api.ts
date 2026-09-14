@@ -1,4 +1,4 @@
-import type { Health, Software } from "@/types";
+import type { ChatMessage, Evidence, Health, Software } from "@/types";
 
 const BASE = "/api";
 
@@ -41,7 +41,18 @@ export function fetchHealth(): Promise<Health> {
   return request<Health>("/health");
 }
 
-export function fetchSoftware(query: string): Promise<{ items: Software[] }> {
+export function fetchSoftware(query: string): Promise<{ items: Software[]; disclaimer: string }> {
   const suffix = query.trim() ? `?q=${encodeURIComponent(query.trim())}` : "";
   return request(`/software${suffix}`);
+}
+
+export function sendAdvise(messages: ChatMessage[]): Promise<{ reply: string; disclaimer: string }> {
+  return request("/advise", { method: "POST", body: JSON.stringify({ messages }) });
+}
+
+export function runInspect(
+  url: string,
+  question: string
+): Promise<{ reply: string; evidence: Evidence; disclaimer: string }> {
+  return request("/inspect", { method: "POST", body: JSON.stringify({ url, question }) });
 }

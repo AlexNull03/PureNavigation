@@ -40,6 +40,10 @@ class TargetError(ValueError):
     """目标地址不合法或不被允许扫描。"""
 
 
+class DnsError(TargetError):
+    """域名解析不开。这本身是判别结论，不是用户输入错误。"""
+
+
 @dataclass(frozen=True)
 class Target:
     host: str
@@ -152,7 +156,7 @@ def resolve_public(host: str) -> list[str]:
     try:
         infos = socket.getaddrinfo(host, None, socket.AF_UNSPEC, socket.SOCK_STREAM)
     except socket.gaierror as exc:
-        raise TargetError(f"域名解析失败：{exc.strerror or 'NXDOMAIN'}") from exc
+        raise DnsError(f"域名解析失败：{exc.strerror or 'NXDOMAIN'}") from exc
 
     addresses = sorted({info[4][0] for info in infos})
     if not addresses:

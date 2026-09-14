@@ -145,7 +145,8 @@ export function BrowsePage() {
         <div className="panel flex flex-col items-start gap-2 rounded-xl px-5 py-8">
           <p className="text-[14px] text-ink">数据库里暂时没有「{query}」这一条。</p>
           <p className="text-[12.5px] leading-relaxed text-muted">
-            本站不会为了凑数而给出未经验证的链接：请自行核对域名是否属于厂商，再决定从哪台服务器下载。
+            可以去 <Link to="/advise" className="text-cyan underline decoration-cyan/40">AI 安装建议</Link>
+            ，它会告诉你如何自己确认官方域名；本站不会为了凑数而给出未经验证的链接。
           </p>
         </div>
       ) : null}

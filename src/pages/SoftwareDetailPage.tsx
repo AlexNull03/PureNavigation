@@ -1,4 +1,4 @@
-import { AlertTriangle, ArrowLeft, Copy, Download, ExternalLink } from "lucide-react";
+import { AlertTriangle, ArrowLeft, Copy, Download, ExternalLink, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
@@ -167,6 +167,12 @@ export function SoftwareDetailPage() {
           本站不代收、不镜像任何安装包，链接直接指向厂商服务器；也无意推荐任何第三方下载站。
           下载后请核对数字签名，遇到要求“下载器/加速组件”的一律视为非官方渠道。
         </p>
+        <Link
+          to="/advise"
+          className="flex shrink-0 items-center gap-1.5 rounded-lg border border-cyan/35 bg-cyan/12 px-3 py-2 text-[12px] text-cyan hover:bg-cyan/20"
+        >
+          <Sparkles size={13} /> 让 AI 帮我配
+        </Link>
       </div>
     </div>
   );

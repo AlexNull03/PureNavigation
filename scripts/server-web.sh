@@ -49,6 +49,18 @@ if [[ -n "$EXISTING" ]]; then
 fi
 
 echo "== 落配置 =="
+# nginx 反代成立的前提是后端只听 127.0.0.1。这台机器上可能留着早前生成的 .env，
+# 里面 HOST 未必是回环 —— 绑到 0.0.0.0 的话 8000 会绕开 nginx 直接对公网开放，
+# 按 IP 限流和 Host 头这些假设统统不成立。这里只报警，不擅自动别人的文件。
+if [[ -f "$APP_DIR/.env" ]]; then
+  backend_host=$(grep -m1 '^HOST=' "$APP_DIR/.env" | cut -d= -f2 || true)
+  if [[ -n "$backend_host" && "$backend_host" != "127.0.0.1" && "$backend_host" != "localhost" ]]; then
+    echo "!! $APP_DIR/.env 里 HOST=$backend_host —— 后端会直接对公网开放 8000，绕过 nginx。" >&2
+    echo "   建议改成 HOST=127.0.0.1 后 sudo systemctl restart puruenavigation，再继续。" >&2
+    echo "   （云安全组里也别放行 8000。）" >&2
+  fi
+fi
+
 cp "$CONF_SRC" "$CONF_DST"
 nginx -t
 

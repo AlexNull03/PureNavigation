@@ -81,18 +81,16 @@ tar -czf - \
        && sed -i 's/\r\$//' '$REMOTE_DIR'/scripts/*.sh \
        && cd '$REMOTE_DIR' \
        && { if [[ -f .env ]]; then \
-              echo '远端已有 .env，保持不动（要改：vim $REMOTE_DIR/.env）'; \
+              echo '远端已有 .env：只补缺键和空值，已有内容不动（由 server-setup.sh 合并）'; \
             elif [[ -s .deploy-tmp/env.fragment ]]; then \
               mv .deploy-tmp/env.fragment .env && chmod 600 .env && echo '已写入远端 .env（含 DeepSeek Key）'; \
             else \
-              cp .env.example .env && echo '!! 本机没有可同步的 Key，已生成占位 .env，请手动填 DEEPSEEK_API_KEY'; \
-            fi; } \
-       && rm -rf .deploy-tmp"
+              cp .env.example .env && echo '!! 本机没有可同步的 Key，已生成占位 .env'; \
+            fi; }"
 # 那个 sed 不是洁癖：Windows 上的 git 常配 core.autocrlf=true，签出的 .sh 可能带 CRLF，
 # 传过去 bash 会报 "bad interpreter / $'\r': command not found"。
 # 已有 .env 时绝不覆盖：把别人配好的 Key 静默清空是最糟的一种 bug。
-# 没有时整份搬运 fragment，而不是往 .env.example 的副本后面追加 ——
-# 同一个键出现两次的话，谁生效取决于解析器实现，不该赌。
+# .deploy-tmp 故意留在远端，下一步 server-setup.sh 要读它做合并，读完由它清理。
 
 rm -rf .deploy-tmp
 

@@ -9,6 +9,7 @@ set -euo pipefail
 
 APP_DIR="${APP_DIR:-$HOME/purenavigation}"
 PY_BIN="${PY_BIN:-python3}"
+PIP_MIRROR="${PIP_MIRROR:-https://mirrors.aliyun.com/pypi/simple/}"
 
 if [[ "${1:-}" == "--root" ]]; then
   if [[ $EUID -ne 0 ]]; then
@@ -64,13 +65,67 @@ CHECK
 
 echo "== 虚拟环境与依赖 =="
 cd "$APP_DIR"
-[[ -d .venv ]] || "$PY_BIN" -m venv .venv
-./.venv/bin/pip install --quiet --upgrade pip
+
+# "目录存在"不等于"环境能用"：缺 python3.x-venv 时 `python3 -m venv` 会先建好
+# bin/ lib/ 再在 ensurepip 那步失败，留下一个没有 pip 的空壳 —— 上次部署就死在这。
+if [[ -d .venv && ! -x .venv/bin/pip ]]; then
+  echo "已有的 .venv 里没有 pip（多半是上次建到一半失败），删掉重建"
+  rm -rf .venv
+fi
+if [[ ! -d .venv ]]; then
+  if ! "$PY_BIN" -m venv .venv; then
+    ver=$("$PY_BIN" -c 'import sys; print("%d.%d" % sys.version_info[:2])')
+    echo "建虚拟环境失败。Ubuntu/Debian 上这一步基本都缺 ensurepip，装完再重跑：" >&2
+    echo "    sudo apt-get install -y python${ver}-venv" >&2
+    exit 1
+  fi
+fi
+
+./.venv/bin/pip install --quiet --upgrade pip || {
+  echo "PyPI 官方源装不动（服务器在国内很常见），改走阿里云镜像重试"
+  export PIP_INDEX_URL="$PIP_MIRROR"
+}
 ./.venv/bin/pip install --quiet -r server/requirements.txt
 
-if [[ ! -f .env ]]; then
-  cp .env.example .env
-  echo "!! 已生成 .env —— 请填入 DEEPSEEK_API_KEY 与 HOST/PORT，AI 功能才完整。"
+echo "== 配置 .env =="
+ENV_FILE="$APP_DIR/.env"
+if [[ ! -f "$ENV_FILE" ]]; then
+  cp .env.example "$ENV_FILE"
+  echo "已生成 .env（占位），下面的合并步骤会尝试填 Key"
+fi
+
+# 把 deploy.sh 随包推来的 Key 并进 .env：**只补缺键和空值，已有非空值一个字都不动。**
+# 之前是"远端有 .env 就完全不处理"，结果机器上留着一个 DEEPSEEK_API_KEY= 空值的旧文件时，
+# 两个 AI 入口会静默降级成"未配置"，而部署全程一句话都不说。
+FRAGMENT=.deploy-tmp/env.fragment
+if [[ -s "$FRAGMENT" ]]; then
+  while IFS= read -r line; do
+    [[ "$line" == *=* ]] || continue
+    key=${line%%=*}
+    value=${line#*=}
+    [[ -n "$value" ]] || continue            # 本机也没值，没什么可推的
+    # 值限定在这个字符集里才敢拿去做 sed 的替换串，否则宁可让人手工填
+    if [[ ! "$value" =~ ^[A-Za-z0-9._:/+-]+$ ]]; then
+      echo "   跳过 $key：值里有特殊字符，请手写进 $ENV_FILE"
+      continue
+    fi
+    if grep -q "^$key=." "$ENV_FILE"; then
+      echo "   $key 已有值，保持不动"
+    elif grep -q "^$key=" "$ENV_FILE"; then
+      sed -i "s|^$key=.*|$key=$value|" "$ENV_FILE" && echo "   填入 $key"
+    else
+      printf '%s=%s\n' "$key" "$value" >> "$ENV_FILE" && echo "   追加 $key"
+    fi
+  done < "$FRAGMENT"
+fi
+rm -rf .deploy-tmp
+chmod 600 "$ENV_FILE"
+
+if grep -q '^DEEPSEEK_API_KEY=.' "$ENV_FILE"; then
+  echo "DeepSeek Key 已配置"
+else
+  echo "!! $ENV_FILE 里 DEEPSEEK_API_KEY 是空的：AI 建议和 AI 判别都会返回“未配置”。"
+  echo "   填法：vim $ENV_FILE，改完 sudo systemctl restart puruenavigation"
 fi
 
 if [[ ! -f dist/index.html ]]; then

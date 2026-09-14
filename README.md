@@ -103,7 +103,7 @@ ssh -t <user>@<host> 'sudo certbot --nginx -d alexcn.work --redirect'
 
 关于 `.env`：脚本随包上传一份只含 `DEEPSEEK_*` 的 fragment，**只在远端还没有 `.env` 时**写入；
 远端已有 `.env` 就一个字都不动 —— 把别人配好的 Key 静默清空是最糟的一种 bug。
-要改密钥得 ssh 上去 `vim $HOME/purenavigation/.env` 后 `sudo systemctl restart puruenavigation`。
+要改密钥得 ssh 上去 `vim $HOME/purenavigation/.env` 后 `sudo systemctl restart purenavigation`。
 
 手工分步（排查问题时更有用）：
 

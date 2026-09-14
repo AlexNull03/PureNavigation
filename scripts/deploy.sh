@@ -105,7 +105,7 @@ fi
 
 echo
 echo "接下来在服务器上执行需要 root 的操作："
-echo "  · 装 systemd 服务单元并启动 puruenavigation"
+echo "  · 装 systemd 服务单元并启动 purenavigation"
 echo "  · 装/配 nginx，把 $DOMAIN 的 /PureNavigation/main/ 反代到 127.0.0.1:8000"
 echo "它会在 $REMOTE_DIR 之外的地方动 /etc/systemd 与 /etc/nginx —— 确认继续？[y/N] "
 read -r REPLY_OK || REPLY_OK=""

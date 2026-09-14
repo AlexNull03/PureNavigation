@@ -56,7 +56,7 @@ if [[ -f "$APP_DIR/.env" ]]; then
   backend_host=$(grep -m1 '^HOST=' "$APP_DIR/.env" | cut -d= -f2 || true)
   if [[ -n "$backend_host" && "$backend_host" != "127.0.0.1" && "$backend_host" != "localhost" ]]; then
     echo "!! $APP_DIR/.env 里 HOST=$backend_host —— 后端会直接对公网开放 8000，绕过 nginx。" >&2
-    echo "   建议改成 HOST=127.0.0.1 后 sudo systemctl restart puruenavigation，再继续。" >&2
+    echo "   建议改成 HOST=127.0.0.1 后 sudo systemctl restart purenavigation，再继续。" >&2
     echo "   （云安全组里也别放行 8000。）" >&2
   fi
 fi
@@ -71,7 +71,7 @@ echo "== 本机自测 =="
 code=$(curl -s -o /dev/null -w '%{http_code}' -H "Host: $DOMAIN" "http://127.0.0.1/PureNavigation/main/api/health")
 echo "经 nginx 打到后端 /api/health -> HTTP $code"
 if [[ "$code" != "200" ]]; then
-  echo "多半是应用服务没起：systemctl status puruenavigation --no-pager -n 30" >&2
+  echo "多半是应用服务没起：systemctl status purenavigation --no-pager -n 30" >&2
   exit 1
 fi
 

@@ -18,8 +18,11 @@ if [[ "${1:-}" == "--root" ]]; then
   fi
   RUN_USER="${SUDO_USER:-$USER}"
   APP_DIR=$(getent passwd "$RUN_USER" | cut -d: -f6)/purenavigation
+  # 单元文件名和 systemctl 参数必须同源：写成两个字面量时，其中一处手滑多一个 u
+  # 就会 "Unit file puruenavigation.service does not exist"，直接 set -e 退出。
+  SERVICE=purenavigation
 
-  cat > /etc/systemd/system/purenavigation.service <<UNIT
+  cat > /etc/systemd/system/$SERVICE.service <<UNIT
 [Unit]
 Description=PureNavigation
 After=network.target
@@ -41,10 +44,10 @@ WantedBy=multi-user.target
 UNIT
 
   systemctl daemon-reload
-  systemctl enable --now puruenavigation.service
-  systemctl restart puruenavigation.service
+  systemctl enable --now $SERVICE.service
+  systemctl restart $SERVICE.service
   sleep 2
-  systemctl --no-pager -n 20 status puruenavigation.service || true
+  systemctl --no-pager -n 20 status $SERVICE.service || true
 
   echo
   echo "服务已起。接下来二选一对外提供服务（这一步刻意不代你做）："
@@ -125,7 +128,7 @@ if grep -q '^DEEPSEEK_API_KEY=.' "$ENV_FILE"; then
   echo "DeepSeek Key 已配置"
 else
   echo "!! $ENV_FILE 里 DEEPSEEK_API_KEY 是空的：AI 建议和 AI 判别都会返回“未配置”。"
-  echo "   填法：vim $ENV_FILE，改完 sudo systemctl restart puruenavigation"
+  echo "   填法：vim $ENV_FILE，改完 sudo systemctl restart purenavigation"
 fi
 
 if [[ ! -f dist/index.html ]]; then

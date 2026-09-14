@@ -409,7 +409,7 @@ README 的部署节按实况重写了（原文还停留在"手工上服务器分
 用户双击 `deploy.bat` 跑出第一段真实结果，一次跑完了此前所有猜测都覆盖不到的部分：
 
 - ✅ 前端构建、tar-over-ssh 上传、远端解包去 CR 全部正常 —— 前面几轮的本地验证没白做。
-- ℹ️ 服务器现状：**Python 3.12.3**；`/home/alex/purenavigation/.env` **已经存在**（更早的手工步骤留下的），
+- ℹ️ 服务器现状：**Python 3.12.3**；`${DEPLOY_USER_HOME}/purenavigation/.env` **已经存在**（更早的手工步骤留下的），
   所以脚本按设计走了"不覆盖"分支。
 - ❌ 死在 `server-setup.sh:68`：`./.venv/bin/pip: No such file or directory`，退出码 127。
 
@@ -435,3 +435,29 @@ README 的部署节按实况重写了（原文还停留在"手工上服务器分
 已有非空 Key 保持不动 / 没有 `.env` 时先生成再填 / 值里含竖线与反引号时跳过并提示手写，且每种都清掉了 `.deploy-tmp`。
 三个脚本过 `bash -n`、零 CR；`deploy.bat --frob` 冒烟仍正常。
 ⚠️ **仍未证实**：那台机器到底缺不缺 `python3.12-venv`。下一次重跑要么直接过，要么打出 apt 那条命令 —— 两种结果都算定位成功。
+
+### 2026-09-14 20:11 更新：venv 修复确认生效，真正卡住的是单元名的一个字母
+
+第二次真跑，用户先报了"卡住"，并要求**先别改代码**。按只读判据查下来，"卡住"是假象：
+
+- ✅ `.venv/bin/pip` 存在、时间戳 19:47，`site-packages` 里有 requirements 的尾巴（cffi 等）——
+  上一轮"pip 缺失就删掉重建 + 阿里云镜像重试"的修复**生效了**，那台机器并不需要额外装 apt 包。
+- ✅ `.deploy-tmp` 已被消耗掉，说明脚本走过了 Key 合并；`grep -c '^DEEPSEEK_API_KEY=.' .env` 返回 1，
+  即补的确实是值而不是空键；`./.venv/bin/python -c "from server.catalog import catalog; print(len(catalog()))"`
+  打印 **24** —— 依赖链、CWD、CSV 编码在服务器上全通。
+- ❌ 那个窗口本身是**半开 SSH 连接**：`deploy.sh` 里的 `ssh` 没带 keepalive，本地看起来像冻结，
+  远端进程早退出了（`pgrep` 只剩 sshd/pts）。这也是 `[y/N]` 第一次没出现的原因。
+
+第三次跑到 `[y/N]` 按了 y，报：`Failed to enable unit: Unit file puruenavigation.service does not exist.`
+
+**定位**：字面值写了两遍，其中一遍多了一个字母 —— `cat > /etc/systemd/system/purenavigation.service`
+写对了，紧跟着的 `systemctl enable --now puruenavigation.service` 拼错了。`daemon-reload` 已经跑过，
+所以文件确实在盘上；`set -e` 让脚本当场退出，nginx 那步（`server-web.sh`）根本没轮到。
+远端此刻的真实状态是：**单元文件存在但未 enable、服务未起、nginx 未配**。
+
+**修复**：单元名收成一个变量 `SERVICE=purenavigation`，`cat` 的目标路径和三条 `systemctl` 都引用它 ——
+同源之后就没法再拼歪。顺带把 `server-setup.sh` / `server-web.sh` / `deploy.sh` / `README.md` 里
+打印给用户照抄的 4 处服务名一并改正：那些是提示语里的命令，错了就是让人去 restart 一个不存在的单元。
+
+**同时**：日志里 `/home/<user>/...` 写死过真实 SSH 用户名，而本仓库是 public —— 已按既有约定改成
+`${DEPLOY_USER_HOME}`（只向前清理，历史里那条需要 force push 才能抹，未经你同意不动）。

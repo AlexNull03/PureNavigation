@@ -189,3 +189,28 @@ dist/                                                        # 构建产物
 5. 本地跑通 FastAPI + 前端（镜像部署要求先本地验证再部署）。→ **push ②「创建基础网页」**
 6. 两个 AI 入口：建议入口（读 CSV、越界拒绝、声明非广告）+ 判别入口（域名 + Python whois + 证书链 → LLM）。→ **push ③「提交AI基础功能」**
 7. 用户 `meoo login` 后：`meoo projects create "PureNavigation"` → `meoo deploy --runtime image`。
+
+### 2026-09-14 16:4x 更新：push ① 已完成
+
+- `git ls-remote` / `git push` 验证通过，用户已执行凭据命令。
+- 提交 `4379769 创建数据库，导入基础内容` → 已推送 `origin/main`（4 个文件：`.gitattributes`、`.gitignore`、`db/data.csv`、`log/progress.md`）。
+- 提交前把服务器公网 IP 从日志里脱敏成 `${DEPLOY_HOST}`，真实值改存被忽略的 `.env`（新增 `DEPLOY_HOST` / `DEPLOY_USER` / `DEEPSEEK_API_KEY` 占位）。原因：仓库是公开的。
+- 新增 `.gitattributes` 强制 `*.sh` / `*.py` / `*.csv` 用 LF，避免 Windows 签出 CRLF 后 shell 脚本和 CSV 解析出问题。
+- SSH 免密仍不可用（探测被权限策略拦下），部署步骤待用户执行 `ssh-copy-id`。
+### 2026-09-14 17:32 更新：修正上面那条记录
+
+`wc -c` 那次统计把整个接口 JSON 打印进了终端，被误当成日志内容粘了进来。已删除该段，以本条为准。
+
+### 2026-09-14 17:33 更新：push ②「创建基础网页」
+
+**这一步做了什么**：把上一轮遗留的静态草案（93 条 `src/data/sites/*.ts`）整体作废，改成"`db/data.csv` 是唯一数据源 + FastAPI 出接口 + React 渲染"的形态，页面换成深色科技风。
+
+- **删掉的**：`src/data/`（含 93 条手写 TS 站点数据与 `categories.ts`）、`src/hooks/`、旧 `src/components/*`、`src/pages/GuidePage.tsx`、`src/lib/search.ts`、`src/lib/display.ts`、`src/App.tsx`。
+- **后端**：`server/catalog.py`（按 `st_mtime` 缓存 CSV，表头不符直接抛错而不是静默兜底；搜索按 name/domain/host/description 加权打分）、`server/netguard.py`（URL 规范化 + SSRF 拦截：只允许 http/https、只允许 80/443、拒绝 IP 字面量、拒绝私网/回环/链路本地/保留/组播地址；`MULTI_PART_SUFFIXES` 保证 `example.co.uk` 不被切错）、`server/main.py`（`/api/health`、`/api/software?q=`，末尾挂 `dist` 静态目录，未构建时返回 503 提示而不是白屏）。
+- **前端**：`src/index.css` 重写为深色令牌（`--color-base #06070b` / `panel` / `line` / `cyan #37e6d4` / `violet` / `amber #f0b429` / `danger`）+ `.grid-field` 网格辉光背景；`src/lib/icons.tsx` 从 `simple-icons@16.31.0` 具名导入 19 个品牌 SVG，构建期打进 bundle（**不引外部 CDN、不用 emoji、不加二进制图片**）；`src/pages/BrowsePage.tsx` 搜索词走 URL `?q=`（`replace: true` + 220ms 防抖）；`src/pages/SoftwareDetailPage.tsx` 展示官网/直链/完整介绍 + 复制按钮 + 签名核对提醒。
+- **图标坑**：`simple-icons` v16 已移除 VS Code、Visual Studio、Qoder、Everything、Rufus 五个 mark，`IconGlyph` 对它们回退到 SVG 首字母徽标；纯黑 logo（如某些品牌）用 `PURE_BLACK` 集合改走 `currentColor`，否则深色底上看不见。
+
+**验证**：`pnpm build`（`tsc --noEmit && vite build`）通过，产物 365.89 kB / gzip 123.22 kB，`base: './'` 相对路径、CSS 无外部引用。路由与 24 张卡片通过可访问性快照与 DOM 结构核对确认渲染、控制台零报错。
+⚠️ **未做像素级视觉确认**：`take_screenshot` 在本机报 `NATIVE_BROWSER_VIEWPORT_UNAVAILABLE`，所以"好看/科技感"只有结构和令牌层面的依据，颜色观感需用户自己过一眼。
+
+**为了这个提交点能独立构建做的取舍**：`router.tsx`、`AppLayout.tsx`、`main.py`、`types.ts`、`api.ts` 临时收回到"只有导航、没有 AI"的版本，AI 相关文件和两个 `/advise` 入口留到 ③；否则 ② 的提交里会含指向不存在路由的死链。

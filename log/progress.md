@@ -329,6 +329,9 @@ DOM 里 3 个 `<strong>`、8 个 `<li>`、开头几行没有残留的 `#`/`*`/�
 原先带一个 `listen 443` + `ssl_certificate` 指向还不存在的证书文件 —— 那样 `nginx -t` 会直接失败，
 反而把 certbot 的签发流程卡死（certbot `--nginx --redirect` 需要能干净地改写现有 server 块）。
 TLS 那一块交给 certbot 生成，不进仓库。
+同时删掉了 `listen [::]:80`：这台 ECS 没配 IPv6，绑定 IPv6 套接字会报
+"Address family not supported by protocol"，**整个 nginx 进程都起不来**，现象会被误读成"部署把机器搞坏了"。
+这条 `nginx -t` 抓不到（它只校验语法，绑定发生在 start），本机又没有 nginx 可供实测，所以只能靠先验排除。
 
 **新增 `scripts/server-web.sh`**（需 root）：探测 apt/dnf/yum 装 nginx → **若已有别的启用配置声明了
 `server_name alexcn.work` 就中止并提示人工合并**（不覆盖别人的站点）→ 落配置 → `nginx -t` →
@@ -349,6 +352,14 @@ TLS 那一块交给 certbot 生成，不进仓库。
   不该被误报成部署失败。
 
 root 阶段（写 `/etc/systemd` 与 `/etc/nginx`）前面加了 `[y/N]` 确认，默认不动系统配置。
+
+最后把 **ssh 往返从 5 次压到 3 次**（建目录 + 解包 + 去 CR + 落 `.env` 合并进同一条远端命令）。
+原因不是性能：服务器还没配公钥免密，每多一次往返就要人手多输一遍口令。
+合并后的远端命令串从脚本里**原样抠出来**、对假远端目录跑了三种场景，都符合预期：
+全新机器 → 由 fragment 写出 `.env` 且只含 DeepSeek 三项；远端已有 `.env` → 一个字都不动（保留原 Key）；
+本机没 Key → 退回 `.env.example` 占位。三种都退出码 0、`.deploy-tmp` 清理干净、解包出的脚本零 CR。
+⚠️ 但 `chmod 600` 这一条**在 Git Bash 下测不出真假** —— `/tmp` 和 Windows Temp 上 `stat` 一律报 644，
+是 MSYS 不反映权限位，不代表远端没生效；真要确认得上线后 `ls -l` 看一眼。
 
 **本地验证到此为止的部分**：三个脚本过 `bash -n`；把参数与 `.env` 解析逻辑抽出来跑四种入参
 （默认 / `--no-build --no-web` / 用位置参数覆盖部署主机与用户 / 未知参数报错退出）都对；

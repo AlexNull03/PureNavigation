@@ -62,37 +62,39 @@ if [[ ! -f dist/index.html ]]; then
   exit 1
 fi
 
-echo "== 打包上传 $DEST:$REMOTE_DIR =="
-ssh -o ConnectTimeout=10 "$DEST" "mkdir -p '$REMOTE_DIR'"
-
 # 模型配置随包一起走：不放进命令行参数（会出现在远端 ps 里），也不交互式让用户再填一遍。
 rm -rf .deploy-tmp && mkdir -p .deploy-tmp
 if [[ -f .env ]]; then
   grep -E '^(DEEPSEEK_(API_KEY|BASE_URL|MODEL)|HOST|PORT)=' .env > .deploy-tmp/env.fragment || true
 fi
 
+echo "== 打包上传 $DEST:$REMOTE_DIR，并落远端 .env =="
+# 建目录 / 解包 / 去 CR / 写 .env 合成**一次** ssh：没配公钥免密时走口令认证，
+# 每多一次往返就要多输一遍密码。
 tar -czf - \
   --exclude='__pycache__' \
   --exclude='*.pyc' \
   dist db server scripts deploy .env.example .deploy-tmp \
-  | ssh "$DEST" "tar -xzf - -C '$REMOTE_DIR' && sed -i 's/\r\$//' '$REMOTE_DIR'/scripts/*.sh"
-# 那个 sed 不是洁癖：Windows 上的 git 常配 core.autocrlf=true，签出的 .sh 带 CRLF，
+  | ssh -o ConnectTimeout=10 "$DEST" \
+      "mkdir -p '$REMOTE_DIR' \
+       && tar -xzf - -C '$REMOTE_DIR' \
+       && sed -i 's/\r\$//' '$REMOTE_DIR'/scripts/*.sh \
+       && cd '$REMOTE_DIR' \
+       && { if [[ -f .env ]]; then \
+              echo '远端已有 .env，保持不动（要改：vim $REMOTE_DIR/.env）'; \
+            elif [[ -s .deploy-tmp/env.fragment ]]; then \
+              mv .deploy-tmp/env.fragment .env && chmod 600 .env && echo '已写入远端 .env（含 DeepSeek Key）'; \
+            else \
+              cp .env.example .env && echo '!! 本机没有可同步的 Key，已生成占位 .env，请手动填 DEEPSEEK_API_KEY'; \
+            fi; } \
+       && rm -rf .deploy-tmp"
+# 那个 sed 不是洁癖：Windows 上的 git 常配 core.autocrlf=true，签出的 .sh 可能带 CRLF，
 # 传过去 bash 会报 "bad interpreter / $'\r': command not found"。
+# 已有 .env 时绝不覆盖：把别人配好的 Key 静默清空是最糟的一种 bug。
+# 没有时整份搬运 fragment，而不是往 .env.example 的副本后面追加 ——
+# 同一个键出现两次的话，谁生效取决于解析器实现，不该赌。
 
 rm -rf .deploy-tmp
-
-echo "== 远端 .env =="
-# 已有 .env 时绝不覆盖：把别人配好的 Key 静默清空是最糟的一种 bug。
-# 没有时整份写入 fragment，而不是往 .env.example 的副本后面追加 ——
-# 同一个键出现两次的话，谁生效取决于解析器实现，不该赌。
-ssh "$DEST" "cd '$REMOTE_DIR' && \
-  if [[ -f .env ]]; then \
-    echo '远端已有 .env，保持不动（要改：vim $REMOTE_DIR/.env）'; \
-  elif [[ -s .deploy-tmp/env.fragment ]]; then \
-    mv .deploy-tmp/env.fragment .env && chmod 600 .env && echo '已写入远端 .env（含 DeepSeek Key）'; \
-  else \
-    cp .env.example .env && echo '!! 本机没有可同步的 Key，已生成占位 .env，请手动填 DEEPSEEK_API_KEY'; \
-  fi; rm -rf .deploy-tmp"
 
 echo "== 远端装环境（无需 root）=="
 ssh -t "$DEST" "cd '$REMOTE_DIR' && bash scripts/server-setup.sh"

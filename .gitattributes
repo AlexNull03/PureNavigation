@@ -12,6 +12,9 @@
 *.css  text eol=lf
 *.html text eol=lf
 
+# cmd 逐行读 .bat，必须是 CRLF
+*.bat  text eol=crlf
+
 *.png  binary
 *.ico  binary
 *.svg  text eol=lf

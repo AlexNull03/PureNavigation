@@ -33,7 +33,11 @@ server/   FastAPI 后端
   prompts.py     两个入口的越界拒绝与注入防护
   run.py         进程入口：部署时用，HOST/PORT 的默认值在这里
 db/       data.csv
-scripts/  部署脚本
+scripts/  deploy.sh（开发机侧一键部署）
+          server-setup.sh（服务器侧：非 root 装应用，--root 装 systemd 单元）
+          server-web.sh（服务器侧需 root：装/配 nginx，撞已有站点会中止而不是覆盖）
+deploy/   nginx.<域名>.purenavigation.conf —— 只写 80，TLS 交给 certbot
+deploy.bat  Windows 入口，双击即用（只做"找 Git Bash → 转给 deploy.sh"）
 ```
 
 接口：
@@ -72,26 +76,42 @@ Key 只在服务端读取，不进前端产物。
 
 线上地址是 **`https://alexcn.work/PureNavigation/main/`**（挂在子路径下，前面套 nginx）。
 
+在**开发机**上一条命令跑完（构建 → 上传 → 建 venv → 装 systemd 服务 → 配 nginx → 公网自检）：
+
 ```bash
-bash scripts/deploy.sh              # 读 .env 的 DEPLOY_HOST / DEPLOY_USER
+bash scripts/deploy.sh              # 读 .env 的 DEPLOY_HOST / DEPLOY_USER / WEB_DOMAIN
 bash scripts/deploy.sh <host> <user>
+bash scripts/deploy.sh --no-build   # 跳过前端构建
+bash scripts/deploy.sh --no-web     # 只装应用，不碰 systemd 和 nginx
 ```
 
-脚本用 tar-over-ssh 只推运行时需要的东西（`dist` / `db` / `server` / `scripts`），
-**不推 `.env`** —— 服务器上的那份有它自己的 Key。
+`WEB_DOMAIN` 决定加载哪份 `deploy/nginx.<域名>.purenavigation.conf`，所以两者文件名要对得上。
+脚本会在需要 root 的那步前停下来要 `[y/N]` 确认 —— 这是一台在跑的机器。
 
-然后在服务器上：
+**Windows 上双击 `deploy.bat` 即可**：它只负责找 Git Bash 并把参数转给 `deploy.sh`。
+该文件必须保持 CRLF 行尾 + 纯 ASCII，两条都是 cmd 解析器的坑，写在文件头注释里。
+
+`ssh` 的口令可以省掉：把公钥追加到服务器 `~/.ssh/authorized_keys` 就只连一次输一次 sudo 口令。
+
+跑完只剩签证书一步（交互式问邮箱）：
 
 ```bash
-bash $HOME/purenavigation/scripts/server-setup.sh              # 建 venv、装依赖、自检
-vim  $HOME/purenavigation/.env                                 # 填 DEEPSEEK_API_KEY
-sudo bash $HOME/purenavigation/scripts/server-setup.sh --root  # 装 systemd 单元
-sudo cp deploy/nginx.alexcn.work.purenavigation.conf /etc/nginx/conf.d/
-sudo nginx -t && sudo systemctl reload nginx
-sudo certbot --nginx -d alexcn.work                            # www 目前不解析，别一起签
+ssh -t <user>@<host> 'sudo certbot --nginx -d alexcn.work --redirect'
 ```
 
-脚本默认不碰系统配置，需要 root 的那步单独要 `--root`：这是一台在跑的机器。
+`www.alexcn.work` 目前不解析，别一起签，否则签发失败。
+
+关于 `.env`：脚本随包上传一份只含 `DEEPSEEK_*` 的 fragment，**只在远端还没有 `.env` 时**写入；
+远端已有 `.env` 就一个字都不动 —— 把别人配好的 Key 静默清空是最糟的一种 bug。
+要改密钥得 ssh 上去 `vim $HOME/purenavigation/.env` 后 `sudo systemctl restart puruenavigation`。
+
+手工分步（排查问题时更有用）：
+
+```bash
+bash $HOME/purenavigation/scripts/server-setup.sh                       # 建 venv、装依赖、自检
+sudo bash $HOME/purenavigation/scripts/server-setup.sh --root           # 装 systemd 单元
+sudo env DOMAIN=alexcn.work bash $HOME/purenavigation/scripts/server-web.sh  # 装/配 nginx
+```
 
 ### 挂子路径的三个必要条件
 

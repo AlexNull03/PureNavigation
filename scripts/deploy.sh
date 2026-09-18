@@ -131,7 +131,7 @@ cat <<NEXT
 上面返回 {"status":"ok","items":24,"llm_configured":true} 就说明整条链路通了。
 最后签证书（交互式，会问邮箱）：
 
-  ssh -t $DEST 'sudo certbot --nginx -d $DOMAIN --redirect'
+  ssh -t $DEST 'sudo certbot --nginx -d $DOMAIN -d www.$DOMAIN --redirect'
 
 然后就能开 https://$DOMAIN/PureNavigation/main/
 NEXT

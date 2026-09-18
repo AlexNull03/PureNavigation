@@ -52,6 +52,10 @@ REMOTE_HOME=$([[ "$USER_NAME" == root ]] && echo "/root" || echo "/home/$USER_NA
 REMOTE_DIR="$REMOTE_HOME/purenavigation"
 DEST="$USER_NAME@$HOST"
 
+# 心跳不是可有可无：半开的 TCP 连接不会自己报错，本地就一直等着，看起来跟"卡在原地"一模一样
+# （2026-09-14 那次就是这么被浪费掉一轮的）。45 秒内对端无响应就明确失败退出。
+SSH_OPTS="-o ConnectTimeout=10 -o ServerAliveInterval=15 -o ServerAliveCountMax=4"
+
 if [[ $BUILD == 1 ]]; then
   echo "== 本机构建前端 =="
   pnpm build
@@ -75,7 +79,7 @@ tar -czf - \
   --exclude='__pycache__' \
   --exclude='*.pyc' \
   dist db server scripts deploy .env.example .deploy-tmp \
-  | ssh -o ConnectTimeout=10 "$DEST" \
+  | ssh $SSH_OPTS "$DEST" \
       "mkdir -p '$REMOTE_DIR' \
        && tar -xzf - -C '$REMOTE_DIR' \
        && sed -i 's/\r\$//' '$REMOTE_DIR'/scripts/*.sh \
@@ -95,7 +99,7 @@ tar -czf - \
 rm -rf .deploy-tmp
 
 echo "== 远端装环境（无需 root）=="
-ssh -t "$DEST" "cd '$REMOTE_DIR' && bash scripts/server-setup.sh"
+ssh -t $SSH_OPTS "$DEST" "cd '$REMOTE_DIR' && bash scripts/server-setup.sh"
 
 if [[ $WEB == 0 ]]; then
   echo
@@ -116,15 +120,18 @@ esac
 
 # DOMAIN 必须显式传：sudo 不会把本机的环境变量带过去，而 server-web.sh 要靠它拼出
 # deploy/nginx.$DOMAIN.purenavigation.conf 的路径。
-ssh -t "$DEST" "cd '$REMOTE_DIR' && sudo bash scripts/server-setup.sh --root && sudo env DOMAIN='$DOMAIN' bash scripts/server-web.sh"
+ssh -t $SSH_OPTS "$DEST" "cd '$REMOTE_DIR' && sudo bash scripts/server-setup.sh --root && sudo env DOMAIN='$DOMAIN' bash scripts/server-web.sh"
 
 echo
 echo "== 从公网验一遍 =="
 sleep 2
-# 打 IP 而不是域名：这里要验的是"安全组放行 + nginx 认这个 Host"，本机 DNS 缓存没刷新
-# 不该被误报成部署失败。
-curl -s --max-time 20 -H "Host: $DOMAIN" "http://$HOST/PureNavigation/main/api/health" \
-  || echo "外网没通：先确认云安全组放行了 80。"
+# 用域名 + --resolve 钉到 IP：既验"安全组放行 + nginx 认这个 Host"，又不被本机 DNS 缓存的
+# 陈旧/缺失记录误报。签过证书之后 80 会 301 到 443，所以 -L 并把 443 也一起钉住；
+# 没签证书时 80 直接 200，-L 什么都不做。
+curl -sL --max-time 20 \
+  --resolve "$DOMAIN:80:$HOST" --resolve "$DOMAIN:443:$HOST" \
+  "http://$DOMAIN/PureNavigation/main/api/health" \
+  || echo "外网没通：确认云安全组放行了 80（签过证书还要放行 443）。本机 TLS 若被中间人替换，这一步也会假失败。"
 echo
 cat <<NEXT
 

@@ -49,6 +49,17 @@ if [[ -n "$EXISTING" ]]; then
 fi
 
 echo "== 落配置 =="
+# 我们这份模板**只写 80**，而 certbot 签发时会把 443 块写进同一个文件。
+# 整份 cp 覆盖的后果是：证书还在盘上、站点看起来部署成功，https 却当场失效。
+if [[ -f "$CONF_DST" ]] && grep -qE 'listen[[:space:]]+443|ssl_certificate[[:space:]]' "$CONF_DST"; then
+  echo "!! $CONF_DST 里已经有 443 / ssl_certificate —— 那是 certbot 写在同一个文件里的。" >&2
+  echo "   本脚本整份覆盖它，签好的 https 会当场失效，所以停在这里。" >&2
+  echo "   只想更新代码：bash scripts/deploy.sh --no-build --no-web" >&2
+  echo "   确实要重落这份配置（之后必须再跑一次 certbot，它会复用已有证书、不重新验证）：" >&2
+  echo "     sudo env DOMAIN=$DOMAIN OVERWRITE_TLS=1 bash scripts/server-web.sh" >&2
+  if [[ "${OVERWRITE_TLS:-}" != "1" ]]; then exit 1; fi
+  echo "   已带 OVERWRITE_TLS=1 —— 继续，覆盖后请立刻重跑 certbot。" >&2
+fi
 # nginx 反代成立的前提是后端只听 127.0.0.1。这台机器上可能留着早前生成的 .env，
 # 里面 HOST 未必是回环 —— 绑到 0.0.0.0 的话 8000 会绕开 nginx 直接对公网开放，
 # 按 IP 限流和 Host 头这些假设统统不成立。这里只报警，不擅自动别人的文件。
@@ -68,10 +79,25 @@ systemctl enable --now nginx
 systemctl reload nginx
 
 echo "== 本机自测 =="
-code=$(curl -s -o /dev/null -w '%{http_code}' -H "Host: $DOMAIN" "http://127.0.0.1/PureNavigation/main/api/health")
+# reload 只是发个 SIGHUP 就返回，老 worker 会带着**旧配置**继续接连接 ——
+# 紧跟的一次性 curl 有可能落到 default_server 上拿到 404。那是竞态，不是故障。
+# （真故障是 502：那才是后端没起。）
+code=000
+for try in 1 2 3; do
+  code=$(curl -s -o /dev/null -w '%{http_code}' -H "Host: $DOMAIN" \
+    "http://127.0.0.1/PureNavigation/main/api/health" || true)
+  if [[ "$code" == "200" ]]; then break; fi
+  if [[ $try -lt 3 ]]; then sleep 2; fi
+done
 echo "经 nginx 打到后端 /api/health -> HTTP $code"
 if [[ "$code" != "200" ]]; then
-  echo "多半是应用服务没起：systemctl status purenavigation --no-pager -n 30" >&2
+  if [[ "$code" == "502" || "$code" == "000" ]]; then
+    echo "后端没应答：systemctl status purenavigation --no-pager -n 30" >&2
+  else
+    echo "nginx 应答了但不是 200 —— 前缀没剥掉或 Host 没匹配上，看 server_name 和 proxy_pass 结尾的斜杠：" >&2
+    echo "  sudo nginx -T | grep -n 'server_name\|proxy_pass'" >&2
+    echo "  curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:8000/api/health   # 绕开 nginx 直连后端" >&2
+  fi
   exit 1
 fi
 

@@ -100,6 +100,11 @@ bash scripts/deploy.sh --no-web     # 只装应用，不碰 systemd 和 nginx
 ssh -t <user>@<host> 'sudo certbot --nginx -d alexcn.work -d www.alexcn.work --redirect'
 ```
 
+签过证书之后要注意：certbot 把 443 块写进**我们那份 `conf.d` 文件里**，而 `server-web.sh` 是整份覆盖它的。
+所以现在它检测到 `listen 443` / `ssl_certificate` 就会停下来报错，要真的重落这份配置得显式带
+`OVERWRITE_TLS=1`（覆盖后立刻重跑一次 certbot，它复用已有证书、不重新验证）。
+日常只更新代码用 `deploy.bat --no-build --no-web`，根本不碰 nginx。
+
 ⚠️ 大陆节点的 ECS 上，域名得先完成 ICP 备案。没备案时阿里云在**机房边缘**按 `Host` 头（443 按 SNI）
 把 80/443 直接拦成 `403 Server: Beaver` 的"Non-compliance ICP Filing"页 —— 请求根本进不了 nginx，
 HTTP-01 校验也会拿到那个拦截页，于是签发必失败，现象看起来像配置写错了。

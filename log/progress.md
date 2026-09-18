@@ -549,3 +549,28 @@ certbot 第一次报 `Another instance of Certbot is already running`。`pgrep -
 且 `sudo certbot renew --dry-run` 跑通；② `server-web.sh` 整份 `cp` 覆盖 `conf.d`，而 certbot 把 443 块写在**同一个文件里**，
 所以下次跑 `deploy.bat` 按 `[y]` 会当场抹掉 https —— 证书已签，这条从假设变成了真实地雷。
 在那之前，更新代码只用 `deploy.bat --no-build --no-web`。
+
+### 2026-09-18 13:56 把三处"只影响安全边际"的脚本改动落地
+
+上一节留的两条尾巴里，②（覆盖掉 443）现在在代码里堵住了。三处改动都不动部署语义，只加护栏和超时：
+
+1. **`server-web.sh` 加 443 护栏**：`cp` 之前先看目标文件里有没有 `listen 443` / `ssl_certificate`。
+   有就停下，因为那是 certbot 写在**同一个文件里**的，整份覆盖的后果是"证书还在盘上、https 当场没了"。
+   确实要重落配置得显式带 `OVERWRITE_TLS=1`，且提示里写明覆盖后要立刻重跑 certbot（它复用已有证书、不重新验证）。
+2. **`server-web.sh` 自检改成 3 次 × 2 秒重试**：`systemctl reload nginx` 在 SIGHUP 后就返回，老 worker 还会用旧配置接几下连接，
+   之前那次 `HTTP 404` 就是这么来的。同时把失败判据分开：**502/000 → 后端没起**（去看 service），
+   **拿到别的 2xx/4xx → nginx 在应答但路由不对**（去看 `server_name` 和 `proxy_pass` 结尾的斜杠）。
+   混成一句"多半是应用服务没起"会让人去查错方向。
+3. **`deploy.sh` 的 ssh 加心跳**（`ServerAliveInterval=15 ServerAliveCountMax=4`）：半开 TCP 不会自己报错，
+   本地就一直等着，看起来跟"卡在原地"一模一样 —— 9/14 那次就是这么浪费掉一轮的。
+   顺带把公网自检从"按 IP + Host 头"改成 `--resolve $DOMAIN:80:$HOST`（外加 `:443:`）配 `-L`：
+   `--redirect` 之后老写法只会打出 301 的空响应体，看起来像没通。
+
+**怎么验的**（这三段都要 root 或真域名才跑得起来，所以把代码块 `sed` 出来喂桩数据单测）：
+护栏四种情形 —— 含 443 不带 flag → 非零退出并打印警告；含 443 且 `OVERWRITE_TLS=1` → 继续；纯 80 配置 → 继续；
+目标文件不存在 → 继续。重试循环 —— `404,404,200` 在第 3 次转绿；`200,404,404` 第一次就过、不多跑；
+`502×3` 命中"后端没应答"；`404×3` 命中路由提示。
+
+**仍在我这侧验不了的**：自动续期。判据是 `systemctl list-timers 'certbot*' --no-pager` 里有 `certbot.timer`
+且下次触发在 60 天内，加上 `sudo certbot renew --dry-run` 打印 `All simulated renewals succeeded`。
+证书 **2026-12-17** 到期；dry-run 是唯一能证明"到时候真能续"的手段，不跑就只能赌。

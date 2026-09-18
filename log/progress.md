@@ -488,8 +488,8 @@ README 的部署节按实况重写了（原文还停留在"手工上服务器分
 
 ### 2026-09-18 13:19 把 www 收进同一个 server 块，并修掉两条被证据推翻的说法
 
-用户把 `alexcn.work` 和 `*.alex.work` 都指到了这台 ECS，问为什么 `ssh alex@www.alexcn.work` 通、
-`ssh alex@alex.work` 不通。实测权威答复：
+用户把 `alexcn.work` 和 `*.alex.work` 都指到了这台 ECS，问为什么 `ssh <user>@www.alexcn.work` 通、
+`ssh <user>@alex.work` 不通。实测权威答复：
 
 ```
 NS alexcn.work = dns27.hichina.com     ← 阿里云解析，本站的

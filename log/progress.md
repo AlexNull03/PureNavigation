@@ -520,3 +520,32 @@ www.alex.work / foo.alex.work  →  NO ANSWER
 
 **未做**：没给 www 做规范跳转到 apex（两套名字服务同一站点会分散缓存/重复内容）。要的话单独加一个
 `if ($host = www.alexcn.work) { return 301 ... }` 或独立 server 块 —— nginx 的 `if` 有坑，需要单独斟酌。
+
+### 2026-09-18 13:50 证书签下来了，整条链从公网复核通过
+
+`deploy.bat` 一次跑通（venv 复用、`.env` 三个键都打印"已有值，保持不动"、自检 24、服务重启成功、
+`server-web.sh` 自测 200），www 也进了块 —— 我这侧独立复核 `www:80=200`、`apex:80=200`。
+
+certbot 第一次报 `Another instance of Certbot is already running`。`pgrep -af certbot` 显示**不是陈旧锁**：
+有个 13:14 起就挂在"Enter email address"那一问上的活进程（而且命令行是旧的单 `-d`），锁是它正持有的。
+⇒ **有进程时绝不能删 `.certbot.lock`** —— 两个实例同时写 `/etc/letsencrypt` 才是真事故。
+它卡在注册账户阶段、还没碰过 nginx，所以杀掉是安全的。杀掉重跑即一次过。
+
+**外部复核（走真实 DNS、不加 `-k`）**：
+
+| 判据 | 结果 |
+| --- | --- |
+| 证书 | `Let's Encrypt`，SAN = `alexcn.work, www.alexcn.work`，`Sep 18 → Dec 17 2026` |
+| `http://apex` / `http://www` | 各自 **301** → 对应 https |
+| `https://apex` / `https://www` | **200** |
+| `https://…/api/health` ×2 | `{"status":"ok","items":24,"llm_configured":true}` |
+| 无斜杠 `…/main` | 301 → `…/main/` |
+| `./assets/*.js` / `*.css` | 200，MIME 为 `text/javascript` / `text/css` |
+
+`take_snapshot` 第一次真正看到线上页面：24 张卡片、三个入口、页脚那句"本站是建议站点，不是广告位"都在。
+（`take_screenshot` 本机仍报视口 0x0，像素级观感没人验过。）
+
+**还剩两件事没做**：① 自动续期从没验证 —— 90 天后到期，判据是 `systemctl list-timers 'certbot*'` 有 timer
+且 `sudo certbot renew --dry-run` 跑通；② `server-web.sh` 整份 `cp` 覆盖 `conf.d`，而 certbot 把 443 块写在**同一个文件里**，
+所以下次跑 `deploy.bat` 按 `[y]` 会当场抹掉 https —— 证书已签，这条从假设变成了真实地雷。
+在那之前，更新代码只用 `deploy.bat --no-build --no-web`。

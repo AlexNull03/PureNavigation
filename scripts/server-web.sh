@@ -79,7 +79,8 @@ cat <<NEXT
 
 nginx 已接管 $DOMAIN 下的 /PureNavigation/main/。最后一步（会问你邮箱，交互式跑）：
 
-  sudo certbot --nginx -d $DOMAIN --redirect
+  sudo certbot --nginx -d $DOMAIN -d www.$DOMAIN --redirect
 
-注：www.$DOMAIN 目前不解析，别写进 -d 里，否则签发会失败。
+注：$DOMAIN 得先在该接入商的 ICP 备案里，否则阿里云会在机房边缘按 Host 头把 80/443
+拦成 "403 Server: Beaver"，HTTP-01 也过不去 —— 那种失败跟本文件无关，别在 nginx 里找原因。
 NEXT

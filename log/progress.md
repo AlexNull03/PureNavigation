@@ -485,3 +485,38 @@ README 的部署节按实况重写了（原文还停留在"手工上服务器分
 已被证据推翻 —— `ss` 显示 nginx 一直在 `[::]:80` 上正常监听（来自发行版 default site）。
 不写那行至今无害，真正的原因是**域名没有 AAAA 记录**；哪天加了 AAAA，就必须补 `listen [::]:80;`，
 否则 IPv6 访客会落到 default_server 拿 404。
+
+### 2026-09-18 13:19 把 www 收进同一个 server 块，并修掉两条被证据推翻的说法
+
+用户把 `alexcn.work` 和 `*.alex.work` 都指到了这台 ECS，问为什么 `ssh alex@www.alexcn.work` 通、
+`ssh alex@alex.work` 不通。实测权威答复：
+
+```
+NS alexcn.work = dns27.hichina.com     ← 阿里云解析，本站的
+NS alex.work   = bella/chuck.ns.cloudflare.com   ← 另一个注册域名，NS 在 Cloudflare
+
+alexcn.work / www.alexcn.work  →  ECS 地址（hichina 与 8.8.8.8 一致）
+alex.work                      →  172.67.x.x（Cloudflare 边缘，橙云代理）
+www.alex.work / foo.alex.work  →  NO ANSWER
+```
+
+⇒ 两件事：`*.alex.work` 那份记录是死的（云解析只有在该域名 NS 指向 hichina 时才是权威）；
+`alex.work` 的 apex 虽然能解析，但解析到的是 CF 边缘，而 **CF 只转发 HTTP/HTTPS，22 端口不回源**，
+所以 ssh 打不过去。`www.alexcn.work` 的 A 记录真指到 ECS，才显得"一个能连一个不能"。
+
+**顺带发现两个真问题**：`www.alexcn.work` 现在**有解析了**，而 README 和 `server-web.sh` 的提示里
+都还写着"www 不解析、别一起签"；更要紧的是 nginx 那个块只有 `server_name alexcn.work;`，
+`Host: www.alexcn.work` 会落到发行版默认站点、返回欢迎页。
+
+**改动**：
+
+1. `server_name alexcn.work www.alexcn.work;` —— 两个名字共用一个块，前端是相对路径，不挑 Host。
+2. certbot 提示改成 `-d $DOMAIN -d www.$DOMAIN`，并把"www 不解析"换成真正的拦路条件：
+   **没备案时阿里云在机房边缘按 Host/SNI 把 80/443 拦成 `403 Server: Beaver`**，HTTP-01 同样过不去。
+   这条是 9/14→9/18 两次实测对比出来的，判据一并写进 README，免得下一个人去 nginx 里找原因。
+3. 修掉 conf 里我自己写错的 IPv6 理由。原注释说"这台 ECS 绑 `[::]:80` 会让 nginx 起不来"，
+   被 `ss` 推翻（default site 一直在 `[::]:80` 上听得好好的）。真实原因是**域名没有 AAAA 记录**；
+   注释改成讲清"哪天加了 AAAA 就必须补这行，否则 IPv6 访客落到默认站点拿欢迎页"。
+
+**未做**：没给 www 做规范跳转到 apex（两套名字服务同一站点会分散缓存/重复内容）。要的话单独加一个
+`if ($host = www.alexcn.work) { return 301 ... }` 或独立 server 块 —— nginx 的 `if` 有坑，需要单独斟酌。

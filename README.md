@@ -93,13 +93,17 @@ bash scripts/deploy.sh --no-web     # 只装应用，不碰 systemd 和 nginx
 
 `ssh` 的口令可以省掉：把公钥追加到服务器 `~/.ssh/authorized_keys` 就只连一次输一次 sudo 口令。
 
-跑完只剩签证书一步（交互式问邮箱）：
+跑完只剩签证书一步（交互式问邮箱）。两个名字都带上 —— `www.alexcn.work` 有 A 记录、和 apex 同一个 IP，
+并且由同一个 server 块服务：
 
 ```bash
-ssh -t <user>@<host> 'sudo certbot --nginx -d alexcn.work --redirect'
+ssh -t <user>@<host> 'sudo certbot --nginx -d alexcn.work -d www.alexcn.work --redirect'
 ```
 
-`www.alexcn.work` 目前不解析，别一起签，否则签发失败。
+⚠️ 大陆节点的 ECS 上，域名得先完成 ICP 备案。没备案时阿里云在**机房边缘**按 `Host` 头（443 按 SNI）
+把 80/443 直接拦成 `403 Server: Beaver` 的"Non-compliance ICP Filing"页 —— 请求根本进不了 nginx，
+HTTP-01 校验也会拿到那个拦截页，于是签发必失败，现象看起来像配置写错了。
+判据：`curl -sI http://<域名>/` 出 `Server: Beaver` 就是这回事，跟本站的配置无关。
 
 关于 `.env`：脚本随包上传一份只含 `DEEPSEEK_*` 的 fragment，**只在远端还没有 `.env` 时**写入；
 远端已有 `.env` 就一个字都不动 —— 把别人配好的 Key 静默清空是最糟的一种 bug。

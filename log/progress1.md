@@ -285,3 +285,34 @@ curl -s --resolve ${WEB_DOMAIN}:443:${DEPLOY_HOST} \
   AI 直接答「两者都没有 Windows on ARM 宿主构建」并建议改用系统自带 Hyper-V，
   推荐卡片挂出 VMware 与 VirtualBox 两张 —— 新列的内容确实进了模型视野，而不是只在页面上摆着。
 - `ans/` 落盘正常，问答按时间戳写入。
+
+### 七、提交与部署
+
+打包上传走 `bash scripts/deploy.sh --no-web`：本机 `pnpm build` 通过（1702 modules，产物
+`index-BS6W8ILF.js` 401.87 kB / gzip 134.78 kB），tar-over-ssh 一次往返完成建目录、解包、
+去 CR、落 `.env`。远端 `.env` 已存在，脚本按设计只报"已有值，保持不动"，没有覆盖 Key。
+`server-setup.sh` 末尾的自检打印 **目录条数: 28**，说明新 CSV 已经在服务器上落盘。
+
+顺带记一笔：上一轮那次部署之所以没结论，是我把 deploy 套在 Python `subprocess` 里跑，
+超时 900 秒后异常抛出，子进程被一起杀掉，输出留在管道里没落盘 —— 看不到卡在哪一步。
+改成 `> /tmp/deploy.out 2>&1` 后台跑，退出码写回同一个文件，这一轮才有干净的过程记录。
+另外 deploy.sh 开头会 `rm -rf .deploy-tmp`，我放在那里的装配脚本和被份 CSV 被它清掉了；
+备份还在 git 的 HEAD 里，没有真的丢东西，但下次别把中间产物放那个目录。
+
+**当前线上状态：接口返回 `Internal Server Error`，必须重启才恢复。** 原因很具体 ——
+磁盘上的 `db/data.csv` 已经是 14 列，而内存里跑的还是旧代码，旧解析器对表头是硬校验
+（列数不符直接抛错），所以新数据一落地，旧进程立刻读不动。这不是"上线了但没生效"，
+而是**已经影响可用性**，重启这一步从"建议"变成"必须"。
+
+远端落盘已用只读 ssh 核对过：`db/data.csv` 845 行、解析后 28 条 14 列，
+`dist/assets/` 里 18:17 的新 bundle（`index-BS6W8ILF.js`）与旧 bundle 并存，
+`index.html` 指向新的那个。也就是说前端和数据都到位了，只差后端进程换代码。
+
+判据（重启后在本机或任意公网机器执行）：
+
+```
+curl -s https://${WEB_DOMAIN}/PureNavigation/main/api/health
+```
+
+返回 `{"status":"ok","items":28,...}` 即恢复；再打 `/api/software`，任意一条里出现
+`downloads` 与 `arch_guide` 两个字段，就说明新代码和新列一起上线了。

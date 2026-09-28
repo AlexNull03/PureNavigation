@@ -574,3 +574,23 @@ certbot 第一次报 `Another instance of Certbot is already running`。`pgrep -
 **仍在我这侧验不了的**：自动续期。判据是 `systemctl list-timers 'certbot*' --no-pager` 里有 `certbot.timer`
 且下次触发在 60 天内，加上 `sudo certbot renew --dry-run` 打印 `All simulated renewals succeeded`。
 证书 **2026-12-17** 到期；dry-run 是唯一能证明"到时候真能续"的手段，不跑就只能赌。
+
+---
+
+## 2026-09-28 · 状态更正：数据库已到 14 列 28 条
+
+本文件停在 9 月中旬，前面「四列 / 十二列」的描述已经过期，按当前实际更正一次：
+
+- `db/data.csv`：**28 条 × 14 列**，UTF-8 无 BOM、LF、全字段加引号。十二列之外新增
+  `多版本下载`（每行 `平台|架构或适用机型|官方URL`）与 `架构选择指导`（只写该工具特有的结论）。
+- 条目构成：原 24 条（Python、VS Code、Qoder、Trae、Docker Desktop、7-Zip、Blender 等）
+  正文全部重写为详实版本，另加 VMware Workstation Pro、VirtualBox、Windows Sandbox、PowerToys。
+  本文件第七节列的「待补未验证直链」这一条已经做完：7-Zip、VLC、IntelliJ、Qoder、Trae 的
+  域名与文件名都按官方页面逐条 curl 复核过，未复核的写法一律不入库。
+- Qoder 与 Trae 的主入口改为国内域（`qoder.com.cn`、`www.trae.cn`），国际版排在后面，
+  两版差异写在简介、概念说明、注意事项第一条与防伪段。
+- 前端首页的 AI 与搜索改成两条单行输入条，对话放进弹层；详情页新增通用架构解释块与
+  多架构入口列表。
+
+改造过程、验证方式与实际效果记在 `log/progress1.md` 的「2026-09-28 · 第二轮改造」一节，
+本文件不再重复展开。

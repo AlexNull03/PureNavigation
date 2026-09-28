@@ -1,97 +1,845 @@
-"软件名","官方主页","下载直链","该软件功能与描述","分区","常见伪造官网与链接","通俗化解释","安装基本流程","特别注意事项","普遍错误与后果","安装成功验证","使用简介与Hello World"
-"Python 3.13","https://www.python.org/downloads/","https://www.python.org/ftp/python/3.13.15/python-3.13.15-amd64.exe","Python 官方解释器，当前 3.13 系列最新补丁版为 3.13.15。初学者装 Python 最容易踩两个坑：一是从下载站装到带全家桶的二渠道包，二是安装时没勾 “Add python.exe to PATH”，导致后面命令行敲 python 找不到。官方安装包第一屏就有这个勾选框，务必勾上。安装完在命令行执行 python --version 验证。","编程语言","只有 python.org 是官方。常见伪造形态：搜索结果里冠名“Python 中文官网 / Python 中文网”的站点；换字符仿冒域名（如 pyth0n.org，字母 o 换成数字 0，本站判别功能实测抓到过，其证书签给了无关第三方）；下载站把“安装包+全家桶”打包分发。页面里带 download、official 字样又不在 python.org 域名下的，一律先存疑。","Python 是解释型语言：写完代码不用单独“编译”成 exe，解释器逐行读、逐行执行，像现读现演的剧本；C / Java 是编译型，先整本“翻译”再运行，像先印书再读。你装的其实是这个解释器，装完命令行里多了 python 命令和 pip（官方的包下载管理器），第三方库都靠 pip 装。教程让你“装 Python”，指的就是它。","1. 点本页下载直链，得到 python-3.13.15-amd64.exe
-2. 双击运行，第一屏底部务必勾选 “Add python.exe to PATH”
-3. 点 “Install Now”，等待几分钟完成
-4. 装完重新打开一个命令提示符窗口（旧窗口读不到新 PATH）","PATH 勾选框只在第一屏出现，错过了只能重装或手动去“系统设置→环境变量”补。微软商店里的 “Python 3.13” 也能用，但路径与权限行为不同，教学场景建议用官网 exe。多个版本共存时以 PATH 里靠前的为准。","没勾 Add to PATH → 命令行敲 python 报“不是内部或外部命令”，新手常误以为没装转而重装；从带捆绑的下载站装 → 附带主页篡改或推广软件；装到需要管理员权限的目录后某些库写不进 → pip 安装报错。","新开 cmd 执行 python --version，输出 Python 3.13.15；再执行 pip --version 能正常出版本号即成功。","新建文件 hello.py，写入一行 print(""Hello, World!"")；在文件所在目录打开 cmd，执行 python hello.py，终端打印 Hello, World! 即为第一个程序。"
-"Visual Studio Code","https://code.visualstudio.com","https://update.code.visualstudio.com/latest/win32-x64-archive/stable","微软出品的轻量代码编辑器，当前稳定版 1.137.0，几乎是 Python / 前端 / 写作的默认选择。这个直链是微软官方的版本无关地址，永远指向最新 stable，不会随更新失效。装好后在扩展市场搜 “Chinese (Simplified)” 语言包可切中文界面。注意以 “VSCode 中国版 / 加速版 / 汉化版” 为名的发行版都不是官方，会预装插件并篡改扩展市场源。","开发工具","官方域名只有 code.visualstudio.com，下载走 update.code.visualstudio.com / vs-codeling 等微软域。凡是“VSCode 中国版 / 加速版 / 汉化版 / 便携集成版”都不是官方发行：会预装插件、把扩展市场换成镜像源，更新链路也不在微软手里。","VS Code 本质是“高级文本编辑器”——负责写和看代码，不负责运行代码。三件套的关系：文本编辑器（记事本PlusPlus/VS Code）写代码；编译器/解释器（Python、JDK）把代码跑起来；IDE（Visual Studio、PyCharm）把编辑、运行、调试、补全打包成一个全家桶。VS Code 介于编辑器与 IDE 之间：本体是编辑器，装上扩展后能干 IDE 的活。","1. 点直链下载 zip/exe（update.code... 永远指向最新稳定版）
-2. 运行安装器，除“选择附加任务”页可按需勾“添加到 PATH”外全部默认下一步
-3. 首次打开按提示允许访问
-4. 扩展市场搜 Chinese (Simplified) 安装中文语言包","它只是编辑器：要写 Python 还得先装 Python 解释器，再装 VS Code 的 Python 扩展。存档 zip 版（run 即用）和 exe 版都官方，选哪个都行。","装了三方“中国版” → 扩展市场被换源，装不到官方插件还浑然不觉；安装时没勾 PATH → cmd 里敲 code 打不开项目目录；把整个磁盘根目录作为工作区打开 → 索引卡死。","双击图标能开；cmd 里输 code 回车能启动；扩展页能正常搜索安装即成功。","新建文件夹 hello-demo 并用 VS Code 打开，在里面新建 hello.py 写 print(""Hello, World!"")，点右上角 ▶ 运行（首次会提示选解释器），终端输出 Hello, World!。"
-"Steam","https://store.steampowered.com","https://cdn.cloudflare.steamstatic.com/client/installer/SteamSetup.exe","Valve 的游戏平台与客户端。这个 exe 只有约 2MB，是在线安装器，运行后会再从官方服务器拉取完整客户端，所以下载快、也不会装到旧版本。请只从 steampowered.com 或这个 steamstatic.com 官方 CDN 获取，第三方 “Steam 管家 / 国服启动器” 会接管你的账号登录。","生活与游戏","官方域只有 steampowered.com 与 steamstatic.com（CDN）。所谓“Steam 管家 / 国服启动器 / 加速下载版”都是第三方程序，形态是接管账号登录或注入加速组件——把账号密码交给它们等于裸奔。国内没有独立的“Steam 中国客户端”，看到“国服版客户端下载”直接判定伪造。","Steam 是 Valve 开的游戏商场 + 游戏库管家：买过的游戏、存档同步、好友社区都在这个客户端里。它不是游戏引擎，也不用每款游戏单独装平台——装一次客户端，之后所有游戏由它下载、更新、验证完整性。","1. 下载 SteamSetup.exe（约 2MB）
-2. 双击，它会自动联网拉取完整客户端，等待即可
-3. 注册 / 登录 Steam 账号
-4. 在“设置→下载”确认游戏安装库路径","在线安装器：断网或代理异常会卡在“正在连接到 Steam 服务器”。游戏体积大，装前看库所在盘剩余空间。首次登录新设备有邮件/手机验证，属正常安全流程。","从第三方“管家”装 → 账号被盗或强制绑定；把游戏库存到 C 盘又塞满 → 更新失败报“磁盘空间不足”；只删客户端不删游戏库 → 几十 GB 白占磁盘。","能登录进客户端、商店页正常刷出、库页能看到游戏列表即成功。","打开客户端后先做三件事：设置→界面→选“简体中文”；给账号绑定手机令牌；从免费游戏里挑一个安装体验下载与启动。"
-"Visual Studio Community","https://visualstudio.microsoft.com/","https://aka.ms/vs/17/release/vs_community.exe","微软的完整 IDE，C++ / C# / .NET 开发的主选。Community 版对个人、开源、教学和小团队免费。这个 aka.ms 短链是微软官方的版本无关地址，始终指向 Visual Studio 2022 社区版最新启动器。它本身只有几 MB，真正的组件在安装时按你勾选的工作负载下载，请预留磁盘与时间。注意与 VS Code 是两个完全不同的产品，别混着搜。","开发工具","只认 microsoft.com 域和 aka.ms/vs/17 官方短链。“Visual Studio 社区版中文下载站”一类站点提供的大多是重新打包的安装器，会夹带推广。另注意产品名：搜 “VS” 出来的很多是 VS Code（编辑器），和 VS 2022（IDE）是两个东西。","Visual Studio 是“全家桶 IDE”：编辑器、MSVC 编译器、调试器、窗体设计器、性能分析一次装齐，C++/C# 课程要求“装 VS”就是它。VS Code 是轻量编辑器要靠插件拼装，两者不是一个产品，名字像而已。","1. 运行 vs_community.exe，拉起安装中心
-2. 在安装中心选 “Visual Studio Community 2022”
-3. 在“工作负载”页勾选需要的（如“使用 C++ 的桌面开发”）
-4. 点安装，下载数 GB 到数十 GB，等待完成","工作负载按需勾选，全选会吃掉几十 GB；安装位置默认 C 盘，紧张可改 D 盘。Community 免费但登录微软账号才解除部分功能限制。","只勾了“Visual Studio Editor”负载 → 没有编译器，按 F5 报“找不到编译器”；C 盘空间不够 → 组件下载到一半失败；被引导装了带推广的“整合版” → 后续更新全坏。","启动后“创建新项目→控制台应用→F5”，能跑出一句 Hello World 即安装成功。","新建项目 → “控制台应用”(C++) → 模板自带的 Console.WriteLine(""Hello, World!"")（C# 同理）→ 按 F5 启动调试，黑窗口打印 Hello, World!。"
-"PyCharm Community","https://www.jetbrains.com/pycharm/","https://www.jetbrains.com/pycharm/download/","JetBrains 的 Python 专用 IDE，代码补全、重构、调试和虚拟环境管理都很扎实。Community 版免费且足够学 Python 用，Professional 版才带 Web 框架与数据库工具。下载页要选对 Community，很多人误下了试用版 Professional。JetBrains 全家桶对学生免费，用学校邮箱申请 JetBrains 教育授权即可。","开发工具","官方域只有 jetbrains.com。“PyCharm 中文官网 / 激活教程 / 永久破解版”站点传播的是带破解补丁的二次包，常藏木马且永远无法更新。正确入口：jetbrains.com/pycharm/download 页面下方选 Community 列。","PyCharm 是 Python 的“重装机 IDE”：新建项目时自动帮你管好虚拟环境、解释器、调试器，开箱即用。与 VS Code 的差别就是“整体房”和“毛坯+自装”的关系：PyCharm 全都配好但笨重，VS Code 轻但功能靠插件攒。学 Python 两者皆可，课程写了哪个装哪个。","1. 官方下载页找到 Community（免费）列，下载 pycharm-*-community.exe
-2. 安装页可选添加到 PATH（右键用 PyCharm 打开文件会用到）
-3. 首次启动选“不导入设置”
-4. New Project 新建项目，它会自动创建虚拟环境","Machine 装 PyCharm 前需要先有 Python 解释器；项目解释器指向系统 Python 或虚拟环境都可，教学建议用项目自带的 venv。学生用学校邮箱申请 JetBrains 教育授权可免费用 Professional。","误下 Professional → 30 天后弹试用结束；没有可用解释器 → 新建项目右上角红字 No interpreter；从“破解站”装 → 不能更新且有安全风险。","能新建项目、编辑 .py 文件、点绿色 ▶ 运行成功即安装完成。","New Project → 右键 main.py → Run 'main'，默认模板打印 Hi, this is a sample script，改成 print(""Hello, World!"") 再跑。"
-"IntelliJ IDEA Community","https://www.jetbrains.com/idea/","https://www.jetbrains.com/idea/download/","Java 开发的主流 IDE，Community 版免费，支持 Java / Kotlin / Android 基础开发。学 Java 的同学常搜到 “IntelliJ IDEA 中文官网” 一类站点，那些都不是官方。JetBrains 教育授权同样覆盖这款产品。","开发工具","官方域 jetbrains.com/idea。搜索结果里的“IntelliJ IDEA 中文社区/中文网”均为仿冒或引流站；“特别永久激活版”分发包同 PyCharm 的坑。下载页认准 Community Edition（免费），Ultimate 是付费试用版。","IDEA 是 Java 的主力 IDE。注意装它之前系统里要先有一个 JDK（如 Temurin）：IDEA 本体自带的运行时只够 IDE 自己用，编译你的 Java 代码要另指 JDK。这是初学者最常卡住的一步——“IDEA 装好了为什么还报 no JDK”。","1. 先安装 JDK（见本站 Eclipse Temurin JDK 条目）
-2. 官方下载页选 Community 列下载安装
-3. 首次启动在欢迎页 New Project 里选择 JDK（可让它代下 Temurin）
-4. 建项目、建类、开写","Community 与 Ultimate 的差别在框架支持（Spring、数据库工具等），入门课程用 Community 完全够。JetBrains 教育授权可覆盖 Ultimate，学生不必纠结。","没装 JDK 就开写 → 代码满屏红线；选了 Ultimate → 到期后要换 Community 重装；项目 SDK 指到 JRE → 不能编译报“no compiler is provided”。","新建 Java 项目，能创建类并 Run 出结果即成功。","New Project → Java → 在生成的 main 方法里写 System.out.println(""Hello, World!"")，点绿色 ▶，控制台输出一行即通。"
-"Qoder","https://qoder.com/","https://qoder.com/download","阿里的 AI 编程智能体产品，主打让 AI 自主完成跨文件的编码任务。下载页区分不同产品线，注意看清你要的是 IDE 还是配套的 Agent 应用，二者安装包不同。作为国产工具，网络连通性和文档都是中文友好，适合不想折腾代理的初学者。","开发工具;AI工具","没有“Qoder 中文官网”这回事，官方域只有 qoder.com。下载页上同时挂着 IDE 与 QoderWork 等多条产品线的安装器，下错产品不算伪造但算常见失误；本站登记的就是 qoder.com/download 的官方通道。","普通 IDE 是“你写、它补全”，Qoder 这类 AI 编程工具是“你说需求、它动手”：你用自然语言描述要做什么，它在项目里自己读代码、改文件、跑命令。对初学者的意义：可以把“不会写”变成“会提要求 + 会验收”。","1. 打开 qoder.com/download，认准 Windows 版 IDE 安装器
-2. 运行安装器，默认路径安装
-3. 启动后用阿里 / Qoder 账号登录
-4. 打开一个文件夹即可开始对话式编程","下载页产品线多，看清楚你要的是 IDE 本体还是配套 Agent 应用；核心能力依赖云端模型，需要联网并登录。","下错产品线 → 功能与预期对不上；未登录 → 大部分 AI 功能灰着；拿它当纯离线编辑器 → 体验断崖。","能登录、新建/打开项目、在对话框发出一条指令并得到回应，即安装成功。","打开一个空文件夹，对 Agent 说：“写一个 hello.py，运行并打印 Hello, World，把结果给我看。”看它建文件、跑命令、回报输出——这就是它的基本工作方式。"
-"Trae","https://www.trae.ai/","https://www.trae.ai/download","字节的 AI IDE，基于 VS Code 内核，所以 VS Code 的插件和快捷键习惯基本可以延续，对初学者上手成本低。国内版和国际版分属不同域名与账号体系，注册前先看自己在用哪个。下载页为动态渲染，请以页面按钮为准，不要从来路不明的 “Trae 破解版” 站点获取。","开发工具;AI工具","国际版官方 trae.ai，国内版官方 trae.cn（对脚本抓取返回 403 是反爬，不是假站，浏览器可正常打开）。除此之外任何“Trae 中文官网 / 海外版破解 / 账号共享站”都是伪造或盗号陷阱。","Trae = 带 AI 对话和“Builder”（说需求、自动生成可运行项目）功能的 VS Code。用过 VS Code 的话界面、插件、快捷键无缝迁移；没用过的话，它比传统 IDE 更“会自己干活”。注意国内版/国际版是两个账号体系，互不相通，选一个用。","1. 官方下载页按系统下载安装器
-2. 安装全程默认下一步
-3. 启动后登录（国内版用手机号/抖音账号，国际版用 GitHub/Google）
-4. 首次可导入 VS Code 配置","先决定用国内版还是国际版再注册，账号不互通；下载页按钮是动态渲染的，以页面为准。","拿国内账号登国际版 → 登录失败；从“破解站”下 → 账号与本机数据有风险；期望和 VS Code 一模一样的插件市场 → 部分源不同。","能登录、打开项目、侧边 AI 对话有响应即成功。","在 Chat/Builder 里输入：“创建一个单文件网页，打开就显示 Hello World”，等它生成并预览——一次完整的“说需求→得结果”体验。"
-"Cursor","https://cursor.com/","https://cursor.com/download","AI 优先的代码编辑器，同样基于 VS Code 内核，对话改代码的体验成熟。免费版有请求额度限制，学生可申请教育优惠。注意官方域名是 cursor.com，搜索时排在前面的一些同名站点是模板或导航站。","开发工具;AI工具","官方域 cursor.com / cursor.sh。搜索结果前排的同名模板站、导航站是引流页面，不提供软件；“Cursor 汉化版 / 无限额度破解版”分发包一律视为伪造。","Cursor 也是“VS Code 内核 + AI”：编辑区照常写代码，AI 侧栏可以框选一段代码直接说“改成 XX”。与 Trae 同类，习惯哪个用哪个；免费层的额度用完会自动降级到基础模型，这是正常机制不是坏了。","1. cursor.com/download 下载 Windows 安装器
-2. 安装后启动，邮箱注册登录
-3. 可一键导入已有 VS Code 配置
-4. 打开项目，Ctrl+L 打开聊天、Ctrl+I 打开编辑器内生成","免费额度按周期计；教育优惠需在官网申请。核心功能需联网。","额度耗尽误判为故障；从未知的“汉化版”安装 → 插件与更新链被改；直接覆盖导入 VS Code 配置偶有插件不兼容。","登录成功、能对一段代码发出指令并看到它落盘修改，即成功。","新建 hello.py，在编辑器内按 Ctrl+I 输入“写一个打印 Hello World 的程序”，Tab 采纳；或 Ctrl+L 让它生成并运行。"
-"Git","https://git-scm.com","https://github.com/git-for-windows/git/releases/latest","版本控制工具的 Windows 官方移植。当前最新为 v2.55.0.windows.5。这个 releases/latest 地址永远跳转到最新版本页，不会因版本更新而失效。初学者常在 “Git 官网” 搜到中文镜像站并被引导安装额外软件，请只认 git-scm.com 与 github.com/git-for-windows。","开发工具;计算机系统工具","官方只有 git-scm.com，Windows 安装包在 GitHub 的 git-for-windows 仓库。“Git 中文官网 / Git 镜像站”常被 SEO 前置，安装时引导加装无关软件；把 gitscm/git-scm 抢注域当官方的也不算罕见。","Git 是给文件做“无限撤销 + 平行宇宙分支”的版本控制工具：每次提交存一个快照，改崩了随时回退，多人协作靠合并。它是个命令行工具（Windows 版附带 Git Bash）；GitHub 是托管 Git 仓库的网站，工具≠网站，两者名字总被混用。","1. 从 releases/latest 下载 Git-*-64-bit.exe
-2. 安装器一路 Next：默认项都可，编辑器那屏可把 Vim 换成 VS Code
-3. PATH 选项保持默认 “Git from the command line and also from 3rd-party software”
-4. 装完打开新 cmd 配置身份：git config --global user.name ""你"" + user.email ""邮箱""","Windows 默认 core.autocrlf=true，提交时会转换换行符——跨平台协作的项目要按团队约定来。公司电脑留意合规要求。","没配 user.name/user.email → 第一次 commit 直接报错；保留了 Vim 又不会退 → 卡在提交界面“关不掉”；PATH 选了“仅 Git Bash”→ cmd 里找不到 git。","新 cmd 执行 git --version 出版本号；git config --global --list 能看到你的署名。","新建文件夹进去执行 git init → 建 hello.txt 写一句 → git add . → git commit -m ""first commit"" → git log 看到记录——一次完整的提交闭环。"
-"Node.js","https://nodejs.org","https://nodejs.org/dist/latest-v22.x/node-v22.23.2-x64.msi","JavaScript 运行时，前端工程化、各种命令行工具都依赖它。强烈建议下载 LTS 长期支持版而不是首页默认推荐的 Current 版，后者生命周期短、生态兼容差。这个直链是 v22 LTS 系列的最新补丁版安装包。安装后执行 node -v 和 npm -v 验证。","编程语言;开发工具","官方只有 nodejs.org。前端老教程里的中文镜像已失效多年，现在更多风险在下载站捆绑的“Node.js 一体化环境”。“cn.nodejs.org 曾经是非官方中文社区，别把它当分发源。”","Node.js 让 JavaScript 离开浏览器也能跑：装它主要是为了 npm——前端脚手架、打包器、各种命令行工具（包括很多课程要求的工具链）全靠它。它自带事件循环异步模型，但对初学者你只要记住：它是 JS 的运行环境 + 包管理器。","1. 走直链下载 v22 LTS 的 .msi
-2. 双击安装，勾选 Add to PATH（默认勾好）
-3. 组件保持默认
-4. 装完开新 cmd 验证","首页默认高亮的是 Current 版，别点——选 LTS。npm 装包慢可按正规方式配置官方认可的国内镜像 registry（npm config set registry ...），但安装包本身不要从二渠道拿。","装了 Current 版 → 部分库不兼容；用旧 cmd 验证 → 报找不到 node（PATH 未刷新，开新窗口就好）；全局装包后又手动删了目录 → npm 半残。","node -v 输出 v22.x；npm -v 输出配套版本号，即成功。","新建 hello.js 写 console.log(""Hello, World!"")，cmd 里 node hello.js，打印成功即跑通第一个 JS 程序。"
-"Eclipse Temurin JDK","https://adoptium.net/temurin/releases/","https://adoptium.net/temurin/releases/","最主流的开源 Java 开发包（JDK）发行版，由 Adoptium 社区维护，是过去 Oracle OpenJDK 构建的事实替代者。学 Java 选它基本不会错。注意区分：Temurin 免费可商用，Oracle JDK 的生产环境使用需要订阅授权，搜 “JDK 下载” 很容易进到 Oracle 的授权页。","编程语言","官方域 adoptium.net。搜 “JDK 下载” 排第一的常是 Oracle 的授权/登录页（免费范围有限、条款复杂）；各种“Java 中文官网”引导下载的其实是 JRE 甚至是捆绑安装包。Java 本身没有“官网安装包”，选对发行版才是正路，Temurin 即开源可商用。","JDK 里装了两样关键东西：javac（编译器，把 .java 翻成 .class 字节码）和 java（JVM 运行时，执行字节码）。Java 口号“一次编写、到处运行”，指的是同一份字节码在任何平台的 JVM 上都能跑。学 Java 课程让“配 JDK 环境变量”，就是在配这两条命令。","1. adoptium.net/temurin/releases 选 Windows x64 的 .msi
-2. 安装时进“自定义安装”勾上 Set JAVA_HOME 和 Add to PATH
-3. 完成新 cmd 验证
-4. 后续再装 IntelliJ IDEA 时把项目 SDK 指向它","选 LTS 版本（17/21 一类），以课程要求为准；.msi 才有环境变量勾选，zip 压缩包需自己配。","用 zip 版没配 PATH/JAVA_HOME → javac 不是内部命令；PATH 残留老 JRE → java -version 版本对不上；Maven/Gradle 报 JAVA_HOME not defined 同理。","java -version 与 javac -version 都打出你装的版本，echo %JAVA_HOME% 有值，即成功。","新建 HelloWorld.java：public class HelloWorld { public static void main(String[] args) { System.out.println(""Hello, World!""); } }。命令行 javac HelloWorld.java 再 java HelloWorld，打印成功即编译+运行全通。"
-"Docker Desktop","https://www.docker.com/products/docker-desktop/","https://www.docker.com/products/docker-desktop/","在本地跑容器和容器镜像的图形化桌面应用，学后端、部署、复现别人项目时常用。企业使用有付费要求，个人与小团队免费。注意它默认会尝试启用 WSL 2 后端，Windows 上需要先按提示开启虚拟化。","虚拟机与容器;开发工具","官方域 docker.com / docs.docker.com。“Docker 中文网 / Docker 社区版下载”多为引流二次包装；把第三方镜像加速域当官方 registry 用也要心里有数——镜像源可以换，安装包只从官方拿。","容器 = 把“应用 + 它依赖的环境”整个打包成一个标准化盒子，在任何装了 Docker 的机器上一键复现——“在我电脑上明明能跑”的解药。它常被拿来和虚拟机比：虚拟机连整套操作系统一起虚拟化（GB 级、分钟级启动），容器共享宿主机内核（MB 级、秒级）。Docker Desktop 在 Windows 上底层用 WSL2（一种轻量虚拟机）来跑 Linux 容器。","1. 官网下载 Docker Desktop Installer.exe
-2. 安装保持勾选 “Use WSL 2”（Win11 一般已就绪）
-3. 装完重启，首次启动等引擎变绿
-4. 验证：docker run hello-world","BIOS/UEFI 未开硬件虚拟化会装不上；公司有规模使用需核对订阅条款（个人学习/小团队免费）；国内网络偶发镜像拉取超时，用正规方式解决而不是来路不明的“加速版”。","报 virtualization support not detected → 去 BIOS 开 VT-x；WSL2 未装 → engine start failed；C 盘空间不足 → 虚拟磁盘膨胀失败，镜像全坏。","docker --version 出版本；docker run hello-world 打印 Welcome to Docker! 即引擎全通。","docker run hello-world 本身就是官方准备的 Hello World：无需写一行代码，看它拉镜像、起容器、打印说明、自动退出——一次体验容器的完整生命周期。"
-"PostgreSQL","https://www.postgresql.org/download/","https://www.postgresql.org/download/","功能最强的开源关系型数据库，文档与生态极好，学 SQL 和做项目都够用一辈子。Windows 安装包由官方合作的 EDB 提供，安装过程会设置超级用户密码和端口，请记住这两项。不要从下载站获取，那些版本常被改动过。","数据库","官网只有 postgresql.org。Windows 安装包由合作官方 EDB 构建（落至 enterprisedb.com 域的重定向是正常官方链路）；“PostgreSQL 中文官网”并不存在，带“下载器”的站都是二改包。","关系型数据库=数据按表存、用 SQL 查的服务器程序。它和 MySQL 同级，是“服务器软件”：装在你机器上常驻一个服务，应用程序通过 5432 端口连它。pgAdmin 是随装的图形管理界面。学 SQL、做后端项目，它是最常见的“正经数据库”。","1. postgresql.org/download 选 Windows，跳转官方 EDB 下载当前版 installer
-2. 安装组件保持 PostgreSQL Server + pgAdmin + Command Line Tools
-3. 设置 postgres 超级用户密码——记牢，忘记无法找回
-4. 端口 5432、locale 默认，一路完成","密码 + 端口这两项决定以后所有连接串；同机装第二个版本时端口自动变 5433，别照抄旧教程。Stack Builder 那步可直接跳过。","忘了密码 → 只能重装或改 pg_hba.conf 高级操作；服务未启动 → 连接被拒；装多个版本后连错端口 → 查不到库。","开始菜单打开 pgAdmin，侧栏 Servers 能连上本地实例；或 cmd 进入安装目录 bin 执行 psql -U postgres 输密码进交互。","在 psql 里敲三行走通数据库的 Hello World：CREATE TABLE greet(msg text); INSERT INTO greet VALUES ('Hello, World!'); SELECT * FROM greet; 查出一行即全链路成功。"
-"Anaconda","https://www.anaconda.com/download","https://www.anaconda.com/download","Python 科学计算发行版，自带 conda 包管理器和大量数据科学库，避免了逐个装包时的依赖冲突。安装包体积大（数 GB），磁盘紧张时可只装 Miniforge 并用 conda 按需装包。注意它的商用许可近年有调整，企业环境需看清条款。","编程语言;开发工具;AI工具","官方 anaconda.com。国内常见“Anaconda 中文官网 / 镜像站安装包”——镜像站（如清华 TUNA）拿来做 pip/conda 源加速是正规操作，但把它当安装包分发渠道就是二改包，安装包只从官网拿。","Anaconda = 一个 Python 解释器 + conda 包管理器 + 几百个预装好的科学计算库（numpy/pandas 等）的发行版，解决“装包编译失败/依赖打架”。conda 环境 = 给每个项目单开一个隔离的盒子，各装各的包版本，互不污染。做数据/机器学习课程常被指定。","1. 官网下载 Windows 图形安装器（数 GB）
-2. 安装类型选 Just Me
-3. Advanced 页按官方建议不勾 “Add to PATH”，改用开始菜单的 Anaconda Prompt
-4. 完成，打开 Anaconda Prompt 验证","体积大，磁盘紧张考虑 Miniforge（同机制、按需装包）；企业与商用部署先核对许可，个人学习不受影响；与系统 Python 共存时谁生效看入口。","加进 PATH 后又装了系统 Python → python/pip 指向混乱；conda 直接在 cmd 用（没走 Prompt）→ 报找不到 conda；环境里装的包版本冲突 → solving environment 反复失败。","Anaconda Prompt 里 conda --version、python --version 都有输出；conda env list 能看到 base。","conda create -n demo python=3.12 -y → conda activate demo → python -c ""print('Hello, World!')""。三行体验“建环境、进环境、跑代码”的完整流程。"
-"Ollama","https://ollama.com","https://ollama.com/download/OllamaSetup.exe","在本地一键运行开源大模型的命令行工具，支持 Windows / macOS / Linux。这个直链是版本无关的官方安装器。想在自己机器上跑对话模型、又不想配置环境，它是最省事的入门路径。注意模型文件动辄数 GB，且对内存和显存有要求。","AI工具","官方只有 ollama.com（模型库在 ollama.com/library）。“Ollama 中文站 / 国内加速版下载器”是蹭热度包装，安装包必须走官方域；模型权重也只从官方 library 列出的地址拉。","大模型本体是一堆权重文件，要跑起来需要专门的推理引擎——Ollama 把这套复杂性收进一条命令：ollama run 模型名 就能聊。它在你机器上起一个本地服务，数据不出本机；和“训练”无关，它只做推理。显存越大能跑的模型越大，内存不足时用量化小模型。","1. 直链下载 OllamaSetup.exe 运行
-2. 装完它常驻后台（托盘图标），没有主窗口是正常的
-3. 打开 cmd 执行 ollama pull qwen3:0.6b（或从 library 选一个适合你内存的模型）
-4. ollama run qwen3:0.6b 开始对话","模型单个数 GB，选尺寸对齐自己的内存/显存（8GB 内存选 0.6b/1.7b 级）；首次拉模型耗时看网速；磁盘预留充足空间。","内存不够硬拉大模型 → 加载慢到不可用甚至失败；以为“装完就有一个聊天软件” → 它本来就走命令行/接口；模型存满系统盘 → 后续全卡。","ollama --version 出版本；ollama list 能看到已下载的模型；run 后得到回复即全通。","ollama run qwen3:0.6b ""用一句话解释什么是大语言模型""——收到回答的这一条命令，就是本地大模型的 Hello World。"
-"LM Studio","https://lmstudio.ai","https://lmstudio.ai/download","图形界面的本地大模型运行时，内置模型检索和 OpenAI 兼容的本地服务接口，适合不想碰命令行的初学者。免费但闭源，商用条款与开源替代品不同。请从官方域名下载，各类 “LM Studio 中文版” 均为二次打包。","AI工具","官方 lmstudio.ai。所有“LM Studio 中文版 / 汉化绿色版”都是二次打包；模型文件它从 Hugging Face 等源拉取，但安装包本身只认官网按钮。","LM Studio 干的事和 Ollama 一样——在自己电脑上跑大模型——区别是它给了完整图形界面：App 内搜模型、下载、聊天、一键起本地 API。不想碰命令行的选它；免费但闭源，企业商用先读条款。","1. 官网点 Download 选 Windows 版
-2. 安装器一路默认
-3. 启动后在左上搜索框选一个模型（看它的内存需求标注）
-4. 下载完进 AI Chat 直接对话","量化档位（Q4_K_M 之类）决定内存占用，按界面提示选；下载中断会留残件，删掉重新下。","下了超内存的大模型 → 加载即卡死；端口 1234 冲突 → 本地服务起不来；重复下载残件 → 列表里有却报错。","模型列表显示已下载、Chat 里能收到本地回复，即成功；Dev 页可另验本地 API。","在 AI Chat 选刚下的模型，发一句“你好，介绍一下你自己”，拿到本地生成的回复——不联网也跑通了大模型的 Hello World。"
-"FFmpeg","https://ffmpeg.org","https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip","音视频处理的命令行事实标准，转码、剪辑、抽帧、压缩都靠它。注意一个关键事实：ffmpeg.org 官网只提供源码，Windows 可执行文件由社区构建，gyan.dev 是最常用的官方认可构建源，这个 zip 始终指向当前 release 版（现为 9.0.1）。下载后需手动把 bin 目录加入 PATH。","计算机系统工具;图形与制作","官网 ffmpeg.org 只有源码，这是正常现象不是“假官网”。Windows 二进制认两个社区官方构建源：gyan.dev 与 GitHub 的 BtbN/FFmpeg-Builds。搜索前排“FFmpeg 中文官网 / 下载器”站点给的全是捆绑包，且常把版本藏旧。","FFmpeg 是音视频的“瑞士军刀命令行”：转格式、剪切、抽帧、压缩、加水印、录制屏幕都是一行命令。它没有窗口界面——你是在指挥一个不知疲倦的转换器；很多播放器和剪辑软件内部就是它。学会 -i 输入 -c 编解码这条骨架，能省掉一半“软件推荐”提问。","1. 直链下载 ffmpeg-release-essentials.zip（约 100+MB）
-2. 解压到固定目录，如 D:\ffmpeg
-3. 系统设置→环境变量→Path→新建，加入 D:\ffmpeg\bin
-4. 新开 cmd 执行 ffmpeg -version","解压目录别放在会删的临时位置；bin 目录才是 PATH 目标，选错文件夹层级是返工主因；升级=换新 zip 覆盖同目录。","报 “ffmpeg 不是内部或外部命令” → PATH 没加或窗口没重开；把解压根目录而非 bin 加进 PATH → 一样找不到；PATH 加了多个 ffmpeg → 版本冲突。","新 cmd 里 ffmpeg -version 输出 ffmpeg version 9.x 即成功；ffprobe -version 顺带验证。","对任意视频抽一帧当封面：ffmpeg -i 输入.mp4 -ss 00:00:01 -vframes 1 cover.jpg。一行命令得到一张图，就算跑通；无素材时可先生成：ffmpeg -f lavfi -i color=c=blue:s=640x360:d=2 test.mp4。"
-"VLC media player","https://www.videolan.org","https://download.videolan.org/pub/videolan/vlc/last/win64/","跨平台开源播放器，几乎支持所有编码格式，无广告无捆绑。这个 last/ 目录是版本无关的官方稳定别名，进去后选最新的 -win64.exe。国内搜索常出现 “VLC 播放器官方中文版”，那些站点会捆绑推广软件。","生活与游戏;计算机系统工具","官方 videolan.org 与下载域 download.videolan.org。“VLC 播放器官方中文版 / 极速版”是带推广的二改包；认准交通锥标志和 videolan 系域名。","VLC = “什么都能播”的本地播放器：不装解码包也能放几乎所有格式（它内置了自己的解码库，底层正是 FFmpeg 那一类库），无广告无会员。顺带还能转码、投屏、录屏，只是界面把高级功能藏得深。","1. 进入 last/win64/ 目录页，选最新 vlc-xx-win64.exe
-2. 安装向导一路下一步，注意别勾捆绑（官方本来就没有）
-3. 完成后可在“工具→偏好设置→界面语言”切中文
-4. 双击任意本地视频验证","目录页里挑 win64 后缀，别下成 arm64；last/ 是版本别名，以后回来还能找到最新版。","从中文版站点装 → 浏览器主页被改、后台多程序；语言找不到（首次进偏好设置切）；硬件解码在某些老显卡花屏 → 关硬件加速即可。","能打开本机.mkv/.mp4 等常见文件流畅播放即安装成功。","用“媒体→转换/保存”把一个视频转成 mp3：加文件→选输出配置音频-MP3→开始。播出来就是播放器的第一个 Hello World。"
-"7-Zip","https://7-zip.org","https://7-zip.org/download.html","开源压缩工具，压缩率高、体积小、无广告，还支持解压 rar。官方只有 7-zip.org 这一个域名，国内搜索常命中的 7-zip.cn 一类站点提供的安装包会附加浏览器和管家软件。下载页选 Windows 的 64-bit x64 那一项。","计算机系统工具","官方只有 7-zip.org。“7-zip.cn / 7-zip 中文官网”分发的安装包会附加浏览器、管家软件——这是国内被点名最多的仿冒下载案例之一。下载页右列选 Windows 下 64-bit x64 的 .exe。","压缩文件=带格式的文件包裹。7-Zip 干两件事：打开几乎所有格式的包裹（zip/rar/7z/tar/iso...），以及用自己的高压缩率 .7z 格式打包。免费开源无广告，装上后右键菜单就是“万能开包裹”入口。注意：解压 rar 可以，创建 rar 不行（rar 是专利格式，创建要 WinRAR）。","1. 官方下载页取 7z-*-x64.exe
-2. 安装一路默认
-3. 完成后右键任意压缩文件即可看到 7-Zip 菜单
-4. 无需重启","安装包只有几 MB 且完全静默——任何“7-Zip 下载器/高速下载”都是假的。","从 cn 仿冒站装 → 全家桶入侵；试图“用 7-Zip 压缩成 rar” → 选项里根本没有，属正常；忘设解压密码 → 打不开加密包。","右键任意 .zip 出现“7-Zip”子菜单，且能正常解压，即成功。","新建一个 txt，右键→7-Zip→添加到压缩包→格式选 7z、压缩等级选“ ultra”→得到同名 .7z。再右键测试压缩包→“测试归档”，就是压缩工具的全流程 Hello World。"
-"Notepad++","https://notepad-plus-plus.org","https://github.com/notepad-plus-plus/notepad-plus-plus/releases/latest","Windows 上的轻量文本与代码编辑器，打开大文件比 VS Code 更快。当前版本 v8.9.8。它曾因更新通道被投毒出过真实安全事件，所以务必只用官方域名或其 GitHub Releases 下载，并尽量校验签名。仅支持 Windows。","计算机系统工具;开发工具","官方 notepad-plus-plus.org 与 GitHub 同名仓库 Releases。它 2025 年真实发生过更新通道被定向攻击的事件，官方一度更换服务器——因此“下载站版 / 历史整合版”风险加倍，只用上述两处。","记事本的进化版：开日志/CSV/大文本秒开，带代码高亮、多标签、正则查找替换，体积不到 10MB。定位是“随手改”而非“写项目”——大工程交给 IDE，看 200MB 日志找它。","1. 从 GitHub releases/latest 下载 npp.*.installer.x64.exe
-2. 安装语言向导里可选简体中文
-3. 默认路径完成
-4. 首次启动遇到插件提示直接跳过","选 x64 版；它更新走官方通道，保持默认更新设置。","下了 32 位版 → 部分新插件不兼容；从下载站装 → 推广软件随附；乱码文件里直接改存 → 编码被改坏，先看右下角编码菜单。","打开任意 .log/.txt 能高亮行号、能多标签切换即成功；设置→首选项→联机状态可查更新。","打开一个日志文件，Ctrl+H 查找替换勾选“正则表达式”，把 ^\d+\. 批量删掉——一次“大文本 + 正则”的 Hello World。"
-"Everything","https://www.voidtools.com/downloads/","https://www.voidtools.com/downloads/","Windows 全盘文件名秒级索引搜索工具，体积极小、速度极快，是替代系统自带搜索的最佳选择。官网提供安装版和免安装便携 zip。国内 “Everything 加速版 / 绿色版” 全是二次打包，会改默认设置并夹带推广。","计算机系统工具","官方只有 voidtools.com。凡带“加速版 / 绿色版 / 中文整合版”的 Everything 都是二次打包，会改默认搜索引擎并塞推广。安装包十几 MB 以内才对——体积明显“胖”了就是捆绑。","Windows 自带搜索慢，是因为它不索引文件名表；Everything 直接读 NTFS 的文件记录，全盘几百万个文件几秒建完索引，边打字边出结果。它只搜文件名（可选开内容搜索但慢）——找“那个报告_final 在哪个盘”这件事，没有比它更快的。","1. 官方下载页选 Installer（或 ZIP 便携版）
-2. 安装一路默认
-3. 首次启动等索引进度条走完（几秒）
-4. 窗口即搜索框，直接打字","便携版适合放 U 盘随身带；公司电脑留意 IT 合规；索引依赖 NTFS 分区。","下了二改包 → 浏览器主页被换；拿它搜文件内容 → 默认没开，误报“搜不到”；装到非系统盘后服务没注册 → 开机不索引。","输入 .pdf 能看到全盘结果即时弹出；设置→索引 能看到各盘已索引即成功。","输入关键词（如报告）看实时过滤，右键结果→打开所在位置，Ctrl+C 复制路径——一次“三秒定位”的 Hello World。"
-"Rufus","https://rufus.ie","https://github.com/pbatard/rufus/releases/latest","制作可启动 U 盘的单文件小工具，装系统必备，当前版本 v4.15。rufus.ie 是唯一官方域名，下载页会同时公布签名哈希，建议核对。它体积小、无需安装，很多 “U 盘启动盘制作工具” 排名比它靠前，但那些会往镜像里注入推广。","计算机系统工具","官方 rufus.ie 与 GitHub pbatard/rufus。搜“U 盘启动盘制作工具”前排的国产同类工具会往系统里塞推广主页——功能一样但代价不同。官网对每个构建都公布签名，下载后右键属性→数字签名 可核对。","重装系统需要一个“插了就能开机引导”的 U 盘，普通拷文件进去不行——Rufus 负责把 ISO 镜像写成引导分区，并按新机器/老机器选好分区方案（UEFI/GPT 还是 MBR）。单 exe 免安装，用完即删。","1. 从 releases/latest 下载 rufus 单文件 exe
-2. 插入一个可清空的 U 盘（≥8GB）
-3. 启动 Rufus：设备选 U 盘、引导类型选 ISO
-4. 分区方案默认 GPT（新机器），点开始并确认清空警告","最重要的一条：写入会清空 U 盘全部数据，先备份。目标机器是 10 年内的基本都选 UEFI/GPT；老机器起不来再回头试 MBR。","没备份 U 盘被格式化 → 数据没了；选了 MBR 在新机器 → 启动项里看不见；ISO 是从二渠道下的 → 装完系统自带推广。","写入进度走完底部显示“准备就绪”；插到目标机重启按启动菜单键（F12/F8 常见）能选到它即成。","拿一个 Ubuntu 桌面 ISO 写入 U 盘，在另一台机器“Try Ubuntu”不安装直接进桌面——一次系统安装盘的全流程 Hello World。"
-"Blender","https://www.blender.org","https://www.blender.org/download/","开源三维建模、渲染与动画套件，能力接近商业软件但完全免费可商用。学习资源极多。请从官网或它的 GitHub 获取，“Blender 汉化绿色版” 既破坏更新链路又常夹带风险，语言在设置内即可切换。","图形与制作","官方 blender.org（下载会跳它的官方 CDN/download 伙伴，域可核对）。GitHub blender/blender 也正规。“Blender 汉化绿色版 / 免安装整合包”破坏更新链、常夹带恶意件；界面中文根本不需要特殊版本，Preferences→Interface→Language 就能切。","三维内容的“全家桶”：建模、雕刻、材质、动画、渲染、合成、视频剪辑、甚至 2D 动画都在一个软件里。商业软件（Maya 等）按年订阅，它完全免费且可商用。代价是学习曲线陡、快捷键体系独立——但免费试错成本低，教程生态全球最大。","1. 官网 Download 选 Windows Installer
-2. 安装一路默认
-3. 启动后 Edit→Preferences→Interface→Language 选中文
-4. 第一次别急着关默认场景——那个立方体就是你的画布","核显老机器选 LTS 稳定版；工程文件存盘习惯从一开始养成（.blend）；快捷键为主的操作逻辑值得看一遍官方新手教程。","下了绿色版 → 无法更新、插件装不进；按 F12 渲染黑屏 → 没配输出路径/灯光，属新手常态；没存直接退出 → 白干两小时。","能新建工程、视口可旋转缩放、按 F12 渲染出默认立方体图，即安装成功。","3D 界的 Hello World：选中默认立方体，按 E 挤出一个头、Z 轴缩放，F12 渲染出一张图——十分钟完成第一个“作品”。"
+"软件名","官方主页","下载直链","该软件功能与描述","分区","常见伪造官网与链接","通俗化解释","安装基本流程","特别注意事项","普遍错误与后果","安装成功验证","使用简介与Hello World","多版本下载","架构选择指导"
+"Python 3.13","https://www.python.org/downloads/","https://www.python.org/ftp/python/3.13.15/python-3.13.15-amd64.exe","Python 是一门解释型（Interpreted）高级程序设计语言，广泛应用于教学、数据处理、自动化脚本与服务端开发。本词条对应 Python Software Foundation 发布的 Windows 64 位官方安装包，当前 3.13 系列的最新补丁版本为 3.13.15。安装完成后获得两个核心组件：其一是解释器（Interpreter），负责逐行读取并执行 .py 源文件，无需事先单独构建；其二是 pip，官方包管理工具，用于从官方仓库下载并安装第三方库。初学者常见问题有两类：一是从非官方分发站点下载到捆绑包，附带推广程序与主页篡改；二是安装时未勾选 “Add python.exe to PATH”，导致命令行无法识别 python 命令，后续教程自第一步即受阻。建议在第一屏先勾选该项再点 “Install Now”，安装完成后在命令行执行 python --version，输出 Python 3.13.15 即为有效安装。日常使用时，安装后即可从命令行的交互式解释器直接试写代码；教学与数据处理所需的第三方库均通过 pip 安装，解释器与 pip 构成后续学习的共同底座。","编程语言","python.org 是 Python 唯一官方网站，其下载页与 ftp 目录下的安装包均为官方分发链路。伪造形态主要有三类：第一类是在搜索结果中冠名“Python 中文官网”“Python 中文网”的站点；第二类是换字符仿冒域名，例如 pyth0n.org（将字母 o 替换为数字 0），本站判别功能实测抓到过该域名，其证书签给了无关第三方；第三类是普通下载站把安装包与推广软件打包成分发。判别标准只有一条：提供安装器的页面域名是否等于 python.org。页面里出现 download、official 等字样但域名不符的，一律先存疑；任何自称中文镜像或整合版的站点，都不应作为安装包来源。官方下载对所有用户免费，任何设置会员制或付费分发的渠道都与官方链路无关。","解释型（Interpreted）与编译型（Compiled）描述的是源代码投入运行的两条路径。解释型语言写完代码后不需要先构建成独立的可执行文件，解释器逐行读取、逐行执行，类似演员照剧本当场演出；C 与 Java 等编译型语言则先把整份源程序翻译为机器代码再运行，类似先完成译稿付印、再供阅读。你安装的正是这台解释器：安装完成后，系统命令行新增 python 与 pip 两条命令，前者启动解释器，后者是官方的包下载与管理工具，Python 生态的全部第三方库都依赖 pip 安装。需要明确 pip 与解释器的对应关系：pip 从属于某一个具体解释器，为命令行当前解析到的 Python 环境安装包；多个版本共存时混用，会出现包已安装但目标环境找不到的现象。教学教程中“装 Python”所指即为本解释器本身，而非任何编辑器。解释器读到文件末尾即退出，不产生常驻进程，这也是 Python 程序可以从单条命令起步排错的原因。","1. 点击本页下载直链，获取安装包 python-3.13.15-amd64.exe。
+2. 双击运行，在安装程序第一屏底部勾选 “Add python.exe to PATH” 后再继续。
+3. 点击 “Install Now”，接受默认安装位置与组件开始安装。
+4. 等待数分钟，直至安装进度到达完成页面。
+5. 安装结束后，关闭安装前已打开的全部命令提示符（Command Prompt）窗口。
+6. 新开一个命令提示符窗口，执行 python --version，输出 Python 3.13.15 即安装成功。
+7. 再执行 pip --version，能正常输出版本号与所属路径，说明包管理组件同步就绪。","1. “Add python.exe to PATH” 勾选框仅出现在安装程序第一屏，错过后需重新运行安装程序，或手动进入“系统设置→环境变量”补写。
+2. PATH 是环境变量（Environment Variable），系统按其中分号分隔的目录顺序查找可执行程序；解释器安装目录进入 PATH 后，任意目录下才能直接运行 python。
+3. 已打开的命令行进程持有其启动时刻的环境变量快照，不会自动重读 PATH，因此一切验证都必须在新开的窗口中进行。
+4. py 启动器（launcher）是官方安装程序默认附带的小型组件，不依赖 PATH，按注册表定位已安装的 Python 版本；多版本共存时可用 py -3.13 显式指定版本启动。
+5. 微软商店中的 “Python 3.13” 同样来自官方分发，但路径与权限行为与官网安装包不同，教学场景建议统一使用官网 exe。
+6. 多个 Python 版本共存时，python 命令以 PATH 中靠前的条目为准，建议只保留一个主要版本或习惯用 py 切换。","1. 现象：命令行执行 python 提示“不是内部或外部命令”｜原因：安装时未勾选 “Add python.exe to PATH”，解释器目录未进入 PATH｜纠正：重新运行安装程序补勾该项，或手动把安装目录写入系统 PATH 后新开窗口验证
+2. 现象：安装时已勾选 PATH，但命令行仍提示找不到 python｜原因：使用的是安装前打开的旧窗口，其中仍为旧的环境变量快照｜纠正：关闭全部旧命令行窗口，重新打开后再执行验证
+3. 现象：安装完成后浏览器主页被改，并出现不明的推广程序｜原因：安装包来自捆绑分发站点而非官方直链｜纠正：卸载该版本并清理推广残留，改由本页官方直链重装
+4. 现象：pip 安装某些第三方库时报权限错误｜原因：Python 被装入需要管理员权限的目录，当前用户没有写入包目录的权限｜纠正：重装到用户可写位置，或在具有管理员权限的命令行中执行安装","1. 新开命令提示符，执行 python --version，期望输出 Python 3.13.15。
+2. 执行 pip --version，期望输出一行包含 pip 版本号及其关联的 Python 安装路径，正常回显即包管理器可用。
+3. 执行 py --version，期望同样输出 Python 3.13.15，说明 Windows 启动器（launcher）已能定位到解释器。
+4. 执行 python -c ""print('Hello, World!')""，终端输出 Hello, World!，说明解释器执行能力正常。","1. 新建一个文本文件并命名为 hello.py，.py 是 Python 源文件的标准扩展名。
+2. 在文件中写入一行代码：print(""Hello, World!"")。
+3. 在资源管理器中进入 hello.py 所在目录，从该位置打开命令提示符（或打开后先执行 cd 切换到目标目录）。
+4. 执行 python hello.py，终端输出 Hello, World!，第一个程序即运行成功。
+5. 若提示“不是内部或外部命令”，请回到“普遍错误与后果”中 PATH 相关条目逐项排查。","Windows|amd64（Intel 与 AMD 的 64 位 CPU，绝大多数台式机与笔记本）|https://www.python.org/ftp/python/3.13.15/python-3.13.15-amd64.exe
+Windows|arm64（骁龙 X 系列等 Windows on ARM 笔记本）|https://www.python.org/ftp/python/3.13.15/python-3.13.15-arm64.exe
+Windows|x86 32 位（仅十年级旧机或必须装 32 位扩展库时）|https://www.python.org/ftp/python/3.13.15/python-3.13.15.exe
+macOS|通用 pkg，Intel 与 Apple Silicon 同一安装包|https://www.python.org/ftp/python/3.13.15/python-3.13.15-macos11.pkg
+Linux|由发行版软件仓库提供，源码编译见官方下载页|https://www.python.org/download/other/
+全平台|各版本与各架构文件的完整索引|https://www.python.org/downloads/windows/
+龙芯 LoongArch|官方无预编译包，需源码编译或改用发行版打包|https://www.python.org/download/other/","Windows 上默认下 amd64 一条即可；只有在骁龙 X 系列笔记本或必须提供 32 位扩展库时才换 arm64 与 x86。3.13 系列仍发布 win32 包，但第三方数据包的预编译轮子已大量只出 64 位，装机前先确认要用的库有 32 位版本。macOS 的 pkg 是通用二进制，Intel 与 Apple Silicon 都用同一个文件，不必分辨。龙芯等国产平台没有官方预编译包，走发行版软件仓库或源码编译。"
+"Visual Studio Code","https://code.visualstudio.com","https://update.code.visualstudio.com/latest/win32-x64-archive/stable","Visual Studio Code 是微软发布的跨平台代码编辑器（Code Editor），当前稳定版为 1.137.0，覆盖 Python、Web 前端、Markdown 写作与配置文件编辑等主流场景。本页下载直链是微软官方的版本无关地址，永远指向最新 stable 版，不会随版本更新而失效。其核心能力集中在编辑体验：多标签与多文件夹工作区、内置集成终端（Integrated Terminal）、查找替换以及 Git 版本控制界面。功能边界同样明确：本体只负责代码的编写与查看，不包含任何编程语言运行时。安装后可在扩展市场（Extension Marketplace）搜索 Chinese (Simplified) 安装简体中文语言包，将界面切换为中文。需要警惕以“VSCode 中国版”“加速版”“汉化版”为名的发行版，均非官方，会预装插件并篡改扩展源，请只通过本页直链获取。对初学者而言，它是写课程作业、整理笔记与修改配置文件场景下的首选编辑器；其全部设置以文本形式保存，便于随项目一同迁移与备份。","开发工具","官方主页域名只有 code.visualstudio.com，下载服务走 update.code.visualstudio.com 与 vs-codeling 等微软自有域名；域名不属于微软的一律视为非官方。伪造形态统一表现为各类“VSCode 中国版”“加速版”“汉化版”“便携集成版”发行包，其危害不在程序本体，而在被改动的分发链路：预装来历不明的插件、把扩展市场替换为第三方镜像源、更新通道脱离微软控制。后果是官方插件难以检索且用户浑然不觉，经镜像安装的扩展完整性也无从核对。判别方法：核对浏览器地址栏中提供安装器的域名是否属于微软官方域；任何要求先下载其专用启动器或加速器的分发页，都不应作为来源。","需要先厘清四个概念之间的关系，再决定工具选型。第一，文本编辑器（Text Editor）只负责代码的书写与呈现，记事本与 VS Code 属于此类。第二，解释器（Interpreter）逐行读取源代码并直接执行，Python 的运行方式即属此类。第三，编译器（Compiler）把整份源程序一次性翻译为机器可执行的程序再运行，C++ 的 MSVC 与 Java 的 javac 属此类。第四，集成开发环境（IDE）将编辑、构建、运行与调试整合于同一应用，Visual Studio 与 PyCharm 是代表。VS Code 的定位介于编辑器与 IDE 之间：本质是编辑器，本体不具备执行能力，通过安装扩展（Extension）获得运行、调试与智能补全的接口。尤其要明确：扩展与语言运行时是两件事——扩展只提供编辑器内的集成界面与语法工具，真正执行代码的仍是系统中单独安装的解释器或编译器。因此在 VS Code 中开发 Python，须先安装 Python 解释器，再安装 Python 扩展，缺一不可。","1. 点击本页直链下载，update.code.visualstudio.com 永远指向最新稳定版，zip 与 exe 均为官方形态。
+2. 双击运行安装向导，除“选择附加任务”页外各屏保持默认并继续。
+3. 在“选择附加任务”页按需勾选“添加到 PATH”，以便后续从命令行启动编辑器。
+4. 安装完成后双击桌面图标首次启动，并按首启提示允许其正常访问本地文件。
+5. 打开左侧扩展视图，搜索 Chinese (Simplified) 并安装简体中文语言包。
+6. 按提示重启应用，界面即切换为中文。
+7. 通过“文件→打开文件夹”载入项目目录，开始编辑。","1. VS Code 只承担编辑职责：要写 Python，必须先安装 Python 解释器，再在 VS Code 中安装 Python 扩展。
+2. 存档 zip 免安装版与 exe 安装版都是官方发行形态，二者任选即可。
+3. 安装扩展不等于安装语言运行时，解释器或编译器需由相应官方渠道单独提供。
+4. 工作区只打开项目根文件夹；将磁盘根目录或系统目录作为工作区会触发大范围索引，导致界面长时间无响应。
+5. 扩展来源保持官方市场默认设置，不接受任何更换市场地址的配置。","1. 现象：扩展市场中检索不到所需的官方插件｜原因：安装了“中国版”等三方发行包，扩展市场已被替换为镜像源｜纠正：卸载后从 code.visualstudio.com 重新安装官方版
+2. 现象：在命令行执行 code 无响应，无法打开项目目录｜原因：安装时未勾选“添加到 PATH”，或安装后沿用了旧窗口｜纠正：重新运行安装程序补勾该选项，并新开命令行窗口验证
+3. 现象：Python 代码被编辑器标红且运行按钮不可用｜原因：只安装了编辑器，系统中没有 Python 解释器｜纠正：先按本站 Python 条目安装解释器，再在编辑器中为其指定路径
+4. 现象：以磁盘根目录作为工作区后界面卡顿乃至无响应｜原因：文件索引范围过大耗尽资源｜纠正：关闭该工作区，改为仅打开具体的项目文件夹","1. 双击桌面图标，主窗口正常打开且无报错弹窗，即基础安装完成。
+2. 新开命令提示符执行 code，编辑器能够启动；再执行 code --version，输出当前稳定版本号（如 1.137.0），说明命令行入口已配置。
+3. 在扩展市场搜索 Chinese (Simplified)，能够正常检索并安装，重启后界面显示中文，说明扩展链路完好。
+4. 打开任意文件夹后，左侧资源管理器显示文件树，通过 Ctrl 加反引号键调出集成终端，能执行命令即为正常。","前提：本机已安装 Python 解释器（参见本站 Python 3.13 条目）。
+1. 新建空文件夹 hello-demo，用 VS Code 的“文件→打开文件夹”载入它。
+2. 在其中新建文件 hello.py，写入代码：print(""Hello, World!"")。
+3. 点击编辑器右上角的运行按钮（▶ 形图标），首次运行会提示选择 Python 解释器，选取官方安装的那个。
+4. 下方集成终端输出 Hello, World!，即为在编辑器辅助下完成的第一个程序。
+5. 若运行按钮不出现，先在扩展市场安装官方 Python 扩展再重复上述步骤。","Windows|用户版 x64（免管理员权限，装在个人目录）|https://update.code.visualstudio.com/latest/win32-x64-user/stable
+Windows|系统版 x64（全机共用，需管理员权限）|https://update.code.visualstudio.com/latest/win32-x64/stable
+Windows|ARM64（骁龙 X 系列笔记本）|https://update.code.visualstudio.com/latest/win32-arm64-user/stable
+macOS|Apple Silicon（M1 至 M5）|https://update.code.visualstudio.com/latest/darwin-arm64/stable
+macOS|Intel 芯片 Mac|https://update.code.visualstudio.com/latest/darwin/stable
+Linux|x64 与 ARM64 的 deb、rpm、tarball 见官方页|https://code.visualstudio.com/download
+Linux|32 位 ARM（树莓派等 ArmHF 设备）|https://update.code.visualstudio.com/latest/linux-armhf/stable
+龙芯 LoongArch|官方无构建，可用国产发行版自带的同类编辑器|https://code.visualstudio.com/download","Windows 先分清两件事：一是芯片，Intel/AMD 选 x64、骁龙选 ARM64；二是权限，用户版装进个人目录、免管理员权限、自动更新，全机共用才选系统版。macOS 按芯片分两个包：关于本机显示 M 系列即 Apple Silicon 版，Intel 即 Intel 版，装错会提示无法打开。Linux 按包管理器选 deb（Debian 与 Ubuntu）、rpm（Fedora 与 openSUSE）或 tarball。"
+"Steam","https://store.steampowered.com","https://cdn.cloudflare.steamstatic.com/client/installer/SteamSetup.exe","Steam 是 Valve 公司的数字游戏发行平台及其配套桌面客户端，覆盖游戏购买、下载、自动更新、云存档与社区功能。本页下载直链对应的 SteamSetup.exe 仅约 2MB，采用在线安装器（Online Installer）机制：包内只含引导程序，运行后从官方服务器拉取完整客户端，因此下载快，且安装的始终是最新版本而非旧缓存。请只从 steampowered.com 或官方内容分发网络（CDN）域 steamstatic.com 获取客户端；所谓“Steam 管家”“国服启动器”等第三方程序会接管账号登录环节，一旦向其提交凭据，账号与其下全部已购游戏的安全即失去保障。安装前请确认游戏库所在磁盘具备数十GB量级的剩余容量，大型游戏的体积普遍在数十GB。对使用者而言，客户端同时承担游戏库管理、好友与社区入口的职责，但其核心始终是已购内容的下载、更新与完整性维护。","生活与游戏","官方域名范围只有两个：steampowered.com 承载商店与主页，steamstatic.com 是其静态资源与客户端分发 CDN。名为“Steam 管家”“国服启动器”“加速下载版”的程序一律非官方，其形态是代管你的账号登录，或注入来路不明的加速组件；把账号密码经由它们提交，等于将账号的唯一入口交给不可核验信用的第三方。另一项需要明确的事实是：Steam 在中国大陆并不发行独立的中国客户端，官方链路中不存在“国服版客户端下载”，凡以此名义的页面均可判定为伪造。判别标准仍以域名为准：提供安装器的地址必须落在上述两个 Valve 域名之内，安装包体积也应保持在数MB量级的在线安装器规模。","Steam 同时承担两种角色。其一是商店（Store）：浏览游戏信息、完成购买与付款记录都在内置商店中进行的账务关系。其二是游戏库管家（Client）：账号名下的游戏清单、下载与安装、版本更新、本地文件的完整性验证（Verify Integrity of Game Files），以及跨设备的云存档（Cloud Save），全部由同一个客户端自动管理。你不需要为每款游戏单独安装某个平台，一次装好客户端，后续所有游戏都由它负责下载与维护。它也不是游戏引擎：每款游戏运行所需的依赖由游戏自身携带，Steam 只负责把它们完整送达本地磁盘并保持版本最新。安装程序之所以只有约 2MB，是因为它采用在线安装器（Online Installer）：可执行文件只负责联网取回完整客户端。需要长期记住的一点是：账号资产集中绑定于登录体系，凭据只应输入官方客户端，任何声称可替代 Steam 登录的工具都应视为风险来源。","1. 点击本页直链下载 SteamSetup.exe，约 2MB，为官方在线安装器。
+2. 双击运行，安装器自动连接 Steam 服务器下载完整客户端，耗时取决于网络状况。
+3. 安装完成后客户端启动，注册新账号或登录已有账号。
+4. 首次在新设备登录时，按邮件或手机验证器的提示完成身份验证，属正常安全流程。
+5. 打开“设置→下载”，确认游戏安装库路径所在磁盘及其剩余容量。
+6. 从商店选取一款免费游戏安装，验证下载与启动流程完整可用。","1. 在线安装器依赖安装期间的持续联网；断网或代理配置异常时，进度会停留在“正在连接到 Steam 服务器”。
+2. 现代游戏体积普遍达数十GB，安装前确认库所在盘的剩余空间，并预留更新所需的额外余量。
+3. 账号凭据只输入官方客户端；任何第三方启动器类工具的代登录、代加速均不建议安装使用。
+4. 首次在新设备登录触发的邮件或手机验证是正常的账户保护流程，不代表账号异常。
+5. 卸载客户端程序不会删除已下载的游戏库文件，彻底清理需要另行删除对应库文件夹。","1. 现象：安装进度长时间停留在“正在连接到 Steam 服务器”｜原因：本机断网或代理设置异常，在线安装器无法取回客户端文件｜纠正：恢复直连网络、清除无效代理后重新运行安装器
+2. 现象：安装第三方“管家”后账号被盗或被强制绑定陌生设备｜原因：登录凭据经由第三方程序中转｜纠正：立即在官方客户端修改密码，并启用手机身份验证器
+3. 现象：游戏更新时提示磁盘空间不足｜原因：游戏库存于系统盘，其容量已被操作系统与其他文件长期占用｜纠正：在“设置→存储”中把库文件夹新建或迁移到容量充足的磁盘
+4. 现象：卸载客户端后仍有数十GB文件占用磁盘｜原因：卸载仅移除程序本体，游戏库文件并未随之删除｜纠正：先在客户端库页逐个卸载游戏，再删除遗留的库文件夹","1. 双击 Steam 图标，客户端正常启动并进入主界面，登录后库页能看到账号名下的游戏清单。
+2. 客户端内置商店页能够正常加载，检索任意游戏名称可返回结果条目。
+3. 打开“设置→下载”，显示的下载与安装路径与此前确认的库文件夹一致。
+4. 选取一款免费游戏执行安装，库页能看到下载进度，完成后“开始游戏”按钮可正常启动，即全链路成功。","1. 登录成功后打开“设置→界面”，在语言列表中选中“简体中文”，按提示重启客户端生效。
+2. 在设置中开启手机身份验证器（Steam Guard 移动端验证），为账号建立二次验证保护。
+3. 在商店的免费游戏中选取一款点击安装，观察客户端自动完成下载、更新与完整性校验的完整过程。
+4. 安装完毕后在库页点击开始游戏进入游玩，即完成从安装到使用的第一个闭环。","Windows|官方在线安装器，64 位系统|https://cdn.cloudflare.steamstatic.com/client/installer/SteamSetup.exe
+Windows|三端总说明与最新客户端要求|https://store.steampowered.com/about/
+macOS|官方客户端（Intel 与 Apple Silicon 均在支持范围内）|https://store.steampowered.com/about/
+Linux|发行版仓库或官方 .deb，仅支持 64 位|https://store.steampowered.com/about/
+Windows on ARM|官方无原生 ARM64 客户端，x64 版经系统模拟运行|https://store.steampowered.com/about/
+龙芯 LoongArch|官方无构建|https://store.steampowered.com/about/","Steam 的官方安装页只按操作系统区分，不提供按 CPU 架构选择的入口，Windows 用户直接取页面上的安装器即可。需要留意的是它现在只服务 64 位系统：Windows 上若仍是 32 位系统，客户端已不再更新，需先把系统升到 64 位。ARM 架构的 Windows 笔记本与龙芯平台没有原生客户端，实际可用性以官方页面当日说明为准。"
+"Visual Studio Community","https://visualstudio.microsoft.com/","https://aka.ms/vs/17/release/vs_community.exe","Visual Studio 是微软推出的 Windows 集成开发环境（Integrated Development Environment，简称 IDE），覆盖 C++、C#、.NET 等主流开发方向；Community 版对个人开发者、开源项目、教学场景与小团队免费授权。本页下载直链 aka.ms 短链属于微软官方域名，始终指向 Visual Studio 2022 社区版最新启动器 vs_community.exe。启动器本身只有数MB，真正的组件在安装阶段按用户勾选的工作负载（Workload）联网下载，规模从数GB 到数十GB 不等，需预留磁盘与时间。与编辑器类产品不同，Visual Studio 一次性提供编辑器、MSVC 编译器、调试器、界面设计器与性能分析工具的成套能力，是 C++ 与 C# 课程的主流选择。请注意它与轻量编辑器 VS Code 是完全不同的两个产品，名称相近，检索与安装时不要混用。对初学者而言，它的价值在于无需另行配置编译器与链接器，从新建项目到构建、调试、性能分析均在同一窗口内完成；个人学习用途落在 Community 版免费授权的范围之内。","开发工具","官方下载链路只包含 microsoft.com 域与微软的 aka.ms/vs/17 前缀官方短链两类地址。名为“Visual Studio 社区版中文下载站”“整合版”的站点，提供的多是重新打包的安装器，夹带推广程序，且更新链路往往在二次打包时被破坏，后续补丁接连失败。另一类混淆并无恶意但同样常见：检索“VS”或“VS 下载”得到的结果大量指向 Visual Studio Code，那是另一款编辑器，与 Visual Studio 2022 这个集成开发环境在形态、用途与课程要求上都不相同，下载错误无法满足教学环境。判别标准两条：安装器来源域名是否属于微软官方链路；产品名是否为不带 Code 后缀的 Visual Studio。","Visual Studio 采用组件化安装（Componentized Installation）机制，其基本单位是工作负载（Workload），即按开发角色预先组织好的组件集合。例如勾选“使用 C++ 的桌面开发”，安装程序会随之装齐 MSVC（Microsoft Visual C++）编译器工具集、Windows SDK、项目模板与调试器；若只勾“Visual Studio Editor”，得到的仅是编辑界面而没有编译器，按 F5 运行时构建环节即失败。这一设计的意义在于避免全量安装：启动器仅数MB，实际体积随勾选增长，单个常用开发负载约在十余GB 量级，全选可达数十GB。它与 VS Code 的区别需要讲清：VS Code 是编辑器，本体不含编译器，需要自行安装语言运行时并用扩展把工具链拼装起来；Visual Studio 是集成开发环境（IDE），编辑、构建、调试与性能分析在 installer 内一次配齐。两者名称相近而定位不同，课程要求不应混同。这一机制带来的便利在于：安装完成后可随时在安装中心点击“修改”增补组件而不必重装；合理做法是先确定语言方向与课程要求，再只勾选对应负载。","1. 通过本页官方短链下载 vs_community.exe，双击运行，拉起 Visual Studio 安装中心。
+2. 在安装中心的产品页选择 “Visual Studio Community 2022”。
+3. 进入“工作负载”页，按课程需求勾选角色组件集，例如“使用 C++ 的桌面开发”。
+4. 在右侧安装摘要中核对该工作负载包含的具体组件及其体积。
+5. 在“安装位置”页确认目标磁盘剩余空间不小于所选组件总体积，C 盘紧张时改选其他本地磁盘。
+6. 点击“安装”，下载规模从数GB 到数十GB，视勾选内容而定，等待其完成。
+7. 安装结束后启动 Visual Studio，登录微软账号以解除 Community 版的部分功能限制。","1. 工作负载按需勾选，全选会占用数十GB 磁盘并显著拉长安装时间。
+2. 默认安装位置为 C 盘；容量紧张时应在开始下载前改选其他本地磁盘。
+3. 除安装体积外，还应为组件缓存与后续更新预留额外空间，建议安装盘预留量达到数十GB。
+4. Community 版免费，但需登录微软账号方可解除部分功能限制，建议安装完成后即登录。
+5. 从事 C++ 开发必须勾选“使用 C++ 的桌面开发”以获得 MSVC 编译器，仅勾选编辑器组件不会安装任何编译器。
+6. 本产品与 VS Code 名称相近但定位不同，课程材料中要求“装 VS”的通常指 Visual Studio。","1. 现象：按 F5 运行项目时提示找不到编译器或无法启动调试｜原因：仅勾选了“Visual Studio Editor”工作负载，未安装 MSVC 工具集｜纠正：重新打开安装中心点击“修改”，补勾“使用 C++ 的桌面开发”
+2. 现象：安装进行到一半失败并报磁盘空间错误｜原因：C 盘剩余空间小于所选工作负载的总体积｜纠正：在安装中心更改安装位置到容量充足的磁盘后重试
+3. 现象：后续版本更新持续失败或组件缺失｜原因：安装了二次打包的“整合版”，官方更新链路被改动｜纠正：彻底卸载后从本页官方短链重装
+4. 现象：按课程要求装好了环境却找不到项目模板与调试入口｜原因：把 Visual Studio 与 VS Code 两个同名相近的产品混淆了｜纠正：确认课程要求为 Visual Studio 2022，并从官方渠道下载 Community 版","1. 双击图标后 IDE 正常加载并进入开始窗口，界面显示 Visual Studio Community 2022。
+2. 点击“创建新项目”，选择“控制台应用”模板，项目能够创建完成且无组件缺失提示。
+3. 按下 F5 启动调试，控制台窗口弹出并输出 Hello, World!，说明编译器与调试器链路完整。
+4. 打开项目属性，在高级设置中可选用 Microsoft (MSVC) 编译器，进一步确认工具集已安装到位。","1. 在开始窗口点击“创建新项目”，选择 C++ 下的“控制台应用”模板，按向导新建项目。
+2. 模板生成的 C++ 源文件在 main 函数中输出：std::cout << ""Hello, World!"" << std::endl;。
+3. 若创建的是 C# 控制台项目，模板自带的 Program.cs 中已有 Console.WriteLine(""Hello, World!"") 一行，无需改动。
+4. 按 F5 启动调试，控制台窗口打印 Hello, World!，即完成构建与调试全链路的首次验证。
+5. 若 F5 提示找不到编译器，请回到安装中心补勾“使用 C++ 的桌面开发”工作负载后重试。","Windows|x64（Intel 与 AMD 64 位，官方唯一推荐的桌面机型）|https://aka.ms/vs/17/release/vs_community.exe
+Windows|下载器与离线布局（vs_buildtools 等变体）|https://visualstudio.microsoft.com/downloads/
+Windows on ARM|无 ARM64 原生 IDE 主体，仅部分组件可跨架构编译|https://visualstudio.microsoft.com/downloads/
+macOS|Visual Studio for macOS 已于 2024 年停止支持，改用其他 IDE|https://visualstudio.microsoft.com/downloads/
+Linux|无 Linux 版本，仅可用于 Xamarin .NET MAUI 命令行|https://visualstudio.microsoft.com/downloads/
+龙芯 LoongArch|官方无构建|https://visualstudio.microsoft.com/downloads/","只有 Windows 一个平台，安装包为 x64，Intel 与 AMD 的 64 位机型通用，不需要按 CPU 厂商区分。骁龙 X 系列笔记本可经系统模拟运行，但涉及原生 ARM 编译需另行安装对应工作负载。macOS 版的 Visual Studio for macOS 已停止支持，苹果机型请改用 Visual Studio Code 或 JetBrains 系。装哪个组件取决于负载：C++ 桌面、Python、.NET Web 互不包含，选错会表现为新建项目时找不到模板。"
+"PyCharm Community","https://www.jetbrains.com/pycharm/","https://www.jetbrains.com/pycharm/download/","PyCharm Community（社区版）是 JetBrains 出品的 Python 专用集成开发环境（IDE，Integrated Development Environment），提供代码补全、跨文件重构、图形化调试器、单元测试运行器、版本控制集成与虚拟环境（virtual environment，项目级隔离的依赖目录）自动管理。
+社区版与 Professional（专业版）的能力边界需要明确：社区版覆盖 Python 语言本身、pip 包管理、虚拟环境、命令行工具与主流版本控制；专业版额外提供 Web 框架支持（Django、Flask、FastAPI）、数据库与 SQL 工具、前端框架深度支持、性能分析器与远程开发。初学者学习语法、算法与数据处理，社区版完全够用。工程管理方面，社区版内置版本控制集成，可以在界面中完成提交、分支与冲突解决；重构操作覆盖重命名、提取函数与跨文件查找引用，改动会同步到整个工程。若课程明确要求 Web 框架或数据库工具，JetBrains 提供教育授权（Educational License）：用学校发放的教育邮箱在官网教育申请页提交学籍信息并通过审核，即可免费使用专业版；没有教育邮箱时，社区版是零成本的默认选择。","开发工具","JetBrains 系列产品的官方域只有 jetbrains.com，产品页为 https://www.jetbrains.com/pycharm/，下载页为 https://www.jetbrains.com/pycharm/download/。JetBrains 没有中文官网、国内代理站或镜像下载站，任何以“PyCharm 中文官网”“PyCharm 国内下载站”为名的页面都不是官方渠道。
+常见的伪造形态有三类。其一是仿冒域名，通过替换或增删字符模仿官方拼写，把字母 o 写成数字 0 或在主域之后附加含中文含义的子域都属于此类。其二是“激活教程加二次打包安装器”站点，传播内嵌破解补丁的分发包，这类包通常禁用自动更新并可能携带窃取浏览器凭据与登录信息的组件。其三是下载站把安装包与推广软件捆绑分发。核验方法只有一条：安装前查看浏览器地址栏中的域名是否完全等于 jetbrains.com，其余渠道一律存疑。","可以把开发环境分为两个层次。文本编辑器（text editor，例如记事本与 VS Code）负责把代码写下来；集成开发环境（IDE）在此之外还代管了解释器配置、依赖隔离、运行与调试这一整套工程事务。PyCharm 属于后者，它的价值在于把初学者最容易出错的环节前置处理：新建项目时自动创建虚拟环境（venv，即 virtual environment 的缩写），让每个项目的第三方库相互隔离，避免不同课程的包版本彼此污染；解释器（interpreter，逐行读取并执行 Python 代码的程序）路径由 IDE 记录，可以在界面上直接切换；调试时可以在代码行设置断点（breakpoint，程序运行到此处暂停以便查看变量），而不必通篇打印变量。
+它与 VS Code 的取舍在于完整度与使用成本：PyCharm 出厂即配置齐备，但占用内存较大、首次索引耗时较长；VS Code 轻快，功能靠扩展逐步搭建。学习 Python 时两者皆可，课程写明哪一个就安装哪一个，不必同时装配两套环境。","1. 打开官方下载页 https://www.jetbrains.com/pycharm/download/ ，在 Community 一列下载文件名中含 community 的 Windows 安装器。
+2. 双击安装器，在安装向导页面按需勾选创建桌面快捷方式与添加可执行文件到 PATH（系统环境变量中的命令搜索路径）。
+3. 安装目录保持默认，等待文件复制与组件注册完成。
+4. 首次启动时在导入设置页面选择“不导入设置”，随后阅读并同意用户协议。
+5. 选择界面主题，允许必要的文件访问权限，进入欢迎界面。
+6. 在欢迎界面点击 New Project（新建项目），指定项目目录与 Python 解释器，让 IDE 自动创建虚拟环境。
+7. 在项目面板中新建一个 .py 文件，编写一条打印语句并点击运行按钮，确认输出正常即完成安装收尾。","1. 安装 PyCharm 之前系统里应已经存在可用的 Python 解释器，否则新建项目时无法选择解释器，界面会持续给出红色提示。
+2. 下载页同时列出 Professional（30 天试用）与 Community（免费）两列，下载前必须确认所点击的列标题为 Community。
+3. 教育授权需要学校发放的教育邮箱，申请时填写真实学籍信息，授权通常需按年复核续期；无法提供教育邮箱时直接使用社区版。
+4. 项目目录不要放在网盘同步目录或包含中文与空格的深层路径下，索引与虚拟环境创建都可能受影响。
+5. 首次打开较大目录会触发全量索引，此时处理器占用偏高属于正常过程，等待右下角进度条结束再进行编码。","1. 现象：新建项目后编辑器右上角显示 No interpreter 并持续报错｜原因：系统中没有可用的 Python 解释器或解释器路径未被识别｜纠正：先从官方渠道安装 Python，再在设置的项目解释器页面指向该安装目录。
+2. 现象：使用约三十天后界面反复弹出试用结束与购买提示｜原因：下载时选择了 Professional 而不是 Community｜纠正：卸载当前版本，从下载页的 Community 列重新安装。
+3. 现象：库在终端里已安装，运行脚本时却提示 ModuleNotFoundError｜原因：终端使用的系统 Python 与运行配置指向的虚拟环境不是同一个解释器｜纠正：统一使用 IDE 内置终端，在同一解释器中安装并运行。
+4. 现象：从所谓激活教程站点安装后无法更新，杀毒软件持续告警｜原因：分发包被植入破解补丁与恶意组件｜纠正：彻底卸载来源不明的版本，从官方下载页重装社区版并修改曾在本机登录过的口令。","1. 启动后在欢迎界面或界面路径 Help→About 查看产品版本，应显示 PyCharm Community Edition，且不出现试用剩余天数提示。
+2. 界面路径 File→Settings→Project→Python Interpreter 中能列出解释器版本号与虚拟环境路径，例如显示 Python 3.13 (venv)。
+3. 新建 .py 文件后工具栏出现可用的运行按钮，点击后底部 Run 窗口输出内容并显示 Process finished with exit code 0。
+4. 界面路径 File→Open 选择一个已有文件夹，索引进度条顺利结束且状态栏无红叉错误，说明工程管理能力正常。","1. 在欢迎界面点击 New Project，项目名填写 hello-demo，解释器选择 New environment 基于 Virtualenv 创建，确认后等待项目初始化完成。
+2. 在项目面板右键项目根目录，选择 New→Python File，文件命名为 main 并回车。
+3. 编辑器会生成注释模板，将其替换为一条打印语句：print(""Hello, World!"") ，保存文件。
+4. 将光标置于该文件内，按 Shift+F10 或点击工具栏运行按钮启动。
+5. 预期结果：底部 Run 窗口输出 Hello, World! 并显示 Process finished with exit code 0。
+6. 一致性验证：在界面路径底部 Terminal（内置终端）中执行 python main.py ，同样得到一行 Hello, World! ，说明终端与运行配置使用同一解释器。","Windows|64 位（Intel 与 AMD），msi 全机或 exe 当前用户|https://www.jetbrains.com/pycharm/download/#section=windows
+Windows|ARM64（骁龙 X 系列）|https://www.jetbrains.com/pycharm/download/#section=windows
+macOS|Apple Silicon 与 Intel 在同一页面按机型分列|https://www.jetbrains.com/pycharm/download/#section=mac
+Linux|tar.gz（x64 与 ARM64）与 Snap|https://www.jetbrains.com/pycharm/download/#section=linux
+历史版本|各平台各架构全部构建的官方归档|https://www.jetbrains.com/pycharm/download/other/
+龙芯 LoongArch|官方无构建|https://www.jetbrains.com/pycharm/download/other/","JetBrains 下载页顶部先选操作系统，再在展开区按架构列出安装包：Windows 区分 64 位与 ARM64，macOS 区分 Apple Silicon 与 Intel，Linux 区分 x64 与 ARM64。msi 装给全机需要管理员权限，exe 只装当前用户；同一台机器多人使用时才需要前者。社区版与专业版是两个不同的下载条目，别在专业版页面下载社区版入口。"
+"IntelliJ IDEA Community","https://www.jetbrains.com/idea/","https://www.jetbrains.com/idea/download/","IntelliJ IDEA Community（社区版）是 JetBrains 面向 Java 与 Kotlin 开发的集成开发环境（IDE，Integrated Development Environment），提供编写、编译、运行、调试、单元测试与版本控制一体化工作方式，并内置 Maven 与 Gradle 构建工具支持以及基础的 Android 开发能力。
+它与 Ultimate（旗舰版）的能力边界集中在企业框架与附加语言：旗舰版提供 Spring 等企业框架的深度支持、Jakarta EE 与数据库工具、性能分析器、前端框架支持与远程开发；社区版专注于标准 Java 语言与开源构建链，入门课程与个人项目的用量完全足够。教育授权方面，用学校发放的教育邮箱在 JetBrains 官网教育申请页提交学籍信息并通过审核，即可免费使用旗舰版；不具备申请条件时，社区版是零成本的正确选择。
+还有一处必须说明的因果：IDEA 自带的运行时仅供 IDE 程序自身使用，并不是开发所需的 JDK（Java Development Kit，Java 开发工具包，内含编译器 javac 与标准类库），因此安装 IDEA 之前应先在系统中准备好一个 JDK，否则新建项目立刻出现无法编译的提示。","开发工具","IDEA 的官方域是 jetbrains.com，产品入口为 https://www.jetbrains.com/idea/，下载入口为 https://www.jetbrains.com/idea/download/ ，页面中应认准 Community Edition（免费）一列，Ultimate 是付费试用版本。JetBrains 没有中文官网或国内代理下载站，搜索结果里冠以“IntelliJ IDEA 中文社区”“IDEA 中文网”的站点均为仿冒或引流页面。
+常见伪造形态有三类：以近似拼写冒充官方域名的站点；提供“永久激活版”“特别版”二次打包安装器的站点，这类分发包禁用更新通道并可能附带窃取凭据的组件；把安装包与推广软件捆绑的下载站。另需注意，搜索 JDK 时排位靠前的常常是另一家厂商的授权与登录页面，其免费范围与商用条款较为复杂，与本条登记的开源发行版并不是一回事。核验方式仍是查看地址栏域名是否完全等于 jetbrains.com。","可以把 Java 开发环境理解成两件东西的组合：JDK（Java Development Kit，Java 开发工具包）是真正把源文件翻译成字节码并运行的工具集，内含编译器 javac 与运行时 java；IDEA 是操作这些工具的工作台，负责编写、组织、触发编译并把结果显示出来。工作台本身不带翻译工具，IDEA 自带的运行时只服务于它自己的界面程序，编译你的代码仍需在项目设置中指向一个外部 JDK，这正是初学者最常见困惑的根源：软件安装成功但代码满屏红色错误，原因并非程序损坏，而是项目的 SDK（Software Development Kit，开发工具包）尚未指定。
+完成这一关联后，IDEA 的价值才真正体现：输入时会推断意图并补全整段结构，重命名一个变量会同步修改整个模块中的引用，运行测试时逐条标注通过与否， Maven 与 Gradle 依赖由它代为解析。因此正确顺序永远是先装 JDK，再装 IDEA，最后在项目结构设置中确认两者已经连通。","1. 先安装 JDK，参见本站 Eclipse Temurin JDK 条目，安装时勾选加入 PATH 与设置 JAVA_HOME。
+2. 打开官方下载页 https://www.jetbrains.com/idea/download/ ，在 Community Edition 一列下载 Windows 安装器。
+3. 双击安装器，按向导完成安装，可按需勾选创建桌面快捷方式与更新文件关联。
+4. 首次启动时在导入设置页面选择“不导入设置”，并同意用户协议。
+5. 在欢迎界面点击 New Project（新建项目），在构建类型中选择 Java。
+6. 在 SDK 下拉框中选择已安装的 JDK；若列表为空，可点击下拉框内的下载入口让 IDEA 代为获取一份。
+7. 指定项目目录并完成创建，等待索引结束后新建一个 Java 类，编写一条打印语句并运行以确认环境可用。","1. JDK 是前置依赖：没有可用的 JDK 时，社区版安装成功也无法编译，报错表现为满屏红色与 no compiler is provided 提示。
+2. 下载页同时提供 Ultimate 与 Community 两列，若误装 Ultimate，三十天试用到期后需要卸载并改用社区版。
+3. Community 与 Ultimate 的差别在框架与工具支持（Spring、数据库工具等），入门课程使用 Community 完全足够，不必为功能焦虑。
+4. 教育授权可覆盖旗舰版，用学校发放的教育邮箱在官网教育申请页提交学籍信息申请，授权通常需按年复核。
+5. 项目 SDK 版本应与课程或教材要求一致（例如统一使用 17 或 21 长期支持版），同一台机器存在多个 JDK 时在项目结构设置中显式指定。","1. 现象：IDEA 安装完成但新建项目后代码满屏红色错误｜原因：系统中没有 JDK，项目 SDK 处于未填写状态｜纠正：先安装 JDK，再在界面路径 File→Project Structure→Project 中指定 SDK。
+2. 现象：编译时报 no compiler is provided in this environment｜原因：项目 SDK 指向了只有运行环境的 JRE 而非完整的 JDK｜纠正：把 SDK 改回包含 javac 的 JDK 目录。
+3. 现象：使用一段时间后被要求购买订阅｜原因：安装时选择了 Ultimate 试用版｜纠正：试用结束后卸载并改从 Community Edition 列下载安装。
+4. 现象：从“永久激活版”站点安装后无法更新且安全软件持续告警｜原因：分发包被植入破解补丁与恶意组件｜纠正：卸载来源不明的版本，从官方下载页重装社区版。","1. 在欢迎界面或界面路径 Help→About 查看版本信息，应显示 IntelliJ IDEA Community Edition 且无试用倒计时。
+2. 界面路径 File→Project Structure→Project 中 SDK 一栏显示具体 JDK 版本，例如 temurin-17，且下方语言级别（Language level）可正常选择。
+3. 命令行为补充验证：新开一个命令提示符窗口执行 java -version 与 javac -version ，两者都输出与项目 SDK 一致的版本号。
+4. 新建 Java 项目后创建类并点击运行，控制台输出结果并显示 Process finished with exit code 0 ，说明编译与运行链路全通。","1. 在欢迎界面点击 New Project，构建类型选择 Java，SDK 选择已安装的 JDK，项目目录填写 hello-demo，点击 Create。
+2. 在项目面板右键 src 目录，选择 New→Java Class，类名填写 HelloWorld 并回车。
+3. 在生成的类中补全主方法，使文件内容为：public class HelloWorld { public static void main(String[] args) { System.out.println(""Hello, World!""); } } 。
+4. 点击类名左侧绿色运行箭头，或按 Shift+F10 启动。
+5. 预期结果：底部控制台输出一行 Hello, World! 并显示 Process finished with exit code 0 。
+6. 命令行等价验证：在项目 out 或编译输出目录下执行 java HelloWorld ，得到同样一行输出，说明 IDEA 只是替你调用了 javac 与 java。","Windows|64 位与 ARM64 两种安装包|https://www.jetbrains.com/idea/download/#section=windows
+macOS|Apple Silicon 与 Intel 分别提供 dmg|https://www.jetbrains.com/idea/download/#section=mac
+Linux|x64 与 ARM64 的 tar.gz，另有 Snap|https://www.jetbrains.com/idea/download/#section=linux
+历史版本|各平台各架构全部构建的官方归档|https://www.jetbrains.com/idea/download/other/
+龙芯 LoongArch|官方无构建|https://www.jetbrains.com/idea/download/other/","下载页与 PyCharm 同构：先选系统，再按架构取包，Windows 有 64 位与 ARM64，macOS 分 Apple Silicon 与 Intel，Linux 分 x64 与 ARM64 并可从 Snap 安装。Community 与 Ultimate 分列两条，课程与个人项目用 Community 足够。历史版本页保留全部旧构建，需要复现旧工程时去那里找，不要从第三方版本站下载。"
+"Qoder","https://qoder.com.cn/","https://qoder.com.cn/download","Qoder 是阿里巴巴推出的 AI 编程智能体（AI coding agent，理解自然语言需求并在工程中自主执行编码任务的工具），核心能力是围绕项目上下文读取文件、跨文件修改代码、执行终端命令并回报运行结果，同时提供任务拆解与长上下文对话。
+版本说明需要优先考虑国内版。Qoder CN（国内版）官方站点为 https://qoder.com.cn/ ，下载页为 https://qoder.com.cn/download ，产品线名称统一带 CN 后缀，包括 Qoder CN 桌面端、Qoder CN IDE、JetBrains 插件、Qoder CN CLI 与 Qoder CN Mobile，界面为中文、定价以人民币结算，在中国大陆网络环境下无需代理即可直连模型服务。Qoder（国际版）官方站点为 https://qoder.com/ ，下载页为 https://qoder.com/download ，功能路线与国内版同源，但账号体系、数据与计费彼此独立，两个版本注册后的账号与历史数据互不相通。
+选择建议：以学习为目的、需要中文界面与人民币结算的用户直接选择 Qoder CN；已有国际版账号或存在跨境协作需求时才考虑国际版。此外下载页并列多条产品线，安装前应确认所点对应的是 IDE 本体还是配套的命令行或移动端子产品。","开发工具;AI工具","Qoder 的官方域只有两个，并且分别对应两个版本：国内版为 qoder.com.cn ，官方站点 https://qoder.com.cn/ 与下载页 https://qoder.com.cn/download ；国际版为 qoder.com ，官方站点 https://qoder.com/ 与下载页 https://qoder.com/download 。除这两个域之外，任何自称“Qoder 中文官网”“Qoder 国内代理站”“Qoder 加速版下载”的页面都不是官方渠道。
+常见伪造形态有三类：用“官方”“中文”等关键词做搜索投放的引流站，把第三方下载器包装成安装入口；宣称提供“免费无限额度”“共享账号”的站点，实际用于收集登录凭据；把安装包改名重新分发的二次打包，其更新链与配置目录都落在他人控制之下。需要特别说明，同一官网下的国内版与国际版是两个独立入口，下载错了不算伪造但会造成账号与数据无法使用的实际后果。核验方式只有一条：安装与注册前查看地址栏域名是否为 qoder.com.cn 或 qoder.com。","传统编辑器的使用逻辑是“由你编写、由它补全”，Qoder 这类 AI 编程智能体的逻辑是“由你说明目标、由它执行修改”：你用自然语言描述需求，它在当前工程中读取相关文件、生成改动、运行命令并把输出反馈回来，你负责提出明确要求并验收结果。对初学者的实际意义在于把“不会写”转化为“会描述问题、会检查结果”，但它不能替代学习本身，你仍需读懂它给出的每一处改动。
+版本差别需要单独说明。Qoder 分为国内版 Qoder CN 与国际版两条独立产品线：Qoder CN 通过 https://qoder.com.cn/ 提供，界面中文、人民币计价、在中国大陆可直连服务；国际版通过 https://qoder.com/ 提供，接入另一套模型服务与计费体系。二者不共用注册账号，同一邮箱在两个站点分别注册得到的是两个互不可见的账户，历史会话与工程配置也不会同步。因此应先在联网环境、界面语言与结算方式三方面确定版本再注册：绝大多数国内学习者选择 Qoder CN 即可，只有在跨境协作或已深度使用国际生态时才选择国际版。","1. 先确定版本，中国大陆的学习者推荐 Qoder CN，打开对应下载页 https://qoder.com.cn/download （国际版为 https://qoder.com/download ）。
+2. 在下载页确认所点击按钮对应的产品名为 IDE 本体，而不是同站的命令行工具或移动端子产品。
+3. 下载 Windows 安装器并双击运行，安装路径保持默认，等待文件写入完成。
+4. 启动应用，在登录页使用与所选版本对应的账号体系完成注册或登录。
+5. 首次运行时选择一个已有项目文件夹，或新建空文件夹作为工作目录，并授予文件访问权限。
+6. 在对话面板发出第一条指令，查看它列出的计划改动清单，确认后允许执行。
+7. 若计划修改范围与预期一致，接受变更并在内置终端确认运行结果。","1. 先确定版本再注册：Qoder CN 与国际版的账号体系与数据互不相通，注册后无法迁移，选错版本意味着从空账户重新开始。
+2. 两个版本的官方入口分属 qoder.com.cn 与 qoder.com ，注册与付费前逐次核对地址栏，避免把账号建在仿冒站点上。
+3. 模型能力依赖云端服务，必须在联网并已登录的状态下使用；未登录时编辑器功能仍可用，但智能体相关指令不会返回结果。
+4. 同一官网下载页并列多条产品线，需区分 IDE 本体、命令行工具与移动端子产品，安装错误产品线会导致功能与预期不符。
+5. 智能体可以直接修改文件与执行命令，重要工程在授权批量写入之前先纳入版本控制，以便逐项审阅变更并随时回退。","1. 现象：在一个站点注册后，另一版本登录始终提示账号不存在｜原因：两个版本账号体系相互独立，注册站点与使用版本不一致｜纠正：确定要长期使用的版本，在该版本官网重新注册，并在设置中退出错误站点的会话。
+2. 现象：对话面板发出指令后没有响应，功能按钮呈不可用状态｜原因：未完成登录，或当前网络无法连接所选版本的模型服务｜纠正：确认登录状态，并在对应版本可直连的网络环境下重试。
+3. 现象：安装完成后找不到工程对话入口，功能与介绍不符｜原因：下载了同站其他产品线而非 IDE 本体｜纠正：回到对应版本下载页，选择名称与用途匹配的安装器重新安装。
+4. 现象：智能体一次性改动多个文件并覆盖了手工修改｜原因：未先提交基线状态就允许批量写入｜纠正：用 Git 先提交当前工程，此后每轮任务都审阅变更清单再逐项接受。","1. 启动后在界面右上角查看登录状态，显示的账号与你下载版本所属官方域一致（Qoder CN 对应 qoder.com.cn ，国际版对应 qoder.com ）。
+2. 界面路径：选择 Open Folder 打开一个本地文件夹，文件树正常展示，侧边 Chat 面板可输入并成功发送消息。
+3. 在对话框输入“列出当前目录下的文件并说明每个文件的作用”，得到的回复与实际目录内容一致，说明模型服务连通。
+4. 让它在空目录中创建一个文件，变更清单出现待接受项，接受后在系统资源管理器中能看到同名文件且内容正确，说明读写链路可用。","1. 新建空文件夹 qoder-demo ，在应用中通过 Open Folder 打开该目录作为工作区。
+2. 在对话面板输入需求：创建一个 hello.py 文件，内容为一条打印 Hello, World! 的语句，创建后运行它并把终端输出反馈给我。
+3. 等待它给出文件与命令的变更清单，逐项确认后接受。
+4. 生成的文件内容应为：print(""Hello, World!"") ，保存后在内置终端执行 python hello.py 。
+5. 预期结果：终端输出 Hello, World! ，目录中出现 hello.py ，说明从需求描述到落盘执行的全链路已经打通。
+6. 若终端提示找不到 python 命令，请先安装本站登记的 Python 3.13 并勾选加入 PATH，再重新执行第 4 步。","Windows|64 位（Intel 与 AMD），国内版|https://qoder.com.cn/download
+macOS|Apple Silicon 与 Intel 按机型自动匹配，国内版|https://qoder.com.cn/download
+Windows|64 位，国际版|https://qoder.com/download
+macOS|Apple Silicon 与 Intel，国际版|https://qoder.com/download
+Linux|官方页未列出即无官方构建，以下载页为准|https://qoder.com/download
+Windows on ARM 与龙芯|官方下载页未列出对应架构|https://qoder.com.cn/download","先决定版本再决定架构：国内版与国际版下载页不同，账号与数据互不相通。国内网络环境下优先 qoder.com.cn。架构上 Windows 只需 64 位包，macOS 在页面上按 Apple Silicon 与 Intel 分列，M 系列芯片选前者；官方页未列出的平台（Linux、Windows on ARM、龙芯）即无官方构建。"
+"Trae","https://www.trae.cn/","https://www.trae.cn/download","Trae 是字节跳动推出的 AI 集成开发环境（IDE，Integrated Development Environment），基于 VS Code（Visual Studio Code，微软开源代码编辑器）内核构建，扩展插件体系、界面布局与快捷键习惯均可直接沿用，从 VS Code 迁移的成本很低。产品能力集中在两条主线：一是 Builder（智能体生成模式，用自然语言描述需求后自动创建可运行的工程骨架），二是编辑器内的对话式改写，可框选代码片段直接说明修改意图。
+版本说明需要优先考虑国内版。Trae 国内版入口为 trae.cn ，国际版官方站点为 https://www.trae.ai/ ，下载页为 https://www.trae.ai/download 。国内版界面为中文、以人民币结算，在中国大陆网络环境下无需代理即可直连模型服务；国际版接入另一套模型服务与计费体系。两个版本的账号体系与本地数据互不相通，注册与订阅都在各自站点独立完成，因此建议优先选择国内版 trae.cn ，只有在需要接入国际生态或已持有国际版账号时才使用 https://www.trae.ai/ 。若确有并存需要，可安装在同一台机器，但登录状态与配置彼此独立，管理成本较高，按课程需求只保留一个更为稳妥。","开发工具;AI工具","Trae 的官方域有两个，分别对应两个版本：国内版为 trae.cn ，国际版为 https://www.trae.ai/ ，其下载页是 https://www.trae.ai/download 。需要说明一点，trae.cn 对自动化脚本抓取返回 403 属正常反爬机制，在浏览器中可以正常打开，这不是判定站点真假的依据。
+除上述两个官方域之外，任何“Trae 中文官网”“Trae 官方下载站”“海外版破解”“账号共享与合租平台”都属伪造或非官方渠道。常见风险形态包括：把安装器与推广软件捆绑的下载站；宣称内置无限额度、需要输入已有账号才能激活的页面，实质是收集凭据；以及替换更新源的二次打包版本，后续升级完全由来路不明的服务器控制。核验方式：下载与注册前查看地址栏域名是否为 trae.cn 或 trae.ai ，并从页面上的官方按钮获取安装器。","可以把 Trae 理解为一台已经装配好 AI 助手的 VS Code：编辑区仍然按普通编辑器的方式工作，文件树、终端、扩展市场与快捷键都是原来的形态；区别在于侧边多了两个入口，一个用于就选中代码提问与改写，另一个用于把整段需求交给它自动搭建工程骨架并跑起来。因为内核与 VS Code 相同，你在 VS Code 中养成的习惯与安装的插件基本可以延续，这也是它与 PyCharm、IDEA 这类专用 IDE 的主要差别：前者靠扩展逐步搭建，后者出厂即完整。
+版本差别应当先于功能去理解。Trae 分为国内版与国际版，入口分别是 trae.cn 与 https://www.trae.ai/ ：国内版界面中文、人民币结算、在中国大陆可直连模型服务，注册使用手机号等本地方式；国际版接入另一套模型服务与计费，注册使用海外账号体系。两套账号互不相通，会话与配置也不会同步，用国内账号登录国际版会直接失败。因此选择顺序是：先看网络环境与结算方式，再决定在哪个站点注册，而不是先注册再考虑迁移。","1. 先确定版本，中国大陆的学习者建议从国内版入口 trae.cn 获取安装器；使用国际版则打开 https://www.trae.ai/download 。
+2. 在下载页按操作系统选择对应安装器，页面按钮为动态渲染，以实际显示的版本与平台为准。
+3. 双击安装器，安装路径与组件选项保持默认，一路完成即可。
+4. 启动应用，在登录页使用与所选版本匹配的账号体系注册或登录：国内版使用手机号等方式，国际版使用海外账号方式。
+5. 首次启动时按提示选择是否导入已有 VS Code 配置，导入前留意插件兼容性。
+6. 通过 Open Folder 打开一个项目目录，等待索引与工作区加载完成。
+7. 在侧边对话面板发出第一条指令，确认能够返回结果即完成安装收尾。","1. 先确定版本再注册：国内版与国际版的账号体系与数据互不相通，注册后无法迁移，选错版本需要从空账户重新开始。
+2. 官方入口分属 trae.cn 与 trae.ai 两个域，trae.cn 对脚本抓取返回 403 属反爬机制，浏览器可正常访问，不要因此误判站点真假。
+3. 下载页按钮为动态渲染，安装器的平台与版本以页面实际显示为准，不要从来路不明的“破解版”“绿色版”站点获取。
+4. 核心对话与生成能力依赖云端模型服务，需要在联网并登录状态下使用；扩展市场与部分服务源在两个版本间存在差异，插件不一定完全等价可装。
+5. 从 VS Code 导入配置会带来原有插件集合，个别插件与新版本内核兼容性存疑，建议导入后先重启一次并逐一验证。","1. 现象：安装完成后登录反复失败并提示账号不存在｜原因：用国内版账号登录国际版客户端，两套账号体系相互独立｜纠正：确认安装器所属版本，在对应站点注册后再登录。
+2. 现象：下载页打不开或返回 403，误以为站点已失效｜原因：trae.cn 对脚本抓取有反爬限制，浏览器访问才正常｜纠正：改用浏览器直接打开官方入口，不要转而搜索所谓加速下载站。
+3. 现象：从破解或共享账号站点安装后账号异常、本地数据被上传风险｜原因：二次打包版本替换了更新源并可能携带窃取组件｜纠正：卸载并从官方域重新安装，同时修改曾在本机使用过的口令。
+4. 现象：期望插件市场与 VS Code 完全一致却搜不到某些扩展｜原因：版本间服务源与市场配置存在差异｜纠正：在扩展面板确认当前可用的市场源，必要时从官方插件页面获取。","1. 启动后在界面左下角或账户菜单确认已登录，且账号所属站点与你下载的版本一致（国内版对应 trae.cn ，国际版对应 trae.ai ）。
+2. 界面路径：File→Open Folder 选择一个本地项目目录，文件树正常展示且可编辑保存。
+3. 侧边 Chat 面板输入“当前目录有哪些文件，分别是什么用途”，能得到与实际情况一致的回复，说明模型服务连通。
+4. 界面路径：Extensions 扩展面板可正常打开并搜索到插件，安装一个轻量插件后重启仍然生效，说明编辑器基础能力完整。","1. 新建空文件夹 trae-demo ，通过 File→Open Folder 打开该目录。
+2. 若此前使用 VS Code，可在首屏提示处选择导入配置；无配置则跳过这一步。
+3. 在侧边 Chat 或 Builder 面板输入需求：创建一个单文件网页，打开即在页面中央显示 Hello World ，并说明如何本地预览。
+4. 等待它生成文件并给出改动清单，确认后接受，目录中出现 index.html 。
+5. 预期结果：双击 index.html 在浏览器打开，页面显示 Hello World 文本，说明从需求描述到生成结果的链路已通。
+6. 等价验证：新建 hello.py 写入 print(""Hello, World!"") ，在内置终端执行 python hello.py 得到一行输出，终端与编辑器协同正常。","Windows|64 位（Intel 与 AMD），国内版|https://www.trae.cn/download
+macOS|Apple Silicon 与 Intel，国内版|https://www.trae.cn/download
+Windows|64 位，国际版|https://www.trae.ai/download
+macOS|Apple Silicon 与 Intel，国际版|https://www.trae.ai/download
+Linux|官方下载页未列出即无官方构建|https://www.trae.cn/download
+Windows on ARM 与龙芯|官方下载页未列出对应架构|https://www.trae.cn/download","同上，先选域名：国内版 trae.cn 与国际版 trae.ai 账号体系独立，国内网络下推荐前者。Windows 取 64 位包即可，macOS 需按芯片分开下载——页面上对 Apple Silicon 与 Intel 有明确分列，在关于本机中查看芯片名称即可判断。官方页未列出的平台不要靠搜索补链接。"
+"Cursor","https://cursor.com/","https://cursor.com/download","Cursor 是 AI 优先的代码编辑器，同样基于 VS Code（Visual Studio Code，微软开源代码编辑器）内核，因此扩展插件、键位设置与使用习惯可以从 VS Code 直接迁移，与 Trae 属于同一技术路线，熟悉哪一个都可以沿用既有配置。它的核心能力集中在三处：编辑器内的内联生成（选中代码后按快捷键直接说明改动意图）、侧边对话（就整个工程提问并要求批量修改）、以及基于上下文的补全（读取相邻文件后推断你接下来要写的代码）。
+版本方面需要说明：就本站登记的入口而言，Cursor 的官方分发只有 https://cursor.com/ 与下载页 https://cursor.com/download 一处，不存在与 Qoder、Trae 并列的国内专用版本入口，因此版本选择的注意事项集中在额度与账号机制上。
+免费额度机制值得单独交代：免费层按周期计算请求额度，用于调用较高档位的模型；额度用尽后不会停用软件，而是自动降级到基础模型继续提供服务，表现为补全与对话仍可用但推理质量与速度下降。学生在官网申请教育优惠可获得更长的额度周期。","开发工具;AI工具","Cursor 的官方域是 cursor.com 与 cursor.sh ，下载入口为 https://cursor.com/download 。搜索结果排位靠前的同名页面中，相当一部分是模板站与导航站，它们展示界面截图却不提供软件本体；这类页面通常用“官方中文站”“国内最新版”作为标题吸引点击。
+另一类更严重的风险形态是所谓“汉化版”与“无限额度破解版”分发包：这类包会替换更新源与扩展市场配置，后续每一次升级都由分发者控制，并且常附带窃取浏览器凭据与登录令牌的组件；宣称只需登录已有账号即可解锁额度的站点，实质是凭据收集页面。需要补充一点，界面语言本身可在软件内部设置或通过正规扩展解决，不存在必须下载特殊版本才能获得中文界面的情况。核验方式仍然是查看地址栏域名是否为 cursor.com 或 cursor.sh ，其余渠道一律不使用。","可以把 Cursor 理解为一台把 AI 装进编辑区而不是装在侧栏之外的编辑器。普通编辑器的分工是“你写代码，工具负责显示与检查”，而 Cursor 在同一编辑区里增加了一层可请求的改写能力：选中一段代码后直接说明想怎么改，它把候选结果就地展示，你按接受键才真正落盘；未接受的内容只是建议，不会自动进入工程。这个机制决定了它的使用姿势：改动要逐段确认，而不是一次性放行。行内补规则在你停顿处给出整段建议，是否采用完全由你决定，因而工作节奏是“连续编写、逐处采纳”。
+它与 Trae 属于同一条技术路线，都基于 VS Code 内核，插件与键位设置可互相迁移，因此已经习惯 VS Code 或 Trae 的用户切过来几乎没有额外成本，选择哪一个主要看模型服务、额度规则与账号便利性。与 PyCharm、IDEA 这类语言专用 IDE 相比，Cursor 本身不代管解释器与构建链，Python 与 Java 仍需先安装对应运行环境（参见本站 Python 与 JDK 条目），它负责的是编写与改写环节。","1. 打开官方下载页 https://cursor.com/download ，按操作系统选择 Windows 安装器。
+2. 双击安装器，安装路径保持默认，等待文件写入完成。
+3. 启动应用，使用邮箱在注册页创建账号并登录。
+4. 若已有 VS Code，可在首屏提示处选择一键导入配置，包括扩展、主题与键位；没有则跳过。
+5. 通过 Open Folder 打开一个已有项目目录，或新建空文件夹作为工作区。
+6. 按 Ctrl+L 打开对话面板，按 Ctrl+I 打开编辑器内生成入口，确认两个面板均可输入。
+7. 发出第一条指令并检查返回内容与改动清单是否正常显示，随后重启一次确认配置持久化。","1. 免费额度按周期计算，额度用尽后自动降级到基础模型，软件仍可使用但回答质量与响应速度下降，这是正常机制而不是安装故障。
+2. 学生在官网申请教育优惠可获得更长额度周期，申请需要可核验的学籍信息，审核期间默认仍按免费层计量。
+3. 核心对话与生成能力依赖联网与登录状态，未登录时只能作为普通编辑器使用，补全与改写不会返回结果。
+4. 本站登记的官方入口只有 cursor.com 一处，不存在经过核实的国内专用版本；若课程要求中文界面与人民币结算，应转而优先考虑本站登记的 Qoder CN 或 Trae 国内版。
+5. 一键导入 VS Code 配置会把原有扩展全部带入，个别扩展与该版本内核兼容性存疑，建议导入后逐项验证或先只导入键位设置。","1. 现象：对话响应明显变慢、补全质量下降，误认为软件已损坏｜原因：本周期免费额度耗尽后自动降级到基础模型｜纠正：查看账户页面确认额度状态，等待周期重置或按正规方式升级。
+2. 现象：从“汉化版”“无限额度版”安装后无法更新，账号与浏览器凭据存在泄露风险｜原因：分发包替换了更新源并可能携带恶意组件｜纠正：卸载并从官方下载页重装，同时修改曾在本机使用过的口令。
+3. 现象：打开项目后补全与对话无反应，输入框呈不可用状态｜原因：未登录或网络无法连接模型服务｜纠正：确认账号已登录并在可直连的网络环境下重试。
+4. 现象：导入 VS Code 配置后某些扩展报错或快捷键冲突｜原因：原扩展与该版本内核不完全兼容｜纠正：在扩展面板禁用报错扩展并逐项恢复，冲突键位在键盘快捷方式设置中重映射。","1. 启动后在界面右下角或账户菜单确认显示已登录邮箱，且当前套餐与官网账户页面一致。
+2. 界面路径：File→Open Folder 打开本地项目，文件树可展开、文件可编辑并正常保存。
+3. 按 Ctrl+L 打开对话面板，输入“说明这个项目的目录结构”，能得到与实际一致的回复，说明模型连通与额度可用。
+4. 新建文件后按 Ctrl+I 输入一条生成需求，编辑器内出现候选改动，按 Tab 后内容真正写入文件，说明改写落盘链路完整。","1. 新建空文件夹 cursor-demo 并用 Cursor 打开，在其中新建文件 hello.py 。
+2. 在空白文件中按 Ctrl+I 打开编辑器内生成，输入需求：写一个打印 Hello World 的 Python 程序。
+3. 候选内容出现后按 Tab 接受，文件内容应为：print(""Hello, World!"") 。
+4. 保存文件，通过界面路径 Terminal（终端）→ New Terminal 打开内置终端，执行 python hello.py 。
+5. 预期结果：终端输出 Hello, World! ，说明从生成到执行的闭环完成。
+6. 另一种等价路径：按 Ctrl+L 在对话面板输入“创建 hello.py 打印 Hello, World 并运行它给出输出”，审阅变更清单后接受，观察同样的输出结果。","Windows|x64（Intel 与 AMD 64 位）|https://cursor.com/download
+Windows|ARM64（骁龙 X 系列）以官方下载页是否列出为准|https://cursor.com/download
+macOS|Apple Silicon 与 Intel 在同一页面分列|https://cursor.com/download
+Linux|AppImage（x64）|https://cursor.com/download
+中文页|与国内版入口同页的说明|https://cursor.com/zh-CN/download
+龙芯 LoongArch|官方无构建|https://cursor.com/download","Windows 下载页区分 x64 与 ARM64 两类，骁龙 X 系列笔记本选 ARM64，其余选 x64。macOS 同样按 Apple Silicon 与 Intel 分列，看关于本机的芯片名称即可。Linux 提供 AppImage，赋予可执行权限后直接运行。这是国际版产品，国内网络下登录与更新可能需要自备条件，可先对比国内同类工具。"
+"Git","https://git-scm.com","https://github.com/git-for-windows/git/releases/latest","Git 是分布式版本控制（Distributed Version Control）工具，用于完整记录一个项目随时间变化的历史，并支持多人并行修改同一批文件后再进行合并。与集中式版本控制不同，每个使用者的电脑上都持有一份完整仓库副本，脱离网络也能提交、回退与查阅历史。Git for Windows 是官方维护的 Windows 移植版，当前最新版本为 v2.55.0.windows.5，除核心命令外还附带 Git Bash 类 Unix 终端环境、Git GUI 图形界面、SSH 客户端与 OpenSSL 等组件。Git 以内容校验和（Checksum）标识每一份快照，历史一旦提交便难以在不留痕迹的情况下改写，这是它可用于审计与多人协作的技术基础；独自练习版本管理与参与团队项目使用的是同一套命令。本条目的下载直链指向 git-for-windows 仓库的 releases/latest 地址，该地址始终跳转到最新版本发布页，不会因版本迭代而失效。初学者最常见的风险是以“Git 官网”“Git 中文官网”为关键词检索，进入非官方镜像站并被引导安装额外软件。请只承认两个来源：项目主页 git-scm.com 与 GitHub 上的 git-for-windows 发布仓库，其余站点均不具备分发安装包的资格。","开发工具;计算机系统工具","Git 的官方站点只有 git-scm.com，Windows 安装包的官方分发位置是 GitHub 上 git-for-windows 仓库的 releases 页面。常见的伪造与劫持形态有四种。第一种是搜索排名靠前的“Git 中文官网”“Git 镜像站”，页面自称官方，安装过程中捆绑推广软件。第二种是抢注近似域名，例如去掉连字符的 gitscm 或增补后缀的变体，用于承接品牌搜索流量。第三种是下载站把官方安装包重新打包分发，附加工具栏与推广组件。第四种是把教程站、文档站或他人自建页面误认为官方下载入口。判别原则是核对浏览器地址栏在点击下载之后的最终域名：安装包只应来自 git-scm.com 或 github.com 这两个域，任何自称官方却又不在上述域名下的下载按钮，都应视为二次分发渠道。","可以把 Git 理解为给整个项目文件夹建立一条带时间轴的快照记录链：每执行一次提交（Commit），它就保存一份当时全部文件的状态记录，此后任何时刻都可以回到指定快照，或从某个历史节点分出一条平行的开发线，即分支（Branch）。它解决的两个核心问题是：文件被改坏之后能否准确回到先前可用的状态，以及多人同时修改同一文件时冲突如何被发现并合并。必须明确区分两个概念。Git 是安装在本机的版本控制工具，属于命令行程序，不联网也能完整使用全部功能。GitHub 是托管 Git 仓库的网站，提供远程备份、多人协作与代码公开访问，属于在线服务而非工具本身，GitLab、Gitee 等属于同类网站。把“学习 Git”等同于“学习使用某个网站”，或在离线时认为 Git 已经损坏，都是概念混淆的直接后果。Git for Windows 安装完成后，同时提供 Git Bash 终端与可在命令提示符中调用的 git 命令，两者功能完全一致，仅所在终端环境不同。","1. 通过本条目下载直链进入 releases/latest 页面，选择与系统位数匹配的 64-bit 可执行安装包 Git-*-64-bit.exe 并完成下载。
+2. 双击安装包进入组件选择（Components）界面，保持安装器默认勾选项直接点击下一步。
+3. 在默认文本编辑器（Default text editor）界面，如果不熟悉 Vim 的操作方式，应选择 Visual Studio Code 或 Notepad，以免后续提交说明卡在终端编辑器中。
+4. 在调整 PATH 环境（Adjusting your PATH environment）界面保持默认选项 Git from the command line and also from 3rd-party software，使 git 在 cmd、PowerShell 以及第三方程序中均可调用。
+5. 在换行符转换（Configuring the line ending conversions）界面保持默认选项 Checkout Windows-style, commit Unix-style line endings，其余 SSH 工具、HTTPS 后端、标签名称与额外选项各屏同样保持默认值直至安装完成。
+6. 安装结束后关闭所有在安装开始之前就已打开的命令行窗口，重新打开一个命令提示符窗口，使新的 PATH 环境变量生效。
+7. 在新窗口中执行 git config --global user.name ""你的姓名"" 与 git config --global user.email ""你的邮箱""，写入全局提交署名信息。
+8. 执行 git --version 与 git config --global --list 两条命令复核安装与配置结果，全部有正常输出即表示流程完成。","1. Git 的提交署名与任何网站账号无关，user.name 与 user.email 只是写入提交记录的作者信息，第一次提交之前必须配置完成，否则提交命令会直接报错。
+2. Windows 版安装后默认启用 core.autocrlf 的转换行为，即在提交时把换行符 CRLF 转换为 LF、检出时再转换回来；跨平台协作的项目必须按团队统一约定设置，否则会出现整份文件被判定为已修改的差异。
+3. 若保留默认的 Vim 编辑器且在提交说明界面中无法脱身，可输入 :wq 保存并完成提交，或输入 :cq 放弃本次提交；长期解决办法是执行 git config --global core.editor ""code --wait"" 更换编辑器。
+4. PATH 选项若选择 Use Git from Git Bash only，git 命令仅在 Git Bash 中可用，在 cmd 与 PowerShell 中会提示不是内部或外部命令，后续按教程操作时会误判为安装失败。
+5. 公司配发设备上安装前需遵守内部软件白名单与合规审批要求，向远程仓库推送代码前应确认仓库归属与访问授权范围。
+6. releases/latest 是永久跳转地址，应收藏该地址而不是某个具体版本的安装文件链接，可避免版本更新后原有链接失效。","1. 现象：执行 git commit 时提示 unable to auto-detect email address 或直接失败终止｜原因：从未配置 user.name 与 user.email，Git 无法为提交生成作者署名｜纠正：执行 git config --global user.name 与 git config --global user.email 两条命令后重试，一次配置对所有仓库生效。
+2. 现象：cmd 中提示 git 不是内部或外部命令，但在 Git Bash 中可以正常执行｜原因：安装时 PATH 选项选择了仅 Git Bash 可用，或者验证时使用的是安装完成之前就已打开的旧窗口｜纠正：重新运行安装器并把 PATH 选项改回默认值，随后关闭全部旧窗口另开一个新窗口再验证。
+3. 现象：填写提交说明时界面变成无法操作的陌生状态，强制关闭窗口后提交被中断｜原因：默认编辑器为 Vim，操作者不了解其命令模式与退出方式｜纠正：在该界面输入 :cq 中止本次提交，随后执行 git config --global core.editor ""code --wait"" 改用图形编辑器。
+4. 现象：文件内容并未改动，git status 却显示大量修改，或换一台电脑协作时整个文件被标记为变更｜原因：core.autocrlf 自动转换换行符，使工作区文件与仓库内记录的字节内容不一致｜纠正：与团队统一换行符策略并配置 .gitattributes，用 git diff --ignore-space-at-eol 判断差异是否仅由换行符造成。","1. 在新开的命令提示符（cmd）中执行 git --version，期望输出 git version 2.55.0.windows.5，其中 windows.5 会随补丁版本变化；若提示找不到命令，说明安装未完成或 PATH 选项选择不当。
+2. 继续在 cmd 中执行 where git，期望第一行结果为 C:\Program Files\Git\cmd\git.exe；若列出的第一路径位于其他目录，说明系统内存在旧的或第三方分发的 Git，需要调整 PATH 顺序或卸载多余副本。
+3. 执行 git config --global --list，期望至少出现 user.name=你的署名 与 user.email=你的邮箱 两行；输出为空说明配置文件 %USERPROFILE%\.gitconfig 尚未生成。
+4. 在 PowerShell 中新建临时目录并执行 git init，期望出现 Initialized empty Git repository 提示且目录下生成隐藏的 .git 文件夹；这一步确认仓库创建与核心命令均可正常工作。","以下流程在 Git Bash 或命令提示符中均可执行，用于完整走通一次提交闭环。
+1. 执行 mkdir demo 创建目录，再用 cd demo 进入该目录。
+2. 执行 git init 初始化仓库，输出中出现 Initialized empty Git repository，随后用 ls -a 可见新生成的 .git 目录。
+3. 新建文件 hello.txt 并写入一行文本 Hello, World from Git 后保存。
+4. 执行 git status，输出中 hello.txt 位于 Untracked files 区段，表示 Git 已发现该文件但尚未纳入版本控制。
+5. 执行 git add . 将改动加入暂存区，再次执行 git status，hello.txt 出现在 Changes to be committed 区段，表示已进入待提交状态。
+6. 执行 git commit -m ""first commit""，输出包含当前分支名以及 1 file changed, 1 insertion(+)，表示快照已写入历史。
+7. 执行 git log --oneline，输出一行七位提交哈希加 first commit，确认历史记录存在。
+8. 修改 hello.txt 后执行 git diff 可看到逐行差异；此时执行 git restore hello.txt 即可丢弃未提交的改动，使文件回到上一次提交时的状态，这就是日常最常用的一次撤销。","Windows|64 位（绝大多数机型，含 2.5x 系列的 arm64 构建说明）|https://git-scm.com/download/win
+Windows|32 位 MinGit（嵌入式与极旧机器）|https://git-scm.com/download/win
+macOS|安装包与 Homebrew 两种方式|https://git-scm.com/download/mac
+Linux|由各发行版软件仓库提供|https://git-scm.com/download/linux
+全部构建|Git for Windows 官方 GitHub 发布页|https://github.com/git-for-windows/git/releases/latest
+龙芯 LoongArch|由龙芯系统仓库打包，不使用 Windows 安装包|https://git-scm.com/download/linux","Windows 上认准 Git for Windows 的 64 位安装包，Intel 与 AMD 通用；32 位机器与嵌入式环境才有 MinGit。官方下载页会自动跳到当前最新版的安装器。macOS 自带或由 Homebrew 安装，Apple Silicon 与 Intel 使用同一命令，包本身按芯片编译。Linux 一律走发行版仓库。国产平台同样由系统仓库提供，不要用 Windows 的 exe。"
+"Node.js","https://nodejs.org","https://nodejs.org/dist/latest-v22.x/node-v22.23.2-x64.msi","Node.js 是建立在 V8 JavaScript 引擎之上的开源 JavaScript 运行时（Runtime），使原本只能在浏览器中执行的 JavaScript 代码能够直接运行在操作系统之上，读写文件、监听网络端口与启动服务。它是现代前端与工具链的事实基础：脚手架、打包器、代码检查工具、各类课程要求的命令行工具，几乎都以 Node.js 为运行环境，并通过其自带的包管理器 npm（Node Package Manager）安装分发。npm 负责依赖解析与版本区间管理，安装结果写入 package.json 与 package-lock.json 两个文件，因此 Node 环境是否干净直接决定前端项目能否按教程正常启动。版本策略需要特别注意：官网首页默认高亮的是 Current 最新版，生命周期短、生态兼容验证不足；应下载 LTS 长期支持版（Long Term Support），即偶数版本号系列，提供约三年的维护与安全更新。本条目的下载直链指向 v22 LTS 系列的最新补丁版安装包 node-v22.23.2-x64.msi，属于官方分发地址，会随该系列发布新补丁而更新。安装完成后可在命令行使用 node 与 npm 两条命令。","编程语言;开发工具","Node.js 的官方站点只有 nodejs.org，官方下载目录位于同一域名下的 dist 路径。常见风险有四种形态。第一种是历史遗留的中文镜像站，早期教程中的镜像地址已失效多年，但页面仍被大量转载或收录，继续按教程访问只会得到过期内容或被劫持的下载入口。第二种是下载站提供的“Node.js 一体化环境”“全功能集成包”，在安装过程中捆绑编辑器、代理工具等无关组件。第三种是仿冒域，例如把字母或连字符替换为相似字符的域名，或利用 cn 等前缀让人误判为官方中文站；需要说明的是，cn.nodejs.org 曾是非官方中文社区，不具备安装包分发资格。第四种是搜索引擎广告位指向的第三方软件站。判别原则是核对下载完成时浏览器地址栏的最终域名是否仍为 nodejs.org，安装包只应从官方 dist 目录获取，其他来源的 installer 一律视为二次分发产物。","Node.js 的作用是让 JavaScript 脱离浏览器也能运行。对初学者而言，安装它的直接目的通常是获得 npm：前端脚手架、打包器、代码检查工具以及大量课程要求的命令行工具，都需要通过 npm 下载并运行，而这些工具本身也是 JavaScript 程序。它内置事件循环（Event Loop）与非同步输入输出模型，擅长处理大量并发连接，这也是许多后端框架选择它的原因，但这些机制在入门阶段并不需要预先掌握，只需记住两件事：Node.js 是 JavaScript 的运行环境，npm 是随之安装的包管理器。另一个需要区分的概念是版本分支：LTS 长期支持版面向生产与教学，维护周期长、兼容性好；Current 最新版承载新特性，供尝鲜与框架作者验证使用。安装后系统里新增了两条命令，node 用于直接执行 JavaScript 文件，npm 用于安装与管理依赖包，二者版本相互配套，均通过命令行调用。需要补充的是，Node.js 本身并不负责打包与构建，它只是让这些工具得以运行的底座，因此入门阶段遇到的构建问题，最终都会归结为 npm 能否正确装包。","1. 通过本条目下载直链获取 v22 LTS 系列的安装包 node-v22.23.2-x64.msi，下载前确认页面最终域名仍为 nodejs.org。
+2. 双击运行安装程序，在欢迎与许可协议界面依次点击下一步。
+3. 在自定义设置（Custom Setup）界面保持所有组件默认勾选，特别确认 Add to PATH 处于勾选状态。
+4. 在最后是否需要自动安装原生模块编译工具的界面按自身需要选择，若暂不编译依赖原生代码的包，可取消该项勾选以避免额外安装工具链并缩短安装时间。
+5. 继续下一步直至安装完成，不需要在过程中修改任何安装路径，除非确无系统盘写入权限。
+6. 关闭安装之前就已打开的所有命令行窗口，重新打开一个新的命令提示符窗口，使 PATH 环境变量刷新生效。
+7. 在新窗口依次执行 node -v 与 npm -v，分别确认运行时与包管理器均可用。
+8. 如需加速依赖下载，只通过 npm config set registry 命令切换到正规镜像源提供方的注册地址，安装包本身仍必须来自官方域名。","1. 官网首页默认高亮按钮指向 Current 版本，应主动切换到 LTS 标签再选择下载，否则容易出现依赖库不兼容与教程示例失效的问题。
+2. Add to PATH 属于安装程序默认勾选项，一旦人为取消，命令行将找不到 node 与 npm 命令，只能重新运行安装程序修复或自行到系统设置的环境变量页补齐。
+3. 验证命令必须在安装完成之后新开的窗口中执行，旧窗口沿用安装时刻读取的环境变量快照，其结果不具备参考意义。
+4. 不要通过手动删除 nodejs 安装目录的方式卸载，全局安装的包与快捷方式会残留，导致 npm 处于半可用状态，应使用控制面板的卸载条目或重新安装修复。
+5. 同一台机器需要在多个 Node 版本之间切换时，应使用版本管理工具统一接管，而不是把多个版本安装到不同目录后手工调整 PATH，后者极易出现指向冲突。
+6. 配置国内镜像只改变 npm 依赖的下载源，不改变安装包来源，任何要求改换安装包下载地址的“加速方案”都应质疑。","1. 现象：安装依赖时报出 EBADENGINE 或某些包在运行阶段崩溃，同一段代码在他人电脑上正常｜原因：安装了生命周期短的 Current 版本，与依赖库要求的主版本区间不匹配｜纠正：卸载后改用 v22 LTS 系列安装包，重装后执行 npm install 重新生成依赖。
+2. 现象：命令行提示 node 不是内部或外部命令，但控制面板中已显示安装成功｜原因：安装时未勾选 Add to PATH，或验证时使用了安装前就已打开的旧窗口｜纠正：另开一个新窗口再次执行 node -v，若仍失败则重新运行 msi 安装程序并确认勾选该项。
+3. 现象：npm install 长时间无响应或频繁出现网络超时错误｜原因：默认的官方源服务器位于境外，直连链路不稳定，与本地网络状况有关｜纠正：用 npm config set registry 切换到正规镜像源提供方的注册地址，再以 npm config get registry 复核生效结果。
+4. 现象：全局安装的命令行工具可以执行 npm 但找不到对应命令，或删除目录后 npm 自身报错｜原因：手动删除安装目录造成全局包与 PATH 记录残缺不一致｜纠正：通过控制面板完整卸载，再用官方 msi 重新安装，避免手工清理目录。","1. 在新开的命令提示符（cmd）中执行 node -v，期望输出形如 v22.23.2 的版本号，主版本号必须是偶数的 LTS 系列；若输出为奇数主版本号，说明实际安装的是 Current 版。
+2. 执行 npm -v，期望输出与该 Node 版本配套的包管理器版本号；命令不存在或提示找不到模块，说明 npm 组件未被安装或 PATH 未包含 nodejs 目录。
+3. 在 cmd 中执行 where node 或在 PowerShell 中执行 Get-Command node，期望指向 C:\Program Files\nodejs\node.exe；若指向其他目录，说明系统中存在旧版本或第三方分发的 Node，需要调整优先级。
+4. 执行 npm config get registry，期望输出为 npm 官方注册地址；若显示陌生地址，说明此前被教程或工具修改过，需要确认该镜像源是否可信后再决定是否改回。","以下流程用于跑通第一个 JavaScript 程序，并验证一次依赖安装能力。
+1. 新建工作目录，例如 mkdir demo 后执行 cd demo 进入。
+2. 在该目录中新建文件 hello.js，写入一行代码 console.log(""Hello, World!"")。
+3. 在命令提示符中执行 node hello.js，终端输出 Hello, World! 即表示运行时与文件读写链路全部正常。
+4. 继续验证包管理功能，执行 npm init -y 生成 package.json 项目描述文件，输出中会列出生成路径。
+5. 执行 npm install dayjs 安装一个体积很小的日期处理库，结束后目录中出现 node_modules 文件夹与 package-lock.json 文件。
+6. 在 hello.js 中追加一行 const dayjs = require(""dayjs""); console.log(dayjs().format(""YYYY-MM-DD""));，保存后再次执行 node hello.js。
+7. 终端输出当天的日期字符串即表示依赖安装与模块加载成功，第一条从环境到运行再到依赖管理的完整链路已经打通。","Windows|x64 .msi（Intel 与 AMD 64 位，最常用的安装包）|https://nodejs.org/zh-cn/download
+Windows|ARM64（骁龙 X 系列）|https://nodejs.org/zh-cn/download
+macOS|Apple Silicon 与 Intel 的 .pkg 在同一页面分列|https://nodejs.org/zh-cn/download
+Linux|x64 与 ARM64 的预编译包及 deb、rpm|https://nodejs.org/en/download/prebuilt-binaries
+其他架构|ppc64le、s390x、ARMv7 等构建见官方列表|https://nodejs.org/en/download/prebuilt-binaries
+龙芯 LoongArch|官方预编译包未列出，需发行版打包或自行编译|https://nodejs.org/en/download/prebuilt-binaries","Windows 选 .msi（带安装向导并自动写入 PATH），归档版适合做绿色部署。按芯片分 x64 与 ARM64 两种，Intel/AMD 取 x64，骁龙取 ARM64。macOS 的 .pkg 分 Apple Silicon 与 Intel 两版，装错的表现为原生扩展模块加载失败。Linux 官方预编译覆盖 x64、ARM64、ARMv7、ppc64le、s390x；官方未列出的架构需自行编译，龙芯机器改用发行版打包。"
+"Eclipse Temurin JDK","https://adoptium.net/temurin/releases/","https://adoptium.net/temurin/releases/","JDK（Java Development Kit，Java 开发工具包）是开发与运行 Java 程序的基础组件，Java 课程要求安装的正是它。Eclipse Temurin 由 Adoptium 社区（原 AdoptOpenJDK）维护，是 Eclipse 基金会旗下的开源构建版本，被广泛视为过去 Oracle OpenJDK 免费构建停发之后的主流替代者，学习 Java 选择它基本不会出错。JDK 内含编译器、运行时与命令行工具，是开发场景的必需品；只安装 JRE（Java Runtime Environment，Java 运行时环境）时能够执行已有程序，但无法编译源文件。Adoptium 同时提供长期支持版本与更新周期更短的功能版本，课程与生产环境应以长期支持版本为准。选发行版时必须考虑授权差异：Temurin 基于开源协议提供，个人与企业使用均可免费商用；Oracle JDK 的生产环境使用需要订阅授权，其下载页与授权条款页面复杂，搜索“JDK 下载”时极易误入。需要注意 Java 并不存在所谓唯一的“官网安装包”，同一份 OpenJDK 源码有多个组织各自构建，选错发行版或误装仅有运行能力的 JRE 都无法完成编译，因此确认来源与版本才是关键。本条目指向 adoptium.net/temurin/releases 官方发布页，应在该页选择 Windows x64 的 msi 安装包。","编程语言","Eclipse Temurin 的官方域是 adoptium.net，下载入口为 adoptium.net 下的 temurin/releases 发布页。该品类常见的误导形态有四种。第一种是搜索结果首位常年出现的 Oracle 下载与授权页面，条款复杂且生产使用需要订阅，初学者往往在不知情的情况下选择了需要授权的路径。第二种是各类“Java 中文官网”“JDK 中文下载站”，实际提供的是早已不再需要的 JRE 运行时，或附带推广组件的重新打包安装程序。第三种是把第三方软件站的“高速下载器”当作官方文件，落地后是捆绑安装。第四种是仿冒 adoptium 拼写的近似域。判别原则有二：安装包来源必须是 adoptium.net；安装包文件名应带有 temurin 与 windows-x64 等官方 msi 构建的命名特征，落地为 exe 下载器的一律可疑。若某个站点声称提供“Java 官方一键安装包”，需要理解 Java 本身没有这样唯一的官方分发形态，选对开源发行版才是可靠路径。","JDK 中可以简化为两样关键东西。其一是 javac，即编译器（Compiler），把人类编写的 .java 源文件翻译成平台无关的字节码文件 .class。其二是 java 命令，即 JVM（Java Virtual Machine，Java 虚拟机）的启动入口，负责读取并执行字节码。Java 的口号“一次编写、到处运行”指的正是这份字节码不绑定具体操作系统，可以在任何平台的 JVM 上运行，这与 C 语言直接编译成机器码的做法有本质差别。因此一个完整流程必然包含两个阶段：先编译，后运行。许多 Java 课程要求“配置 JDK 环境变量”，实质上就是让系统在命令行中能够找到 javac 与 java 这两条命令，并通过 JAVA_HOME 这个环境变量向 Maven、Gradle、IDE 等下游工具指明开发工具包的安装位置。课堂里用编辑器一键运行时，它实际上在背后替你依次调用了这两条命令，把 .java 编译到输出目录后再启动 JVM；命令行报找不到或无法加载主类这类问题，多数就是所在目录与类名不一致造成的。理解这一点之后，安装时勾选自动配置项、验证时分别检查两条命令，就不再是需要死记硬背的操作步骤。","1. 打开 adoptium.net/temurin/releases 发布页，先按课程要求选择 Java 主版本，再筛选操作系统为 Windows x64、安装包格式为 .msi 的条目。
+2. 运行安装程序，在完成前的配置界面进入自定义安装（Custom Setup）列表，把 Set JAVA_HOME 与 Add to PATH 两项设置为 Will be installed on local hard drive。
+3. 保持其余组件默认选项继续安装，包括 Java 与 javac 文件关联项，等待安装进度完成。
+4. 关闭安装之前已打开的所有命令行窗口，重新打开一个命令提示符窗口，使新增的环境变量生效。
+5. 依次执行 java -version、javac -version 与 echo %JAVA_HOME%，核对版本号与安装路径是否与实际安装一致。
+6. 若版本号与预期不符，检查系统 PATH 中是否存在更早安装的 JRE 或旧 JDK 目录，并把 Temurin 的 bin 目录调整到它们之前。
+7. 后续安装 IntelliJ IDEA 或 Eclipse 时，在项目 SDK（Software Development Kit，软件开发工具包）设置中选择本机的 Temurin 安装目录，而不是让编辑器自行下载其他构建。
+8. 使用 Maven 或 Gradle 构建项目前，在命令行执行 echo %JAVA_HOME% 确认其有值，避免工具报出 JAVA_HOME 未定义的错误。","1. 应优先选择 LTS 长期支持版本，例如 17 与 21 这类长期支持版本号，最终以课程或教材明确要求的主版本为准，版本不一致会导致语法特性与依赖兼容问题。
+2. 只有 msi 安装包提供 Set JAVA_HOME 与 Add to PATH 的勾选入口，zip 压缩包解压后需要完全手工配置环境变量，初学者建议使用 msi。
+3. JAVA_HOME 应指向 JDK 安装根目录而不是其下的 bin 子目录，末尾不要带反斜杠，这是构建工具最常报错的细节之一。
+4. 此前安装过 Oracle Java 自动更新程序或 JRE 的电脑，其 PATH 条目常常排在前面，导致 java -version 输出的版本与刚装的 JDK 无关，需要人工核对并排序。
+5. 授权差异要在正式项目或公司环境中提前确认：Temurin 可免费商用，Oracle JDK 的生产使用依赖订阅，选错发行版会带来合规风险。
+6. 验证必须使用新开的命令行窗口，旧窗口沿用安装前的环境变量快照，其报错信息不具备诊断价值。","1. 现象：命令行提示 javac 不是内部或外部命令，而 java 可以执行｜原因：下载的是 zip 压缩包版本未配置 PATH，或安装时未勾选自动配置项，也可能是只装了不含编译器的 JRE｜纠正：重新运行 Temurin 的 msi 安装程序并勾选 Add to PATH，随后新开窗口用 javac -version 复验。
+2. 现象：java -version 输出的版本号与刚安装的 JDK 不一致，例如仍显示旧版本或 JRE 字样｜原因：系统 PATH 中较早安装的 JRE 或旧 JDK 目录排在 Temurin 之前，命令被前者拦截｜纠正：在环境变量编辑器中把 Temurin 的 bin 目录移到列表顶部，或卸载旧运行时后重新验证。
+3. 现象：Maven 或 Gradle 构建时报 ERROR JAVA_HOME is not defined correctly｜原因：JAVA_HOME 未设置、指向了 bin 子目录或路径末尾多了分隔符｜纠正：把 JAVA_HOME 设为 JDK 安装根目录，关闭旧窗口后在新窗口执行 echo %JAVA_HOME% 确认结果正确。
+4. 现象：在 IDE 中可以运行，离开 IDE 用命令行构建就失败｜原因：IDE 内部配置了自己的 JDK 路径，没有依赖系统环境变量，两者互不继承｜纠正：在项目 SDK 设置中指向同一份 Temurin 安装目录，并以命令行验证结果作为最终判定依据。","1. 在新开的命令提示符（cmd）中执行 java -version，期望首行形如 openjdk version ""17.0.x""，其中厂商字段应为 Temurin 或 Eclipse Adoptium；若显示其他厂商或旧版本号，说明 PATH 指向的不是本次安装的 JDK。
+2. 执行 javac -version，期望输出与上一条主版本完全一致的 javac 版本号；这是判定装的是完整 JDK 而非 JRE 的关键一项，javac 存在即编译器可用。
+3. 执行 echo %JAVA_HOME%，期望输出安装根目录形如 C:\Program Files\Eclipse Adoptium\jdk-17.0.x 一类路径；若原样回显字符串本身，说明该环境变量并未创建。
+4. 在 PowerShell 中执行 Get-Command java, javac，期望两者 Source 均落在同一个 Temurin bin 目录下；若来自不同目录，说明系统内存在多份 Java，需要在环境变量中调整顺序或卸载多余版本，这也是版本号看起来对不上的最常见原因。","以下流程在命令提示符（cmd）中执行，用于验证编译与运行两个阶段。
+1. 新建工作目录，例如 mkdir D:\java-demo 后执行 cd D:\java-demo 进入，注意目录路径中避免中文与空格。
+2. 在该目录中新建文件 HelloWorld.java，文件名必须与类名严格一致，大小写敏感。
+3. 文件内容为一行完整代码：public class HelloWorld { public static void main(String[] args) { System.out.println(""Hello, World!""); } }
+4. 执行 javac HelloWorld.java 进行编译，命令无输出即为成功，此时目录中出现同名的 HelloWorld.class 字节码文件。
+5. 执行 java HelloWorld 运行程序，注意后面写的是类名而不是文件名，不要带 .class 后缀。
+6. 终端输出 Hello, World! 即表示编译器、字节码与 JVM 三者全部工作正常，Java 入门环境配置完成。
+7. 若报出 错误: 找不到或无法加载主类，通常是在 .class 所在目录之外执行了命令，或类名与文件名不一致，先返回该目录并核对命名再重试。","Windows|x64（Intel 与 AMD 64 位）|https://adoptium.net/temurin/releases/
+Windows|AArch64（骁龙 X 系列 Windows 笔记本）|https://adoptium.net/temurin/releases/
+macOS|x64（Intel 机型）|https://adoptium.net/temurin/releases/
+macOS|AArch64（Apple Silicon，M 系列芯片）|https://adoptium.net/temurin/releases/
+Linux|x64、AArch64、ppc64le、s390x、RISC-V 均有构建|https://adoptium.net/temurin/releases/
+各版本与校验和|官方发布与安装说明|https://adoptium.net/installation/
+龙芯 LoongArch 与 32 位 ARM|Temurin 无对应构建|https://adoptium.net/temurin/releases/","Temurin 的架构标签写的是 Operating System 与 Architecture 两栏：x64 指 Intel/AMD 的 64 位桌面，AArch64 指 ARM 64 位（Apple Silicon 与骁龙均属此列），二者不能互换。经实测其官方下载入口对 Windows、macOS、Linux 三系的 x64 与 AArch64 都提供构建，Linux 另有 ppc64le、s390x 与 RISC-V；32 位 ARM 与龙芯没有构建。选错架构的报错通常是“不是此平台的应用程序”或 java 命令直接无输出。"
+"Docker Desktop","https://www.docker.com/products/docker-desktop/","https://www.docker.com/products/docker-desktop/","Docker Desktop 是在本地计算机上运行容器（Container）与容器镜像（Image）的图形化桌面应用，内置 Docker 引擎、命令行工具 docker 以及与 VS Code 等编辑器的集成能力。它在后端学习、服务部署、复现他人项目环境等场景中是常用工具：镜像来自镜像仓库（Registry），一条命令即可完成拉取、启动与销毁，因此适合在本地快速搭起数据库等依赖服务。把依赖数据库、缓存中间件等一整套运行环境封装为镜像后，可以在任意安装了 Docker 的机器上以相同方式启动。使用条款方面，企业规模化使用存在付费订阅要求，个人学习与小团队使用免费，正式环境部署前应核对当前条款。技术前提方面，它在 Windows 上默认尝试启用 WSL 2（Windows Subsystem for Linux，Windows 的 Linux 子系统）作为后端来运行 Linux 容器，因此需要先按提示开启硬件虚拟化并安装 WSL 2 组件，否则会安装失败或引擎无法启动。官方主页与下载地址均为 www.docker.com 下的 docker-desktop 产品页，安装文件应从该页面获取。","虚拟机与容器;开发工具","Docker 的官方域是 docker.com，产品下载页位于 www.docker.com 之下，权威文档位于 docs.docker.com。常见的误导形态有四种。第一种是“Docker 中文网”“Docker 社区版下载”一类站点，页面把官方安装包二次包装后附加推广组件，或以“加速版”名义植入代理工具。第二种是仿冒拼写域，例如把 docker 替换为形近字符后用于承接品牌搜索流量。第三种是把第三方镜像加速地址当作官方镜像仓库使用；需要区分的是，镜像源可以按需替换，安装包本身只应从官方域名获取，两者的信任要求完全不同。第四种是下载站的“一键安装器”，实际是不明启动器而非官方 exe。判别原则是核对点击下载之后浏览器地址栏的最终域名：只有落在 docker.com 及其子域下的下载链路才算官方来源；若页面同时提供“额外插件”“环境配置助手”等勾选，基本可以直接判定为非官方分发。","容器是把应用程序连同它依赖的运行环境一起打包成的标准化单元，在任何装了 Docker 的机器上都能以同一方式复现，因而常被用来终结“在我电脑上明明能跑”这类无法定位的协作问题。它经常被拿来与虚拟机（Virtual Machine）比较，两者的差别是本质性的。虚拟机通过hypervisor 虚拟出完整硬件，并在其中安装整套操作系统，占用以 GB 计的内存，启动通常需要几十秒到分钟量级。容器不虚拟硬件也不自带内核，它与宿主机共享同一个 Linux 内核，只隔离文件系统视图、进程与网络命名空间，因此内存开销在 MB 量级、启动通常在百毫秒到秒量级。镜像采用分层（Layer）结构，每一层只读且可以被多个镜像复用，这正是镜像体积可以远小于虚拟机磁盘文件、拉取速度更快的原因。代价是容器与宿主内核耦合，跨系统运行需要适配：在 Windows 上，Docker Desktop 底层通过 WSL 2 这一个轻量虚拟机来提供 Linux 内核，从而运行 Linux 容器。","1. 从 www.docker.com 的 Docker Desktop 产品页下载安装文件 Docker Desktop Installer.exe，下载前确认地址栏最终域名仍为官方域。
+2. 启动前先在 BIOS 或 UEFI 中确认硬件虚拟化（Intel VT-x 或 AMD-V）已开启，并确认 Windows 功能中已启用虚拟机平台与 WSL。
+3. 以管理员身份运行安装程序，保持 Use WSL 2 instead of Hyper-V 的默认勾选状态继续安装，Windows 11 通常已具备所需组件。
+4. 安装完成后按提示注销并重新登录，或重启计算机，使相关系统组件与用户组权限生效。
+5. 首次启动 Docker Desktop，等待界面左下角或状态栏的引擎指示由黄色变为绿色，表示 Docker 引擎已正常运行。
+6. 如需登录账号，可跳过并选择继续而不登录，本地使用容器功能并不要求账号。
+7. 关闭旧窗口后新开一个 PowerShell 或命令提示符，执行 docker --version 与 docker info 复核命令与引擎状态。
+8. 执行 docker run hello-world 完成一次端到端验证，看到官方测试容器的输出即说明拉取镜像、启动容器两条链路均正常。","1. BIOS 或 UEFI 中未开启硬件虚拟化是安装失败的首要原因，报错通常为 virtualization support not detected，需要进入固件设置开启后再安装。
+2. 使用条款按企业规模与席位界定，个人学习与小型团队可免费使用，公司环境部署前必须核对当时的订阅条款，避免合规风险。
+3. 默认引擎基于 WSL 2，如果本机未安装 WSL 组件会报引擎启动失败，可通过 wsl --install 补齐，或在安装界面改用 Hyper-V 后端。
+4. Docker 的虚拟磁盘默认放置在系统盘，随着镜像增多会持续占用空间，系统盘紧张时应把 WSL 数据迁移到空间充足的磁盘，而不是放任磁盘写满。
+5. 遇到镜像拉取超时属于网络链路问题，应通过配置正规镜像仓库地址解决，不要使用来路不明的“加速版”安装程序。
+6. 容器与虚拟机选型不同：需要完整操作系统隔离或运行 Windows 图形应用时仍应使用虚拟机，容器适用于以 Linux 进程为单位的轻量服务复现。","1. 现象：安装过程或启动时提示 virtualization support not detected｜原因：主板固件中的 Intel VT-x 或 AMD-V 硬件虚拟化选项处于关闭状态｜纠正：重启进入 BIOS 或 UEFI 开启虚拟化，再用 docker info 确认 Engine 状态正常。
+2. 现象：Docker Desktop 界面长期停在启动状态，命令行报 error during connect 或 engine start failed｜原因：WSL 2 组件缺失、虚拟机平台功能未启用，或相关服务未随系统启动｜纠正：在 PowerShell 中执行 wsl --install 与 wsl --update 后重启，再启动 Docker Desktop。
+3. 现象：docker pull 长时间停滞或提示超时，本地无法构建镜像｜原因：默认官方镜像仓库的访问链路不稳定，与本机网络环境有关｜纠正：在设置中配置正规可用的镜像仓库地址后重启引擎，避免下载所谓加速版安装程序。
+4. 现象：使用一段时间后系统盘空间耗尽，已有镜像全部损坏或无法启动｜原因：WSL 虚拟磁盘文件随镜像增长不断膨胀且不会自动收缩，磁盘空间不足导致写入失败｜纠正：及时清理无用镜像与构建缓存，并把 WSL 数据目录迁移到空间充足的磁盘后重建环境。","1. 在新开的 PowerShell 或命令提示符中执行 docker --version，期望输出 Docker version 后面跟随版本号与构建号；提示命令不存在时先检查安装是否完成并重新打开窗口。
+2. 执行 docker info，期望末尾的 Server 段落正常返回且 Storage Driver、Kernel Version 等字段有内容；若出现 error during connect，说明桌面引擎未启动，需要等待指示变绿后重试。
+3. 执行 docker run hello-world，期望输出包含 Welcome to Docker 的标题行以及说明镜像已成功拉取的段落，结束后容器自动退出，这一步同时验证镜像仓库访问与容器生命周期。
+4. 执行 docker ps -a，期望列表中出现本次的运行记录，状态列为 Exited (0)，其中 0 表示正常退出；若显示非零退出码，说明容器执行异常，可用 docker logs 查看具体输出。","Docker 官方已经准备好一个无需编写任何代码的 Hello World，即 hello-world 镜像，它用于一次体验容器的完整生命周期。
+1. 确认 Docker Desktop 引擎状态为已运行，新开一个 PowerShell 窗口。
+2. 执行 docker run hello-world，命令会依次完成三件事：从镜像仓库拉取只读镜像层、在镜像之上创建一层可写层并启动容器、运行其中的程序。
+3. 终端输出标题为 Welcome to Docker 的说明文本，表明安装、拉取与运行全链路成功，程序打印完毕后容器自行退出。
+4. 执行 docker ps -a，可以看到该容器记录及其 Exited (0) 状态，理解“容器是进程的一次运行”而不是常驻程序。
+5. 执行 docker images，列表中显示 hello-world 镜像及其标签，说明镜像已缓存在本机可重复使用。
+6. 执行 docker rm 并在后面填写 docker ps -a 中的容器名称以删除记录，再用 docker rmi hello-world 删除镜像，完成一次环境清理。
+7. 进一步体验隔离能力，可执行 docker run -it ubuntu:latest cat /etc/os-release，观察其输出的发行版信息与本机操作系统无关，这正是容器把应用连同环境一并打包的直观证明。","Windows|x64（Intel 与 AMD，需 WSL 2）|https://www.docker.com/products/docker-desktop/
+Windows|ARM64（骁龙 X 系列笔记本）|https://www.docker.com/products/docker-desktop/
+macOS|Apple Silicon（M1 至 M5 芯片的 Mac）|https://www.docker.com/products/docker-desktop/
+macOS|Intel 芯片 Mac|https://www.docker.com/products/docker-desktop/
+Linux|x64 与 ARM64 的 deb、rpm、tgz 安装指引|https://docs.docker.com/desktop/setup/install/linux/
+龙芯 LoongArch|官方无 Desktop 构建，服务器上可用发行版打包的引擎|https://docs.docker.com/desktop/setup/install/linux/","下载页自动识别机型：Windows 分 x86_64 与 ARM64 两条，macOS 分 Apple Silicon 与 Intel 两条，四个包互不通用，装错的表现为启动时报虚拟化错误。Windows 用户还要先确认 WSL 2 可用，否则引擎起不来。Linux 不需要 Desktop 也能跑容器引擎；Desktop 版本官方提供 x64 与 ARM64。镜像内部还有一次架构选择：ARM 机器上拉 x86 镜像会经模拟运行，性能明显下降。"
+"PostgreSQL","https://www.postgresql.org/download/","https://www.postgresql.org/download/","PostgreSQL 是功能最强的开源关系型数据库（Relational Database）服务器，数据按表组织、通过 SQL（Structured Query Language，结构化查询语言）访问，同时以文档完备与生态扩展丰富著称，学习数据库原理与承担正式项目都足够使用。它在许可上完全开源免费，这一点与需要订阅授权的商用数据库产品有本质区别。Windows 平台的安装程序由官方合作组织 EDB 提供构建，从 postgresql.org 跳转至 enterprisedb.com 域下载属于正常官方链路，并非第三方改动；安装过程会要求设置超级用户 postgres 的密码并指定监听端口，默认端口为 5432，这两项决定今后所有连接串，务必记录。不要从下载站获取安装包，那些版本常被改动过。作为服务器软件，它与前面几种命令行工具的使用心智不同：安装后常驻一个后台服务，应用程序通过端口与它通信，因此排错时要先区分服务状态、端口认证配置与客户端参数三类问题。","数据库","PostgreSQL 的官方站点是 postgresql.org，下载入口位于其 download 页面。该品类需要澄清两类常见误解。第一类是“PostgreSQL 中文官网”：这样的官方中文站点并不存在，任何以此名义提供下载器的网站都属于二次修改包，可能改动默认端口、注入插件或附加推广组件。第二类是对 EDB 域名的误判：Windows 安装程序由官方合作的 EDB 构建，从官网点击下载后落到 enterprisedb.com 域是正常且可预期的官方链路，不应被误认为跳转到了第三方站点。除此之外还要警惕仿冒拼写域与下载站的高速浏览器捆绑包，后者常把安装包与无关工具一并装入。判别原则有二：入口必须从 postgresql.org 的下载页发起；落地域名必须是 enterprisedb.com 或 postgresql.org。任何要求额外安装“数据库管理助手”“中文语言包”的流程，都不属于官方安装程序的行为。","关系型数据库是一种常驻运行的服务器程序，负责按表存储数据、执行 SQL 查询、保证并发下的数据一致性，并管理谁可以访问哪些数据。它与 MySQL 处于同一层次，是学习 SQL 与做后端项目时最常见的“正经数据库”选择。这里的关键心智是：数据库不是双击打开就用的软件，而是一台在你机器上后台运行的服务。安装完成后，系统里有一个 Windows 服务在监听 TCP 端口，默认端口为 5432；应用程序、命令行工具或图形界面都必须指明主机与端口才能连上它。随装的工具中，psql 是命令行客户端，pgAdmin 是图形化管理界面，两者都只是访问服务的客户端，不是数据库本身。与 Java 程序连 MySQL 一样，连接失败的原因从来不是“代码写错了”这么简单，而通常是三条链路之一出了问题：服务是否在运行、端口是否被防火墙或配置限制、账号与认证规则是否允许这次连接。把这三层分开排查，是数据库排错的基本方法。","1. 打开 postgresql.org 的 download 页面，选择 Windows 平台，按页面跳转进入官方合作 EDB 的下载页，获取当前版本的安装程序。
+2. 运行安装程序，在 Installation Directory 界面保持默认安装路径，避免目录中出现中文与空格。
+3. 在组件选择（Select Components）界面保留 PostgreSQL Server、pgAdmin 与 Command Line Tools 三项，Stack Builder 可在安装结束时取消勾选并跳过。
+4. 在 Password 界面为超级用户 postgres 设置密码，该密码无法找回，应立即写入安全的记录位置并牢记。
+5. 在 Port 界面确认端口为默认的 5432，只有本机已存在其他数据库服务时才考虑修改，并在记录中注明最终端口。
+6. 在 Locale 界面保持默认区域设置，随后依次点击下一步直至安装结束，不需要额外调整服务启动参数。
+7. 安装完成后打开 Windows 服务管理界面 services.msc，确认以 postgresql 开头的服务状态为正在运行。
+8. 使用开始菜单中的 SQL Shell（psql）验证连接，主机填 localhost、端口填刚记录的数字、数据库填 postgres、用户填 postgres，输入密码后出现数据库提示符即完成配置。","1. 超级用户密码与监听端口这两项决定今后所有连接串，一旦遗忘，只能修改认证配置或重装，成本远高于当场记录。
+2. 同一台机器安装第二个 PostgreSQL 版本时，安装程序会自动把端口改为 5433 或其他空闲端口，照抄旧教程的连接串会连到错误实例，出现库与表不存在的假象。
+3. 认证行为由数据目录下的 pg_hba.conf 控制，默认只放通来自本机的连接，远程连接失败应先检查该文件规则与 listen_addresses 设置，而不是怀疑程序损坏。
+4. Stack Builder 步骤用于附带下载驱动与附加模块，初学阶段可直接跳过，误选后可能引入无关组件与额外网络下载。
+5. 作为服务常驻后台会占用内存并随启动自动拉起，若不需要长期使用，可在服务管理中把启动方式改为手动，避免无谓占用。
+6. 版本主号与课后练习或框架教程可能不一致，SQL 语法层面差异很小，但图形界面菜单位置与默认认证方式会有区别，遇到对不上的说明应以本机版本文档为准。","1. 现象：连接时报出 FATAL: password authentication failed for user ""postgres""｜原因：输入的密码与安装时设置的超级用户密码不一致，或把系统登录口令当成了数据库口令，两者相互独立｜纠正：确认为安装阶段设置的数据库密码；若彻底遗忘，可在数据目录的 pg_hba.conf 中临时把认证方式改为可信认证，用 psql 重置密码后再立即改回原设置。
+2. 现象：连接报 ECONNREFUSED 或 could not connect to server 一类拒绝连接错误｜原因：本地服务未运行，或端口不是实际的 5432、5433；此类错误说明请求根本没有被数据库处理，与密码无关｜纠正：在 services.msc 中启动 postgresql 服务并核对实际端口；若服务在运行而远程仍报 no pg_hba.conf entry for host，则是该文件未放通来源地址，需要补充对应的连接规则并重新加载配置。
+3. 现象：命令行中执行 psql 提示不是内部或外部命令｜原因：安装时未把 Command Line Tools 加入 PATH，或使用了安装前打开的旧窗口｜纠正：进入安装目录下的 bin 子目录执行 psql，或把该 bin 目录加入环境变量后新开窗口验证。
+4. 现象：安装多个版本后查询结果与所学内容不符，找不到自己创建的表｜原因：连接到了另一版本实例所在的端口，数据本就不在同一个数据库集簇里｜纠正：用开始菜单快捷方式名称或执行 SHOW port 确认当前实例端口，再把连接串统一到目标版本。","1. 打开开始菜单中的 pgAdmin，在左侧 Servers 列表展开并连接本地实例，弹出密码框输入超级用户密码后能看到 Database、Login/Group Roles 等节点，即表示服务可用且认证通过。
+2. 打开命令提示符（cmd）并进入安装目录下的 bin 子目录，执行 psql -U postgres，提示输入密码后出现 postgres=# 数据库提示符，即命令行链路可用；PowerShell 中同样可用，但需先用 cd 切换到该目录；若这一步直接连不上，先在 services.msc 中确认以 postgresql 开头的服务状态为正在运行且启动类型为自动。
+3. 在 psql 提示符下执行 SELECT version();，期望输出 PostgreSQL 主版本号与构建信息，用于确认连接到的实例版本与所装一致。
+4. 继续执行 SHOW port; 与 SHOW data_directory;，期望分别返回安装时记录的端口（默认 5432，多实例时可能为 5433）与数据目录路径；若返回 5433 说明本机存在两套实例，后续连接串必须相应调整。","数据库的 Hello World 是完成一次写入与一次查询，以下流程在 psql 交互界面中逐条执行，全部为逐条输入并以分号结尾。
+1. 进入安装目录下的 bin 子目录后执行 psql -U postgres，输入安装阶段设置的密码，看到 postgres=# 提示符。
+2. 输入 CREATE TABLE greet(msg text);，期望返回 CREATE TABLE，表示表已在当前数据库中创建。
+3. 输入 INSERT INTO greet VALUES ('Hello, World!');，期望返回 INSERT 0 1，表示成功写入一行数据。
+4. 输入 SELECT * FROM greet;，期望输出一列 msg、一行 Hello, World! 的结果表格，至此存储、写入与查询三段链路全部通过。
+5. 输入 \dt 可列出当前数据库中的表，用于确认对象确实存在；输入 \q 退出 psql 交互界面。
+6. 若希望表结构与数据在下次练习中不复用，可执行 DROP TABLE greet; 清理，随后用 \q 退出；数据库的排错习惯是每次操作后都留意返回的状态字样，而不是只等待输出。","Windows|x64 交互式安装程序（EnterpriseDB 提供，官方认可渠道）|https://www.postgresql.org/download/windows/
+Linux|各发行版仓库、官方 apt 与 yum 源|https://www.postgresql.org/download/linux/
+macOS|Homebrew 或 EDB 安装程序|https://www.postgresql.org/download/macos/
+源码|所有平台的通用来源|https://www.postgresql.org/ftp/source/
+ARM64 与国产平台|通过发行版软件仓库安装，不使用 Windows 安装包|https://www.postgresql.org/download/
+历史与全部文件|官方 FTP 镜像索引|https://www.postgresql.org/ftp/","Windows 的图形安装程序由 EnterpriseDB 维护（PostgreSQL 官方页面直接指向它），只提供 x64；ARM64 与国产平台请走系统软件仓库或源码编译。macOS 推荐 Homebrew，Apple Silicon 与 Intel 会各自取对应构建。Linux 注意发行版仓库自带的版本号往往落后一到两个大版本，需要新版时用官方 apt 或 yum 源。"
+"Anaconda","https://www.anaconda.com/download","https://www.anaconda.com/download","Anaconda 是面向数据科学与科学计算的 Python 发行版（Distribution），在同一个安装包里提供 Python 解释器、conda 包与环境管理器，以及数百个已完成编译与依赖配对的科学计算库（NumPy、pandas、Matplotlib、scikit-learn 等）。它解决的核心问题是第三方库在 Windows 上的编译失败与版本冲突：使用 pip 安装包含 C 语言扩展的包时需要本地编译环境，而 Anaconda 分发的是预编译产物，安装过程不依赖编译器。conda 同时承担环境管理器（Environment Manager）的角色，可以为每个项目建立相互隔离的依赖集合，避免不同项目对同一库的版本要求互相干扰。安装包体积达到数 GB，磁盘空间紧张的机器可以改装同一机制的最小发行版 Miniforge，它只带解释器与 conda，其余包按项目需要逐次安装。许可方面需要注意，Anaconda 的商用许可条款近年经过调整，企业环境在部署前应先核对当前条款是否要求订阅，个人学习与教学用途通常不受影响。","编程语言;开发工具;AI工具","官方入口只有 www.anaconda.com，下载直链同样落在该域名之下。国内搜索结果中反复出现的“Anaconda 中文官网”“Anaconda 镜像站下载”均非官方分发渠道。这里需要区分两类性质完全不同的站点：清华大学 TUNA 一类的正规镜像站，其用途是为 pip 与 conda 提供国内源加速，属于社区允许的正当做法；把镜像目录当作安装包分发渠道则构成二次打包，其内容已经脱离官方构建，无法验证是否被改动。判别原则是：软件本体只从 anaconda.com 获取，镜像站只用于配置软件安装完成之后的包下载地址。凡是页面同时提供“高速版下载器”“安装教程加群”、捆绑网盘链接的，无论域名如何包装都应存疑。","Python 官方安装的解释器可以理解为一间公共工作台：所有通过 pip 安装的库都堆在同一层架子上，第一个项目需要某个库的 1.x 版本，第二个项目需要 2.x 版本，两者就会互相挤占，这正是依赖冲突的来源。Anaconda 的做法是提供一批可以单独开关的独立工具箱（conda 环境，Environment）：每个项目开一个箱子，箱子里的解释器版本与库版本自成一套，箱子之间互不干扰，项目结束删掉箱子即可，不在工作台上留下残余。conda 与 pip 的分工是初学者的主要困惑点：conda 是这套发行版的包管理器兼环境管理器，应优先使用；pip 是 Python 官方的包管理器，在已经激活的 conda 环境里同样可以直接使用，用于安装 conda 仓库中暂时缺少的包。混用的风险在于 pip 不记录 conda 的版本约束，先用 pip 再用 conda 操作同一环境时，conda 可能不知道部分文件已被替换，进而出现版本回退或依赖损坏。因此推荐顺序是：一个环境内先用 conda 安装含编译产物的大依赖（如 numpy、scipy），再用 pip 补齐少量纯 Python 包。","1. 在本页官方主页与下载直链（https://www.anaconda.com/download）选择 Windows 图形安装器，安装包体积为数 GB，下载需要预留时间。
+2. 双击安装器，在欢迎页点击 Next，在授权页选择 I Agree。
+3. 安装类型页面选择 Just Me（仅当前用户），该选项写入用户目录，不需要管理员权限。
+4. 目标位置保持默认路径，路径中不要包含中文与空格，以免部分科学计算库在读取动态库时出现异常。
+5. 在安装选项页面按官方建议保持 Advanced 页中“Add Anaconda to my PATH environment variable”与“Register Anaconda as my default Python”两项处于未勾选状态。
+6. 点击 Install 等待文件写入完成，结束后点击 Finish 关闭向导。
+7. 通过开始菜单中的 Anaconda Prompt 打开命令行入口，后续所有 conda 命令都在该窗口中执行。
+8. 在 Anaconda Prompt 中执行 conda info，确认安装位置与版本符合预期。","1. 不建议把 conda 加入系统 PATH：Anaconda 自带一套 Python 与大量动态库，写入系统 PATH 后会与机器上已有的系统 Python 或其他发行版互相遮蔽，python 与 pip 最终指向哪个解释器取决于 PATH 中的先后顺序，问题很难排查，官方安装器给出的提示针对的正是这一风险。
+2. 日常入口使用开始菜单的 Anaconda Prompt（或 Miniconda Prompt），它在启动时已执行过初始化脚本，conda 命令才可用。
+3. 磁盘空间紧张的机器可改装 Miniforge：同为 conda 机制，默认指向社区源，体积远小于完整版，包按项目需要安装。
+4. 企业或商用部署前先核对 Anaconda 当前公布的许可条款；个人学习与教学通常不受影响，条款细节以官网说明为准。
+5. 国内网络下载包缓慢时，正规做法是为 pip 与 conda 配置国内镜像源，这只改变包的下载地址，安装包本身仍必须来自官网。
+6. 同一台机器上让 conda 与系统 Python 共存时，用 where python 与 where pip 检查当前入口实际指向的路径。","1. 现象：命令行输入 conda 提示“不是内部或外部命令”｜原因：直接在普通 cmd 窗口里使用 conda，未通过 Anaconda Prompt，而安装时按官方建议没有写入系统 PATH｜纠正：改用开始菜单的 Anaconda Prompt，或在确实需要使用的终端中先执行 conda init 再重新打开窗口。
+2. 现象：安装并勾选加入 PATH 之后，系统原有 Python 的第三方包全部失效｜原因：Anaconda 目录排在 PATH 前面，把 python 与 pip 遮蔽（shadow）成了另一个解释器｜纠正：删除该 PATH 条目，重装时保持不勾选，把 Anaconda Prompt 作为唯一入口。
+3. 现象：conda install 长时间停在 Solving environment 并最终报冲突｜原因：同一环境里混装了对立版本的依赖，或 pip 与 conda 交叉修改了同一个包｜纠正：为该任务新建独立环境，遵循先 conda 后 pip 的顺序，冲突无法化解时直接删除环境重建。
+4. 现象：从“中文官网”或镜像站下载的安装包装完后附带额外软件，或默认包下载源被改写｜原因：该渠道提供的是二次打包产物，已脱离官方构建与签名链路｜纠正：安装包只从 www.anaconda.com 获取，镜像站仅用于配置包下载源。","1. 在 Anaconda Prompt 中执行 conda --version，输出 conda 加版本号。
+2. 继续执行 python --version，输出 Python 版本号，且该解释器位于 Anaconda 安装目录下。
+3. 执行 conda env list，列表中至少存在 base 环境并带星号标记，表示当前环境已激活。
+4. 执行 python -c “import numpy, pandas” 不报错，说明预编译的科学计算库可正常导入。","以下流程全部在 Anaconda Prompt 中完成，覆盖建环境、进环境、跑代码、清理环境四个动作。
+1. 执行 conda create -n demo python=3.12 -y，创建名为 demo 的独立环境并指定解释器版本。
+2. 执行 conda activate demo 进入该环境，命令行提示符前会出现 (demo) 标记。
+3. 执行 python --version，确认输出 Python 3.12 开头的版本，说明当前解释器来自新环境。
+4. 执行 python -c “print('Hello, World!')”，终端输出 Hello, World!，第一段代码即在新环境中跑通。
+5. 需要第三方库时先执行 conda install numpy -y，conda 仓库中确无对应包时再改用 pip install 包名。
+6. 项目结束执行 conda deactivate 退出环境，再执行 conda remove -n demo --all -y 清除整个环境，机器上不残留零散包。","Windows|x86_64（Intel 与 AMD 64 位）|https://repo.anaconda.com/archive/Anaconda3-2026.07-1-Windows-x86_64.exe
+macOS|Apple Silicon（Anaconda3 2026.07-1 起仅提供 arm64）|https://repo.anaconda.com/archive/Anaconda3-2026.07-1-MacOSX-arm64.sh
+macOS|Intel 机型取最后一批 x86_64 包|https://repo.anaconda.com/archive/Anaconda3-2025.12-2-MacOSX-x86_64.sh
+Linux|x86_64|https://repo.anaconda.com/archive/Anaconda3-2026.07-1-Linux-x86_64.sh
+Linux|aarch64（ARM64 服务器与开发板）|https://repo.anaconda.com/archive/Anaconda3-2026.07-1-Linux-aarch64.sh
+全部构建|官方归档索引，含 ppc64le 与 s390x|https://repo.anaconda.com/archive/
+Windows on ARM 与龙芯|归档中无对应构建|https://repo.anaconda.com/archive/","归档文件名末尾的平台标签就是答案：Windows-x86_64、Linux-x86_64、Linux-aarch64、MacOSX-arm64、MacOSX-x86_64。Windows 官方只有 x86_64 一种，没有 ARM64 构建。从 2026.07-1 起 macOS 只出 arm64 包，Intel 机型需回退到 2025.12-2 的 x86_64 包，这也是 Mac 用户装不上的最常见原因。"
+"Ollama","https://ollama.com","https://ollama.com/download/OllamaSetup.exe","Ollama 是在本机运行开源大语言模型（Large Language Model）的命令行推理工具，支持 Windows、macOS 与 Linux，本页下载直链是版本无关的官方安装器地址，始终指向最新构建。它把模型权重（Weights）与推理引擎的复杂性收进一条命令：ollama run 模型名 即可完成下载、加载与对话，模型清单位于 ollama.com/library。安装完成后它在后台常驻一个仅监听本机的本地服务，对话内容与模型文件都留在自己的电脑上，这一点与调用云端接口的聊天工具在数据流向上有本质区别。需要正视的是硬件门槛：模型体积与运行所需内存直接相关，参数量越大、保存精度越高，需要的显存或内存越多，本机资源不足时会出现加载缓慢甚至无法完成的情况。它没有主窗口属于正常设计，交互通过命令行或本机 HTTP 接口进行，若期望“装完就有一个聊天软件”，会误判为安装失败。","AI工具","官方域名只有 ollama.com，模型库在该域名下的 /library 路径，安装器为 /download/OllamaSetup.exe。“Ollama 中文站”“Ollama 国内加速版下载器”“Ollama 绿色整合版”都属于蹭热度的二次包装，风险集中在安装器内捆绑推广程序，以及把模型下载地址替换为第三方仓库。模型权重单个动辄数 GB，获取成本较高，因此“网盘模型合集”“免下载整合包”尤其需要谨慎：来源不明的权重可能被替换，也无法核对它标注的量化档位与原始模型是否一致。判别原则与其他工具相同，软件本体与模型清单只从 ollama.com 获取；如果确实为了加速而更换下载源，也应只在软件自身的配置层面替换为官方支持的镜像地址，而不是使用被替换过的安装程序。","Ollama 做的事情可以类比为一台只对你自己开放的聊天服务器：它把大模型的权重文件读进内存，逐字生成回答，整个过程在本机完成。判断能否跑动某个模型，先要看清两个硬件数字。查看内存：打开 PowerShell 执行 Get-CimInstance Win32_ComputerSystem，返回的 TotalPhysicalMemory 字段以字节为单位，除以 1024 的三次方即得内存 GB 数；也可以在任务管理器（按 Ctrl+Shift+Esc 打开）的“性能”选项卡中直接读出已安装内存与当前占用。查看显卡：执行 Get-CimInstance Win32_VideoController，输出的 Name 与 AdapterRAM 分别对应显卡型号与显存容量；若列表同时出现核芯显卡与独立显卡（Discrete GPU），说明机器具备独显，该字段在部分系统上数值不准，精确显存以任务管理器“性能”页中专用 GPU 的容量为准。对应关系是：仅有核显时模型主要占用内存，生成速度明显下降；内存 8 GB 的机器建议从 qwen3:0.6b 这一档的小模型开始，再逐步尝试更大参数量的模型。内存容量与显卡类型这两项加起来，决定了本机可以稳定运行的模型范围。","1. 点击本页下载直链获取 OllamaSetup.exe 并双击运行，安装过程保持默认选项。
+2. 安装完成后它在系统托标的后台常驻，没有主窗口属于正常设计，不必寻找界面。
+3. 打开 PowerShell 执行 Get-CimInstance Win32_ComputerSystem 查看内存，执行 Get-CimInstance Win32_VideoController 查看显卡，先确认本机资源档位。
+4. 打开 cmd 执行 ollama --version，确认命令可用且服务已启动。
+5. 从模型库 ollama.com/library 选一个尺寸与本机内存匹配的模型，执行 ollama pull qwen3:0.6b 下载权重，首次拉取耗时取决于网速。
+6. 执行 ollama run qwen3:0.6b 进入交互，输入问题即得到回答。
+7. 日常使用中执行 ollama list 查看已下载模型，执行 ollama rm 模型名 删除不再需要的模型以释放磁盘。","1. 模型体积与量化档位（Quantization）共同决定占用：模型库中标注的 q4_K_M 一类后缀表示权重以约 4 位精度分块量化存储，相比 16 位全精度可把体积与内存需求压缩到约四分之一，代价是回答质量轻度下降，本机资源有限时应优先选择量化档位更低的构建。
+2. 模型单个数 GB，下载前确认磁盘剩余空间，并把模型缓存放在容量充足的分区。
+3. 8 GB 内存的机器适合 0.6b、1.7b 这类小尺寸模型，超出资源范围的模型即使下载成功也无法流畅运行。
+4. 它只提供推理能力，与模型训练无关，不要期待用它训练或微调自己的模型。
+5. 首次启动服务或拉取模型时保持网络稳定，代理异常会导致下载停在某一层不动。
+6. 除命令行外它对外提供本机接口，供其他软件按 HTTP 调用，注意不要把服务暴露到公网。","1. 现象：安装完成后找不到软件窗口，双击图标没有可见反应｜原因：Ollama 本身设计为后台本地服务加命令行交互，没有聊天主窗口｜纠正：打开 cmd 执行 ollama --version 确认服务在位，再用 ollama run 模型名 开始对话。
+2. 现象：ollama pull 长时间停在某一层，或最终报网络错误｜原因：模型权重体积大，网络不稳或使用了被替换过下载地址的第三方分发包｜纠正：只从 ollama.com 的安装器获取程序，保持网络稳定并等待分层进度完成。
+3. 现象：模型可以加载但生成极慢，几秒才输出一个字，或提示内存不足｜原因：所选模型规模超出本机内存与显存，运行时被系统换页到硬盘｜纠正：先用 Get-CimInstance 查清内存与显卡，改用 0.6b 一类小尺寸模型或更低量化档位。
+4. 现象：系统盘逐渐被占满，后续拉取模型失败｜原因：模型默认缓存在用户目录下，长期试错累积数十 GB｜纠正：把模型缓存目录迁移到容量充足的分区，并定期用 ollama rm 清理不再使用的模型。","1. 新开 cmd 执行 ollama --version，输出版本号，说明命令与后台服务均正常。
+2. 执行 ollama list，能列出已下载模型的名称、大小与修改时间。
+3. 执行 ollama run qwen3:0.6b 后出现交互提示，输入问题能收到回复。
+4. 生成过程中在另一个窗口执行 ollama ps，能看到正在运行的模型及其占用内存，说明推理确实发生在本机。","1. 先确认本机资源：在 PowerShell 执行 Get-CimInstance Win32_ComputerSystem 查看内存字节数，执行 Get-CimInstance Win32_VideoController 查看显卡型号。
+2. 打开 cmd 执行 ollama --version，确认程序与服务都在位。
+3. 从 ollama.com/library 选一个尺寸与内存匹配的小模型，执行 ollama pull qwen3:0.6b，等待各层进度全部完成。
+4. 执行 ollama run qwen3:0.6b “用一句话解释什么是大语言模型”，收到回答的这一条命令就是本地大模型的 Hello World。
+5. 想结束单次对话在交互中输入 /bye；执行 ollama list 复核模型已存在，执行 ollama rm qwen3:0.6b 可在不需要时释放磁盘空间。","Windows|amd64（Intel 与 AMD 64 位）|https://ollama.com/download/OllamaSetup.exe
+Windows|ARM64 机型见官方下载页列出的构建|https://ollama.com/download
+macOS|Apple Silicon（M 系列，本机推理效率最好）|https://ollama.com/download
+macOS|Intel 芯片 Mac 的支持以官方下载页为准|https://ollama.com/download
+Linux|curl 一键脚本，自动识别 amd64 与 arm64|https://ollama.com/download
+GPU|NVIDIA 与 AMD 显卡由程序自动检测，无需另装驱动版|https://ollama.com/download
+龙芯 LoongArch|官方无构建|https://ollama.com/download","Windows 直接取页面上的 OllamaSetup.exe；macOS 按芯片选，Apple Silicon 上统一内存使大模型的可用显存更大，这也是官方最推荐的组合。Linux 用页面给出的脚本安装，脚本本身会判断 amd64 还是 arm64。显卡侧不用另装“GPU 版”，程序运行时自动探测 NVIDIA 与 AMD 显卡，检测不到的表现为回退到 CPU 推理且速度骤降。"
+"LM Studio","https://lmstudio.ai","https://lmstudio.ai/download","LM Studio 是提供完整图形界面的本地大模型运行时（Runtime），目标与 Ollama 一致，都是在自己的电脑上加载开源大语言模型并完成推理，区别在于它把模型检索、下载、对话与本地服务启动全部放进窗口，不需要输入命令。主要能力分为三块：应用内搜索模型，并为每个构建标注量化档位与预计内存需求；AI Chat 页签进行多轮对话；Developer 页签一键启动与 OpenAI 接口兼容的本地服务，默认端口 1234，供其他编辑器与程序按标准格式调用。它是免费但闭源（Closed source）的软件，商用条款与开源替代品不同，企业环境部署前应先阅读官方许可说明。安装包只从官网 lmstudio.ai 的下载按钮获取；模型文件由应用内检索从 Hugging Face 等源拉取，这两条链路的可信来源不同，但都不需要经由第三方打包站。对初学者的意义在于，模型挑选、下载进度、内存提示与对话界面都在同一个窗口内完成，不必先学习命令行语法。","AI工具","官方域名是 lmstudio.ai，下载入口为 /download。流传的“LM Studio 中文版”“汉化绿色版”“免安装整合包”全部属于二次打包：它们往往替换应用图标与启动参数，把模型下载目录指向第三方网盘，部分还在安装过程中附带推广程序，并且由于改动了更新链路，此后无法通过官方通道获得新版本。另一类干扰是名称本身，搜索结果前排会命中若干拼写接近的教程聚合页与导航站，这些页面不提供软件本体，只提供转载的下载按钮。判别方法有三条：只从官网按钮下载单个安装器；模型只通过应用内的检索框下载，不从所谓模型合集网盘手工导入来历不明的文件；如果需要中文界面，先在官方设置中确认语言选项，而不是去寻找所谓的中文版本。","LM Studio 与 Ollama 做的是同一件事，区别相当于图形界面与命令行：前者在窗口里点选模型并对话，后者靠命令操作。选模型的关键是看懂量化档位（Quantization）标注，例如 Q4_K_M：Q 后的数字 4 表示每个权重平均以 4 位存储，而全精度权重是 16 位，模型体积因此大约压缩到四分之一；K 指按权重分块并保存缩放系数的存储方式（K-quant），M 表示附带的中等规模修正数据，用于在压缩之后尽量找回精度。量化之所以能显著降低占用，是因为推理的主要成本在于把权重从显存读入计算单元，位宽变小后同时减少了存储空间与读取带宽需求，代价是回答质量轻度受损，Q4 一档通常仍在可接受区间。界面上每个模型都会标出预计内存需求，选一个低于本机可用内存、并为系统留出余量的构建即可，这一步判断对了，后续很少出现卡死。若机器只有集成显卡，可用的是与系统共享的内存，余量更要留足。","1. 打开官网 lmstudio.ai 点击 Download，选择 Windows 版本的安装器。
+2. 双击运行安装器，全程保持默认选项直到写入完成。
+3. 首次启动如果出现模型存放目录的提示，选择剩余空间充足的分区。
+4. 在左上角搜索框按关键词挑选模型，注意每条结果标注的量化档位与预计内存需求。
+5. 点击下载并等待进度结束，中途断网或取消会留下不完整文件。
+6. 下载完成后进入 AI Chat 页签，确认顶部选中该模型即可开始对话。
+7. 需要被其他程序调用时，切到 Developer 页签启动本地服务并记下端口。","1. 先看资源再选模型：在 PowerShell 执行 Get-CimInstance Win32_ComputerSystem，把返回的 TotalPhysicalMemory 除以 1024 的三次方得到内存 GB 数；执行 Get-CimInstance Win32_VideoController 查看显卡，列表同时出现核芯显卡与独立显卡说明机器具备独显，任务管理器（Ctrl+Shift+Esc）的性能页也能直接读出内存与显存占用。
+2. 量化档位直接决定占用，同一模型的 Q8 与 Q4 体积相差一倍以上，界面标注的内存需求是最可靠的依据。
+3. 本地服务默认端口 1234，与其他程序冲突时在设置中更换端口后再启动。
+4. 下载中断会在模型目录留下残件，典型表现是列表中有记录但加载失败，应删除后重新完整下载。
+5. 软件免费但闭源，商用条款与开源替代品不同，企业部署前先核对许可。
+6. 模型文件动辄数 GB，避免存放在空间紧张的系统盘。","1. 现象：选中模型后界面长时间无响应，甚至整个程序卡死｜原因：下载了超出本机内存与显存的大模型，加载阶段开始频繁使用虚拟内存｜纠正：关闭程序并删除该模型，改选标注内存需求低于本机可用内存的量化档位。
+2. 现象：Developer 页启动本地服务失败，提示端口被占用｜原因：默认端口 1234 已被其他程序监听，或上一个服务实例未正常退出｜纠正：在设置中更换端口，或结束残留进程后重新启动服务。
+3. 现象：模型列表里有该条目，但对话时报错或反复加载失败｜原因：此前下载被中断，目录中留下了不完整的残件｜纠正：删除对应的模型文件后重新完整下载，不要在下载过程中关闭程序。
+4. 现象：从“LM Studio 汉化绿色版”安装后无法更新，模型下载地址被指向第三方网盘｜原因：该分发包属于二次打包，替换了更新与下载链路｜纠正：卸载后仅从官网下载按钮重新安装。","1. 模型页能看到已下载的条目及其体积，说明权重文件完整落盘。
+2. 在 AI Chat 中选中该模型发送一句话，能收到本地生成的回复。
+3. 生成期间打开任务管理器性能页，能看到内存或 GPU 占用上升，证明推理发生在本机。
+4. 在 Developer 页启动服务后显示监听端口 1234，接口状态为运行中，说明对外调用链路也已就绪。","1. 在左侧模型搜索框输入关键词，从结果中挑一个标注内存需求低于本机可用内存的模型，点击下载按钮，等待进度完成。
+2. 下载结束后切到 AI Chat 页签，在顶部模型选择器确认已选中该模型。
+3. 发送一句“你好，介绍一下你自己”，收到本地生成的回复即跑通，整个过程不需要把内容提交给外部服务，这就是它的 Hello World。
+4. 想验证接口能力：切到 Developer 页签启动本地服务，页面给出端口为 1234 的监听信息，其他程序按 OpenAI 兼容格式调用该地址即可。
+5. 生成期间观察任务管理器中内存与 GPU 的占用变化，可以判断本机资源为该模型留出的余量是否充足，不足时换更低一档的量化构建。","Windows|x64（Intel 与 AMD 64 位）|https://lmstudio.ai/download
+Windows|ARM64 是否提供以官方下载页为准|https://lmstudio.ai/download
+macOS|Apple Silicon（M 系列统一内存，最常被推荐的组合）|https://lmstudio.ai/download
+macOS|Intel 芯片 Mac|https://lmstudio.ai/download
+Linux|x64 AppImage|https://lmstudio.ai/download
+龙芯 LoongArch|官方无构建|https://lmstudio.ai/download","下载页按 Windows、macOS、Linux 分区，Windows 与 macOS 内再按芯片分列，M 系列选 Apple Silicon 版。它能用哪些显卡取决于芯片：Apple Silicon 走 Metal，Windows 上 NVIDIA 走 CUDA、AMD 走 ROCm 且仅限部分机型，Intel 核显能力有限。装好后在右侧模型面板查看加速状态一栏即可确认是否用上了显卡。"
+"FFmpeg","https://ffmpeg.org","https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip","FFmpeg 是音视频处理的命令行事实标准工具，覆盖转码（把一种编码换为另一种）、剪切、抽帧、压缩、混流、加水印、屏幕录制等场景，Windows 社区构建当前 release 版本为 9.0.1。它由两条主干程序构成：ffmpeg 负责读写与转换媒体流，ffprobe 负责查看文件的编码格式、时长、码率等元信息，许多播放器与剪辑软件内部调用的正是同一套库。使用它需要掌握一条命令行结构：可执行程序名、可选的输入选项、-i 加输入文件、若干输出选项、最后是输出文件，参数的位置决定它作用于输入还是输出。一个关键事实是，ffmpeg.org 官网只提供源码（Source code），不发布 Windows 可执行文件，桌面用户使用的二进制由社区构建，gyan.dev 是最常用的官方认可构建源，下载得到的 zip 始终指向当前 release 版本，解压后还需要手动把 bin 目录加入 PATH 才能在任意目录调用。","计算机系统工具;图形与制作","官网 ffmpeg.org 的下载页只列源码，这是该项目正常的分发方式，不是“假官网”。Windows 用户需要的是编译好的可执行文件，可信的社区构建源有两个：gyan.dev（提供 ffmpeg-release-essentials.zip 这类版本无关的别名地址）与 GitHub 上的 BtbN/FFmpeg-Builds 仓库。搜索结果前排的“FFmpeg 中文官网”“FFmpeg 高速下载器”“FFmpeg 工具箱”站点提供的全是捆绑包，常见手法是把外层套一个下载器、内层附带推广程序，并且把版本隐藏在明显落后的旧构建上，用户以为在用官方版，实际既拿不到安全更新也带着额外组件。判别方式有三条：核对域名是否属于上述三处；正常产物应当是解压后包含 bin、doc、share 的目录，而不是安装向导；用 ffmpeg -version 读出实际版本并与构建源发布页对照，版本落后过多即可判为旧包。","FFmpeg 的定位是音视频领域的万能转换器，几乎所有格式之间的转换都能用一行命令表达。它没有窗口界面，所有操作都通过参数描述，因此入门的关键不是背诵命令，而是理解这条骨架：程序名，加输入选项，加 -i 输入文件，加输出选项，加输出文件。-i 用来声明一个输入，写在 -i 之前的选项修饰紧随其后的这个输入，写在 -i 之后的选项修饰紧随其后的输出，这就是同一条命令里位置不同含义不同的原因。-c 控制编解码器（Codec）：写成 -c copy 表示把原始流直接拷贝进新的容器而不重新编码，速度极快且不损失质量，适用于只更换封装格式的场景；写成 -c:v libx264 则指定视频用 H.264 重新编码，其中 -c:v 只管视频流，-c:a 只管音频流。-ss 用于定位时间点，-vframes 用于限制输出帧数，-crf 用于控制重编码质量。理解这一组参数之后，转格式、剪切、抽帧、压缩都可以自行拼装，不再需要到处询问软件推荐。","1. 点击本页下载直链获取 ffmpeg-release-essentials.zip，体积约 100 多 MB，该地址始终指向当前 release 构建。
+2. 把压缩包解压到一个固定且长期保留的目录，例如 D:\ffmpeg，不要放在会被清理的临时位置。
+3. 确认该目录下存在 bin 子目录，其中包含 ffmpeg.exe 与 ffprobe.exe 等可执行文件。
+4. 打开系统设置中的环境变量编辑界面，在 Path 变量里新建一条记录，填写 bin 目录的完整路径，例如 D:\ffmpeg\bin。
+5. 保存设置并关闭所有已经打开的命令提示符窗口，旧窗口不会读取修改后的 Path 值。
+6. 重新打开一个命令提示符，执行 ffmpeg -version 检查输出。
+7. 日后升级时下载新的 zip 覆盖同一个目录即可，Path 记录不需要改动。","1. 加入 PATH 的目标是 bin 目录，选中解压根目录或它的上一级目录是最常见的返工原因。
+2. essentials 构建已包含常用编解码器，若需要额外组件可改用同一构建源的 full 构建，两者差别只在包含库的多少。
+3. 参数位置有意义：-ss 写在 -i 之前按关键帧快速定位，速度快但落点可能有偏差；写在 -i 之后逐帧解码定位，精确但更慢。
+4. -c copy 虽然快，但只在目标容器支持原有编码时才会成功，失败时应改为明确指定编码器重新编码。
+5. 路径中包含空格、中文或层级过深会让命令书写容易出错，建议解压到简短的固定路径。
+6. 版本号以 ffmpeg -version 的输出为准，社区构建源的更新节奏与官网源码发布接近但并不同步。","1. 现象：命令行提示“ffmpeg 不是内部或外部命令”｜原因：PATH 中没有加入 bin 目录，或已经加入但仍在修改前打开的旧窗口中执行｜纠正：确认 Path 中记录的确实指向 bin 目录，保存后新开一个命令提示符再试。
+2. 现象：已经在 PATH 里加了条目仍然提示找不到命令｜原因：加入的是解压根目录而非包含 ffmpeg.exe 的 bin 目录，层级选错｜纠正：把该条目改为 bin 目录的完整路径。
+3. 现象：同一条命令在不同机器上结果不一致，或行为与教程对不上｜原因：PATH 中存在多个 FFmpeg 目录，系统实际调用了排在前面另一个版本｜纠正：只保留一条记录，并用 where ffmpeg 检查当前实际调用的是哪一个。
+4. 现象：剪切或转码时报编码器缺失、无法初始化输出流｜原因：在只更换容器时使用 -c copy，但原有编码不被目标容器支持，或选项被放在错误的位置｜纠正：把 -c copy 换成明确的编码器（如 -c:v libx264），并逐项核对各选项位于 -i 之前还是之后。","1. 新开命令提示符执行 ffmpeg -version，输出 ffmpeg version 9.x 及构建配置信息，说明可执行文件与 PATH 均正确。
+2. 执行 ffprobe -version 同样输出版本号，验证配套组件齐全。
+3. 执行 ffmpeg -codecs 能列出编解码器、ffmpeg -formats 能列出容器格式，说明库加载正常。
+4. 对任意本机视频执行 ffprobe 输入文件路径，能读出时长与编码信息，即完成一次真实调用。","下面三段命令覆盖最常见的三种需求，每条之后逐项解释参数含义。
+1. 手边没有素材时先生成一个测试视频：ffmpeg -f lavfi -i color=c=blue:s=640x360:d=2 test.mp4。其中 -f 指定输入格式为 lavfi 虚拟源，-i 声明输入，color 参数里 c 指定颜色、s 指定分辨率、d 指定时长 2 秒，test.mp4 是输出文件。
+2. 抽取一帧作为封面：ffmpeg -i 输入.mp4 -ss 00:00:01 -vframes 1 cover.jpg。-i 指定输入文件，-ss 定位到第 1 秒（写在 -i 之后，采用逐帧解码的精确落点），-vframes 1 表示只输出 1 帧，输出文件名的 jpg 后缀决定图片格式。
+3. 压缩体积：ffmpeg -i 输入.mp4 -c:v libx264 -crf 28 -c:a copy out.mp4。-c:v 指定视频编码器为 H.264，-crf 控制质量（数值越大体积越小、质量越低，18 到 28 是常用区间），-c:a copy 表示音频不重新编码直接拷贝。
+4. 处理任何文件之前先用 ffprobe -i 输入.mp4 查看编码信息，再据此选择命令，是最省时间的习惯。
+以上任意一条执行成功、并在输出目录看到生成物，即为 FFmpeg 的 Hello World。","Windows|x64 共享构建（gyan.dev，官方下载页指向的构建方）|https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip
+Windows|32 位与带 LGPL 授权的变体见同一构建页|https://www.gyan.dev/ffmpeg/builds/
+macOS|Homebrew 安装，Intel 与 Apple Silicon 均适用|https://ffmpeg.org/download.html
+Linux|发行版仓库自带，版本以发行版为准|https://ffmpeg.org/download.html
+源码|自行编译以获得特定编码器与硬件加速|https://ffmpeg.org/download.html
+龙芯与 ARM|由对应发行版仓库或源码编译提供|https://ffmpeg.org/download.html","FFmpeg 官方页只给源码与指向各平台构建方的链接：Windows 用户用官方页指过去的外部构建（gyan.dev 与 BtbN），选 x64 即可，32 位机才用 x86 包；macOS 用 Homebrew，Linux 用发行版仓库。Windows 的 zip 是绿色包，解压后必须手工把 bin 目录加入 PATH，否则命令行找不到 ffmpeg；另一个常见坑是把整个解压目录而不是其中的 bin 加进了 PATH。"
+"VLC media player","https://www.videolan.org","https://download.videolan.org/pub/videolan/vlc/last/win64/","VLC media player 是 VideoLAN 社区维护的跨平台开源播放器，本页下载直链指向 download.videolan.org 下的 last/win64/ 目录，last 是版本无关的官方稳定别名，进入后选择文件名最新的 -win64.exe。它的特点是自带整套解码库（底层同为 FFmpeg 那一类库），不依赖系统安装的编解码包即可播放绝大多数音频与视频容器，包括 .mkv、.avi、.flv 这类系统自带播放器常常无法打开的文件，全程无广告、无捆绑、无会员体系。除播放之外，它还具备格式转码、屏幕录制、抓取网络流、把媒体投放到局域网设备的能力，这些高级功能集中在“媒体”与“工具”两个菜单中，界面层次较深，初次使用容易被忽略。整体定位属于桌面的基础设施类工具：体积不大、覆盖格式广，在没有专业软件时还能承担一次性的格式转换任务。与在线视频平台不同，它处理的是本机已有的文件与用户主动填入的网络流地址，因此不包含账号、推荐与推送机制。","生活与游戏;计算机系统工具","官方域名只有 videolan.org，下载走同一域名下的 download.videolan.org，路径中的 last/win64/ 是官方长期维护的版本别名目录，每次进入都能找到当前最新构建。国内搜索结果里以“VLC 播放器官方中文版”“VLC 极速版”“VLC 汉化版下载站”为名的站点全部是二次打包，常见做法是在安装向导中额外增加勾选框、替换浏览器主页与默认搜索引擎、写入后台计划任务，用户即使事后卸载播放器也未必清理干净这些改动。判别方法有三条：核对域名是否为 videolan.org 及其下载子域；官方安装包体积在几十 MB 量级，明显偏大的必然被扩充过；界面图标为官方交通锥标志。官方安装向导本身不含任何捆绑选项，一旦出现“推荐安装”字样的窗口，即可判定来源有问题。","VLC 的定位是什么都能播的本地播放器，理解它只需抓住一点：播放一个视频要先把文件里压缩过的数据还原成画面与声音，这一步依赖解码器（Decoder），Windows 自带播放器主要使用系统提供的解码组件，遇到未收录的格式就报错；VLC 把一整套解码库随软件一起安装，因此不受系统限制，这是它能够播放 .mkv、.avi 等文件的根本原因。正因为这套库与 FFmpeg 同源，许多播放器与剪辑软件内部直接调用的就是 FFmpeg，两者是引擎与产品的关系。除播放之外，它常被忽略的用途还包括把视频里的声音导出成 mp3、把屏幕录成视频、把本机媒体推送到电视上，这些功能都藏在“媒体→转换/保存”等菜单深处，第一次使用时建议逐条展开看看。它不提供在线片源，也不需要注册账号，属于纯粹的本地工具。对于只想把已下载的文件顺利播放出来的用户，装一个 VLC 通常就可以到此为止。","1. 进入本页下载直链指向的 last/win64/ 目录页，该页面以文件列表形式展示各版本安装包。
+2. 选择文件名中版本号最新的 vlc-版本号-win64.exe，注意后缀是 win64 而不是 arm64。
+3. 双击运行安装向导，语言页可按需选择，简体中文界面也可以在安装完成后再切换。
+4. 组件选择页保持默认勾选，一路点击下一步直到写入完成。
+5. 安装结束时勾选运行 VLC，先播放一个本机视频确认解码正常。
+6. 需要中文界面时，在“工具→偏好设置→界面”的语言项中选择简体中文，然后重启 VLC。","1. 目录页同时提供 32 位与 ARM 架构的构建，普通 Windows 电脑应选 win64，选错后缀会导致无法安装或运行效率异常。
+2. last/ 是版本别名目录，日后回来仍可用同一路径找到最新版，不必保存带具体版本号的链接。
+3. 部分较老的显卡在硬件加速解码下会出现花屏或卡顿，此时在“工具→偏好设置→输入/编解码器”中把硬件加速改为禁用即可。
+4. 转码功能位于“媒体→转换/保存”，必须在输出配置里明确选择容器与编码，否则默认组合可能与预期不符。
+5. 它不含在线内容与账号体系，任何所谓会员版、去广告版的说法都可以直接判定为伪造。
+6. 偏好设置窗口默认只显示基础项，需要查看高级项时在左下角选择简易全部设置模式。","1. 现象：安装之后浏览器主页被改，开始菜单出现陌生软件｜原因：从“VLC 官方中文版”站点下载到的是附带推广的二改包｜纠正：卸载后在 videolan.org 的下载目录重新安装，并检查浏览器的起始页与扩展。
+2. 现象：双击视频提示不支持的编码，或只有声音没有画面｜原因：下载了 arm64 或 32 位版本与系统架构不匹配，或安装时自行取消了组件｜纠正：确认安装的是 win64 版本，重装时保持组件选择页为默认。
+3. 现象：播放某些影片时画面出现色块、条纹或明显掉帧｜原因：老显卡的硬件解码路径与该视频编码器不兼容｜纠正：在偏好设置的输入/编解码器项中把硬件加速改为禁用，重新打开文件。
+4. 现象：找不到中文界面入口，或转码输出的格式与选择不符｜原因：VLC 的相关选项位于菜单深层，转码时没有在输出配置中指定预设｜纠正：在“工具→偏好设置→界面语言”切换语言，转码时在“转换/保存”对话框中明确选择音频或视频配置。","1. 双击本机的 .mp4 与 .mkv 文件都能流畅播放，说明内置解码库工作正常。
+2. 通过“媒体→打开文件”能一次选中多个文件并连续播放，界面响应正常。
+3. 在偏好设置底部能看到当前版本号，与下载目录中最新的 vlc 文件名一致，说明装的确实是官方构建。
+4. 用“媒体→转换/保存”导出的音频文件能正常播放，即验证转码链路同样完整。","播放器的第一个 Hello World 是完成一次真实的格式转换，而不只是双击播放。
+1. 打开 VLC，点击“媒体”菜单中的“转换/保存”。
+2. 在文件页点击“添加”，选入一个本机视频文件，然后点击“转换/保存”按钮。
+3. 在弹出的设置页中，把配置文件选择为 Audio - MP3。
+4. 点击“浏览”指定输出文件路径，文件名后缀写为 .mp3，避免与输入文件同名而被覆盖。
+5. 点击“开始”，下方进度条走完后转换结束，窗口会自动关闭。
+6. 双击导出的 .mp3 能听到原视频的声音，说明解码、重新编码、封装三个步骤全部跑通。
+7. 日常播放只需“媒体→打开文件”或把文件直接拖入窗口，空格键控制暂停与继续。","Windows|x86_64（64 位，绝大多数机型）|https://download.videolan.org/pub/videolan/vlc/last/win64/
+Windows|arm64（骁龙 X 系列笔记本）|https://download.videolan.org/pub/videolan/vlc/last/win64/
+Windows|32 位旧机取 win32 目录|https://download.videolan.org/pub/videolan/vlc/last/win32/
+macOS|Apple Silicon 与 Intel 的 dmg|https://www.videolan.org/vlc/download-macosx.html
+Linux|各发行版仓库与 Flatpak|https://www.videolan.org/vlc/download-redhat.html
+Android|Google Play 与 F-Droid|https://www.videolan.org/vlc/download-android.html
+其他平台|官方列出的全部端口|https://www.videolan.org/vlc/","Windows 认准 videolan.org 域下的官方目录：64 位机取 win64，32 位旧机才有 win32 的必要，目录中同时有 .exe 安装器与 .nsis.exe 便携版。ARM64 笔记本可在官方页面的平台选择中取得对应包。macOS 分 Apple Silicon 与 Intel 两版 dmg，Linux 用发行版仓库或 Flatpak。下载页上有多个镜像域名，认准主站即可，不必点镜像。"
+"7-Zip","https://7-zip.org","https://7-zip.org/download.html","7-Zip 是 Igor Pavlov 维护的开源压缩与归档工具，LZMA 与 LZMA2 两种高压缩比算法即出自其手。核心能力有四项：一是自有 7z 格式，支持固实压缩（把多个文件当作一整块压缩，海量小文件的压缩率明显高于逐个压缩的 zip）与最高 256 字节的字典大小；二是 AES-256 加密与文件头加密，勾选后者时连压缩包内的文件名都不外泄；三是分卷压缩，把归档切成指定大小的多段以便分发；四是解压侧的宽格式支持，除 7z、zip、tar、gz、bz2、xz、zst 之外还能读 rar、cab、iso、wim 与不少磁盘镜像。另附 7z.exe 命令行与极小的 7zr.exe。许可为 LGPL，个人与商用均免费，唯一限制来自内置的 unRAR 代码：不能用于开发新的 RAR 兼容产品。当前版本 26.03，官方下载页同时给出 Windows 的 x64、ARM64 与 32 位三种构建。","计算机系统工具","官方域只有一个：7-zip.org，下载页为 https://7-zip.org/download.html，页面底部把源码与安装包指向作者维护的 GitHub 账号 ip7z，这两处都属官方链路。需要警惕的形态有：把 7-zip 与 7zip 之类相近拼写抢注成独立域名并挂下载器的站点；在原版安装包里塞进浏览器主页改动与推广程序的二次打包，常见于各类“驱动站”“软件下载站”；宣称“7-Zip 中文版免安装高速版”的分发，官方安装程序自带简体中文，不存在单独中文版。自证方法：地址栏只看 7-zip.org 或 github.com/ip7z；下载后右键属性查看数字签名，签名者应为 Igor Pavlov 或对应项目名；文件体积异常偏大即为可疑。凡带 download、official、cn 字样而域名不在这两处的，一律先存疑。","压缩就是把若干文件装进一个更小的容器，需要时再原样取出，这个容器叫归档。为什么要压：传输时体积更小，归档时把散落的几十个文件变成一个好备份的文件。格式名字容易混：zip 是几十年前的通用格式，兼容性最好但压缩率一般；7z 是 7-Zip 自己的格式，同等条件下更省空间，代价是对方也必须有支持 7z 的软件；rar 是 WinRAR 的私有格式，7-Zip 能把它解开，却不能生成它，想在界面里“压缩成 RAR”是选不到的，这不是软件缺功能。还有两个常见名词：固实压缩指整包一起算，小文件多时收益大；分卷指把一个大包切成 1.2.3 若干个文件。密码保护方面，只加密数据与连文件名一起加密是两档强度，后者需要专门勾选。","1. 打开官方下载页 https://7-zip.org/download.html，在 Windows 区选 64 位安装包（文件名形如 7z2603-x64.exe，Intel 与 AMD 的 64 位机型通用）
+2. 双击运行，安装界面第一步可点 Language 选简体中文
+3. 选择安装路径，默认在系统盘的 Program Files 下，需要改到别的盘时避免中文与空格目录
+4. 在功能选择页保留默认的文件关联即可，若希望右键菜单里出现 7-Zip 子菜单，勾选添加外壳扩展
+5. 界面里若有「添加到 PATH」一项，需要命令行 7z 的话勾上，否则装完在命令提示符里敲 7z 会提示不是内部或外部命令
+6. 完成后点关闭，不必重启系统
+7. 在任意文件夹上右键，能看到 7-Zip 菜单（Windows 11 里可能收在「显示更多选项」内）即安装到位","1. 官方安装程序本体不带任何推广组件，装了之后出现浏览器主页被改、多出无用软件，几乎都可以判定拿到的是二次打包版
+2. 7-Zip 没有自动更新机制，安全修复要靠手动升级，建议每隔几个月回官方下载页看一次版本号
+3. RAR 只支持解压不支持创建，需要交付 rar 文件时要么改用 7z 或 zip，要么向对方说明格式差异
+4. 密码一旦遗失无法找回，压缩包也不存在官方解锁途径，重要归档请另外保存口令
+5. 加密时想连文件名一起保护需在对话框里单独勾选加密文件头，默认只加密数据
+6. 老压缩包里的中文文件名可能显示为乱码，那是当年用 GBK 编码写入所致，可在文件对话框里切换代码页，或请对方用 UTF-8 重新打包","1. 现象：从搜索前排的“7-Zip 中文官网”下载，装完浏览器主页被改、多出推广程序｜原因：该站点是二次打包，安装包被塞进附带组件｜纠正：只在 7-zip.org 与 github.com/ip7z 两处获取，安装前右键属性核对数字签名。
+2. 现象：在压缩格式下拉列表里找不到 RAR，以为软件功能不全｜原因：RAR 属专有格式，7-Zip 只实现了解压端｜纠正：改用 7z 或 zip，若必须交付 rar，请说明需要对方使用 WinRAR。
+3. 现象：命令行敲 7z 提示不是内部或外部命令｜原因：安装时未把程序目录加入 PATH｜纠正：重装时勾选加入 PATH，或直接用完整路径调用，也可临时用免安装的 7zr.exe。
+4. 现象：解压几百个小文件的压缩包比想象中慢，压缩率也一般｜原因：使用了非固实的 zip 格式或误选了极低压缩等级｜纠正：同批小文件请选 7z 格式与固实压缩，等级取默认值即可。","1. 命令提示符执行 7z i，期望输出版本信息形如 7-Zip 26.03，并列出支持的压缩与解压格式
+2. 若提示不是内部或外部命令，说明未入 PATH，改用完整路径 ""C:\Program Files\7-Zip\7z.exe"" i 再试一次
+3. 开始菜单里出现 7-Zip 程序文件夹，文件管理器右键菜单能看到 7-Zip 子菜单
+4. 任选一个文件夹，右键 7-Zip「添加到压缩包」，生成 .7z 文件后双击能列出内容
+5. 控制面板的程序列表里能看到 7-Zip 与对应版本号，卸载入口正常","1. 新建一个文件夹，放三个文本文件进去，作为练习对象
+2. 在该文件夹上右键，选 7-Zip「添加到压缩包」
+3. 对话框里压缩格式选 7z，压缩等级用默认，固实数据保持默认，留空密码，点确定，得到同名的 .7z 文件
+4. 右键这个 .7z，选「提取到当前目录」，确认文件原样回来、内容与行数没有变化
+5. 再做一次命令行版：把压缩包和 7z.exe 所在目录打开在同一个路径，执行 7z a test.7z 文件夹名，随后执行 7z e test.7z 解出
+6. 最后用右键「测试压缩包」验证 CRC 校验通过，这一步等价于确认归档没有损坏","Windows|x64（Intel 与 AMD 64 位，安装器）|https://7-zip.org/download.html
+Windows|x64 MSI（企业分发与静默安装用）|https://7-zip.org/download.html
+Windows|ARM64（骁龙 X 系列笔记本）|https://7-zip.org/download.html
+Windows|x86 32 位（旧机）|https://7-zip.org/download.html
+Windows|7zr.exe 仅支持 7z 格式的极小程序|https://7-zip.org/a/7zr.exe
+源码|各平台通用，可自行编译|https://github.com/ip7z/7zip/releases
+macOS 与 Linux|官方不发二进制包，由 Homebrew 与发行版仓库提供|https://7-zip.org/download.html","官方下载页按 Windows 的架构分列三种：x64、ARM64、以及仍在页面底部的 32 位包，Intel 与 AMD 的 64 位机型一律取 x64。同一个版本还分 .exe 安装器与 .msi 两种封装，个人用前者，需要脚本静默部署或软件分发时才用 msi。macOS 与 Linux 官方不发布二进制包，Homebrew 与发行版仓库里的 sevenzip、p7zip 是另一条脉络，命令行程序名可能是 7zz 而不是 7z，写脚本前先用 which 确认。"
+"Notepad++","https://notepad-plus-plus.org","https://github.com/notepad-plus-plus/notepad-plus-plus/releases/latest","Notepad++ 是 Windows 平台的开源文本与源代码编辑器，基于 Scintilla 编辑控件原生实现，不调用 .NET 运行时，因此冷启动与内存占用都很低，在旧机器上依然可用。主要能力有：八十多种语言的语法高亮与折叠；列块编辑（矩形选择，可按列批量插入或删除）；基于 PCRE 的查找替换，支持正则与跨行匹配；宏录制与回放，把一串重复编辑固化成一次按键；会话与多标签，可同时打开整个项目的若干文件；插件体系，官方插件管理面板可安装 Compare（比对差异）、MarkdownViewer、NppExport 等扩展；界面支持简体中文。当前版本 8.9.8.1，官方发布 x64、ARM64 与 32 位三种构建，另有无安装的 zip 绿色包。它定位是编辑器，不含项目管理、调试器与代码补全引擎，这些属于 IDE 的职责。","计算机系统工具;开发工具","官方域只有 notepad-plus-plus.org，源码与发布页在项目自己的 GitHub 仓库 notepad-plus-plus 之下，这两处之外都不算官方渠道。常见的仿冒形态：把 notepad 与 plus 用相近字符替换或加横杠、加 cn、加 download 后缀抢注的域名，页面外观雷同但安装包来自第三方服务器；国内各类下载站提供的“Notepad++ 中文版”，往往在安装包里附带浏览器插件与推广软件；声称“去广告绿色精简版”的分发，改动无法审计，插件目录还可能被预置。核验办法：地址栏核对完整拼写 notepad-plus-plus.org；安装前右键属性看数字签名；留意体积，官方 x64 安装包在几十兆以内，明显偏大的应起疑；装完检查插件目录里是否多出未知 dll，那是最常见的夹带位置。","把它理解成“更强、更快的记事本”即可：同样是打开一个 txt 就能改，但它能在同一窗口开很多标签，能对代码上色，能一次替换上百处符合规律的文本。与 IDE（集成开发环境）的区别在于职责：编辑器只负责看和改文本，编译、调试、依赖管理要另配工具；IDE 则把这些一并装好。日常最容易碰到的是两个概念。第一个是编码：同一段中文字节，按 UTF-8 解读是一句通顺的话，按 GBK 解读就是乱码，文件本身没坏，只是需要用菜单「编码」里另一个解读方式重新打开并转换保存。第二个是行尾：Windows 用 CR LF 两个字符表示换行，Linux 与 macOS 只用 LF，跨平台协同时显示成一行到底或小方块，用「编辑」下的文档格式转换统一即可。矩形选择则像用橡皮框选一片列，常用于给多行文本批量加逗号或缩进。","1. 打开官方下载页 https://notepad-plus-plus.org/downloads/，当前版本为 8.9.8.1
+2. 按机型选安装包：Intel 或 AMD 的 64 位 Windows 取 x64，骁龙 X 系列笔记本取 ARM64，只有依赖 32 位老插件时才选 x86
+3. 双击运行安装向导，第一步可把界面语言选为简体中文
+4. 安装位置默认在系统盘，如需改到其他盘，路径避免中文与空格
+5. 组件页保持默认即可；自定义安装里按需勾选「在桌面创建图标」与「在文件右键菜单中显示」
+6. 完成安装后首次启动，若弹出自动更新提示，建议保留默认的检查更新，安全修复依赖它
+7. 打开一个已有文件确认能正常显示中文，再在「设置→首选项」里调整自己的偏好，设置会自动保存
+8. 若需要在机房 U 盘上随身携带，改下载 zip 绿色包，解压即用，配置写在程序目录内","1. 32 位与 64 位安装包决定能装哪一类插件：64 位程序无法加载只有 32 位版本的 dll，反之亦然，选版本前先看要用的插件是否有对应构建
+2. 官方安装包不含推广组件，安装后出现多余软件基本可判定来源不是官网
+3. 编辑大文件吃力：数百兆以上的日志建议用专门工具或命令行处理，Notepad++ 会明显卡顿甚至占用大量内存
+4. 保存前留意右下角的编码与行尾状态，跨平台协作的工程统一用 UTF-8 无 BOM 与 LF，可避免大量无意义差异
+5. 自动更新与插件更新是两个开关，在「设置」首选项里分别控制，公司环境若禁止联网更新可关闭检查
+6. 它只有 Windows 版本，macOS 与 Linux 上没有官方移植，需要同一环境跨平台时请改用跨平台的同类编辑器","1. 现象：插件管理面板里能看到某个插件，装完后菜单里却找不到｜原因：装的是 32 位构建，插件只有 64 位版本，或反过来｜纠正：卸载后按插件支持的位数重装，多数情况下应统一取 x64。
+2. 现象：从下载站装的版本安装过程中自动装了浏览器工具栏与无关软件｜原因：安装包被二次打包夹带推广｜纠正：只用 notepad-plus-plus.org 或其官方 GitHub 发布页，装后检查插件目录有无陌生 dll。
+3. 现象：打开老文件满屏乱码，以为文件损坏｜原因：文件是 GBK 编码而程序按 UTF-8 解读｜纠正：在「编码」菜单里改用 ANSI 或 GB2312 重新打开，确认显示正常后再转为 UTF-8 保存。
+4. 现象：从 Linux 或 Git 拿来的文件所有内容挤成一行｜原因：行尾是 LF，被旧程序按无换行显示｜纠正：用「编辑→文档格式转换」转成 Windows 格式，或在首选项里让程序自动识别行尾。","1. 启动后标题栏或「帮助→关于」显示版本号 8.9.8.1（或官网当前版本），位数标注为 64-bit 或 ARM64，与下载的安装包一致
+2. 新建文件，输入若干行中文并保存，重新打开不乱码，右下角显示 UTF-8
+3. 打开一个 .py 或 .js 文件，关键字出现着色，说明语言模式与词法文件加载正常
+4. 按 Ctrl+F 打开查找对话框，勾选「正则表达式」后用 .* 能匹配整行，说明 PCRE 引擎可用
+5. 「插件→插件管理」能列出官方插件列表（联网状态下），说明插件通道正常
+6. 按住 Alt 再用鼠标拖出矩形选区，可同时选中多行同一列，验证列块编辑生效","1. 新建一个文件，随手敲五行文字，按 Ctrl+S 保存为 demo.txt，编码保持默认的 UTF-8
+2. 练习列编辑：按住 Alt 用鼠标框选每行行首的一列，敲入两个空格，一次给五行加上缩进
+3. 练习正则替换：按 Ctrl+H，查找目标写 ^(.)，替换为 [$1]，勾选「正则表达式」，点全部替换，每行首字符被套上方括号
+4. 给文本上色：菜单栏「语言」选 Markdown 或 Python，观察关键字与标题变色的差别
+5. 练习编码转换：在「编码」菜单选「转为 ANSI」保存一份，再用「转为 UTF-8」转回来，对照两次显示差异，理解乱码从何而来
+6. 最后按 Ctrl+Shift+S 把当前会话里所有打开的文件一并保存，这是多标签工作时的常用收尾动作","Windows|x64 安装器（Intel 与 AMD 64 位，绝大多数机型）|https://notepad-plus-plus.org/downloads/
+Windows|x64 绿色 zip（免安装、U 盘携带）|https://notepad-plus-plus.org/downloads/
+Windows|ARM64（骁龙 X 系列笔记本）|https://notepad-plus-plus.org/downloads/
+Windows|32 位 x86 包（旧机或依赖 32 位插件时）|https://notepad-plus-plus.org/downloads/
+全部构建|官方 GitHub 发布页，含校验和|https://github.com/notepad-plus-plus/notepad-plus-plus/releases/latest
+macOS 与 Linux|无原生版本，官方建议改用同类跨平台编辑器|https://notepad-plus-plus.org/","只发布 Windows 版本。下载页对同一版本给出 x64 与 ARM64 两种安装器以及 x64 的 zip 绿色包：Intel/AMD 机型选 x64，骁龙 X 系列笔记本选 ARM64，需要在机房电脑上免安装使用才拿 zip。32 位包现在只有一种情况才需要——继续依赖某个只有 32 位 dll 的老插件，否则 64 位程序无法加载它，表现为插件管理器里显示了插件却调不出菜单。苹果与 Linux 上没有官方移植，课程要求同一环境时改用跨平台的同类编辑器更省事。"
+"Everything","https://www.voidtools.com/downloads/","https://www.voidtools.com/downloads/","Everything 是 voidtools 出品的 Windows 文件名检索工具，解决的是资源管理器搜索慢的问题。它直接读取 NTFS 的主文件表（MFT，记录卷上所有文件名的元数据表），一次性建立全盘名称索引，几十万条记录通常十几秒建成，之后输入关键词即时出结果，内存占用也远小于逐目录遍历的方案。功能上包含：搜索语法，例如扩展名限定、按文件夹范围、按大小与修改日期过滤、正则与通配；实时索引，文件新增删除立刻反映到结果里；排序与列自定义；把窗口固定在最前并用快捷键呼出；内置 HTTP 与命令行接口 ES，可在脚本里取结果并喂给后续处理；以服务模式运行时以最低权限访问 MFT。可索引 NTFS 与 exFAT 等卷，非 NTFS 位置通过增量索引目录纳入。仅 Windows，稳定版 1.4.1.1032，预览版 1.5.0.1423b。","计算机系统工具","官方域只有 voidtools.com，下载页是 https://www.voidtools.com/downloads/，页面上所有安装包与校验文件都挂在同域下。需要提防的形态：把 Everything 与常见英文词混用做投放的仿冒站，域名里带 down、soft、cn 等后缀，页面外观几乎一样但下载按钮指向别处；把原版程序改名重打包并预置主页劫持的“高速中文版”，官方安装程序本身带简体中文，不存在单独的中文版；把 ES 命令行工具与主程序分开发布的站点。核验方式有三步：地址栏逐字确认是 voidtools.com；下载同页的 .sha256 校验文件核对哈希；安装后在程序「关于」里看官方主页一栏指向 voidtools.com。凡是搜索结果首位带下载器、要求先装“安全组件”的页面，都不算官方渠道。","普通搜索是一个文件夹一个文件夹翻过去看，文件越多越慢。Everything 换了个思路：卷上每个文件叫什么、在哪个目录，操作系统本来就记在一张表里（主文件表），它把这张表读进内存建成索引，之后只是查表，所以快。要理解的两点区别：第一，它默认只查文件名与路径，不读文件里面写了什么，所以搜「报告」能找到文件名含报告的文档，却搜不出正文里的词；需要查内容时得开启内容索引，或改用全文检索工具，代价是索引更大、更慢。第二，索引是按卷建立的，插上移动硬盘或访问网络共享里的文件不在默认范围内，要把这些位置加入增量索引才会出现。此外它还分“以管理员运行”和“服务模式”两种取表的方式：不升权限就读不到 MFT，这也是很多人装完搜不出结果的真正原因。","1. 打开官方下载页 https://www.voidtools.com/downloads/，稳定版文件名形如 Everything-1.4.1.1032.x64-Setup.exe，Intel 与 AMD 的 64 位机型取这一条
+2. 骁龙 X 系列笔记本改取 ARM64 安装包（当前挂在预览版编号下）
+3. 需要免安装或 U 盘携带时，取同页的 zip 包，解压后直接运行程序本体
+4. 双击安装包，安装向导里可把界面语言选为简体中文，随后选择安装目录，默认即可
+5. 在安装选项页勾选「安装 Everything 服务」，它负责以最小权限读取卷索引；同时按需勾选「随 Windows 启动」
+6. 完成后启动程序，窗口底部状态栏会出现索引进度，几十万文件一般十几秒完成
+7. 首次搜索前用右键菜单里的「以管理员身份运行」验证一次能否看到全部本地卷，若正常，之后交给服务模式即可
+8. 在「工具→选项→索引」里确认要检索的卷已勾选，插了第二块盘的话在这里补上","1. 索引内容包含整盘所有文件名，公司电脑与共享机器上要考虑隐私，必要时限定索引目录，并在退出时清空最近搜索
+2. 开启内置 HTTP 服务后局域网内其他程序可查询你的索引，不需要就关掉，需要时请设置访问口令
+3. 它只覆盖 Windows，macOS 与 Linux 无对应版本；跨平台协作时不要把工作流依赖在它身上
+4. 稳定版 1.4 与预览版 1.5 的配置目录一致，降级前建议先导出设置，避免新格式配置读不出来
+5. 结果列表默认不显示隐藏与系统文件，需要时在选项里显式打开，不要误认为文件丢失
+6. 安装包同页提供 sha256 校验值，从网络环境不稳定处下载后先核对再安装","1. 现象：明明盘里有这个文件，搜索框里敲名字却一条结果都没有｜原因：程序没有读取该卷索引的权限，或以普通权限启动而无法访问 MFT｜纠正：以管理员身份运行一次并勾选安装服务，确认状态栏显示已索引的文件数量不为零。
+2. 现象：换到 D 盘或移动硬盘后搜不到内容｜原因：默认只索引安装时探测到的 NTFS 卷，新卷未加入索引范围｜纠正：在「工具→选项→索引」里勾选该卷，非 NTFS 位置改为加入文件夹做增量索引。
+3. 现象：想找文档里写过的词，搜出来是空的｜原因：默认只匹配文件名与路径，不读文件内容｜纠正：改用文件名关键词组合扩展名过滤，或开启内容索引，正文级检索更合适的做法是配合专门的全文工具。
+4. 现象：从仿冒站下载后浏览器主页被改，程序里还多出广告｜原因：拿到的是二改打包版本｜纠正：卸载并在 voidtools.com 重新下载，用同页 sha256 核对文件，检查安装目录有无陌生 dll。","1. 托盘区出现 Everything 图标，主窗口底部状态栏显示形如「已索引 xxx 个文件」的数字，且数字与本机文件量级相符
+2. 搜索框输入 .txt 或 ext:txt，结果列表瞬间列出 txt 文件，说明索引与查询链路可用
+3. 按 F5 重建索引后数字继续变化，且新建一个文件后两三秒内能搜到，说明实时更新生效
+4. 在「工具→选项→索引」页面能看到本地各 NTFS 卷被列出并勾选
+5. 命令行验证：安装目录下执行 es.exe -n 5 .py，返回若干条文件名而不报错，说明命令行接口可用
+6. 结果列表标题行点文件名可切换排序，右键能「打开路径」并定位到该文件","1. 启动后把光标放在搜索框，先输入 py 观察结果滚动，这就是它的基本工作方式
+2. 输入 ext:py，只看 Python 源文件；再加空格输入 project，条件即为「名字里含 project 的 py 文件」
+3. 输入 size:>50mb 找出大于 50 兆的文件，用来定位占空间的元凶
+4. 输入 dm-res:np 一类高级语法前不必深究，先用界面上的「工具→搜索→高级搜索」对话框把条件填出来，看它生成的字符串，反向理解语法
+5. 右键任一条结果，选「打开路径」，在文件管理器里定位到该文件所在目录，确认索引与真实磁盘一致
+6. 按 F7 把窗口固定在最前，再到「工具→选项→常规」里设置一个呼出快捷键，之后随时一键唤出，这是它日常最省时间的用法","Windows|x64 安装版（Intel 与 AMD 64 位）|https://www.voidtools.com/Everything-1.4.1.1032.x64-Setup.exe
+Windows|x64 便携 zip（免安装）|https://www.voidtools.com/Everything-1.4.1.1032.x64.zip
+Windows|ARM64（骁龙 X 系列笔记本）|https://www.voidtools.com/Everything-1.5.0.1423b.ARM64-Setup.exe
+Windows|x86 32 位旧机|https://www.voidtools.com/Everything-1.4.1.1032.x86-Setup.exe
+命令行版 ES|x64 与 ARM64，脚本与 PowerShell 里调用|https://www.voidtools.com/ES-1.1.0.38.x64.zip
+校验和|官方 sha256 文件|https://www.voidtools.com/Everything-1.5.0.1423b.sha256
+macOS 与 Linux|官方无对应构建|https://www.voidtools.com/downloads/","官方按 x64、ARM64、x86 三种 Windows 架构分别发布，并同时提供安装版（Setup.exe、msi）与免安装 zip；索引内容完全相同，差别只在是否写入注册表与服务。ARM64 条目目前挂在 1.5 预览版下，介意的话可先用 1.4 稳定版的 x64 包在模拟层运行。做批处理或 PowerShell 检索时用官方的 ES 命令行包，它的架构划分与主程序一致。非 Windows 平台没有构建，文件检索需改用系统自带工具。"
+"Rufus","https://rufus.ie","https://github.com/pbatard/rufus/releases/latest","Rufus 是 Akeo（GitHub 账号 pbatard）维护的 Windows 可启动 U 盘制作工具，体积小、单文件运行，不写注册表也不需要安装。它的职责是把一张 ISO 光盘镜像写成 U 盘上可引导的系统：支持 Windows 安装镜像、各类 Linux 发行版、FreeDOS、UEFI Shell 等；提供两种写入方式，标准模式把文件解出到 FAT 分区、写完仍可继续存放其他资料，DD 模式按扇区整盘镜像、兼容性最好但 U 盘在系统里会显示为无法读取的原始分区；可自选分区形式（MBR 或 GPT）与目标固件（传统 BIOS 或 UEFI），并在制作 Windows 安装盘时提供去除硬件与账户限制、创建本地账户等选项；支持校验镜像哈希、下载镜像、把 U 盘超级格式化回普通存储盘。当前版本 4.15，发布 x64、ARM64、32 位与便携版四种文件。仅 Windows，macOS 与 Linux 无原生版本。","计算机系统工具","官方域是 rufus.ie（含 rufus.io 的作者旧域，页面均指向同一发布渠道），源码与二进制同时挂在作者的 GitHub 账号 pbatard/rufus 发布页。这两处之外都要当作可疑。常见形态：仿冒主页把下载按钮接到带下载器的第三方位，装上后附带推广程序；宣称“Rufus 中文版绿色免安装精修版”的分发，官方程序自带简体中文且本就是免安装单文件，所谓中文版多余；把老版本伪装成最新版，用于回滚到某个仍会绕过新版限制的构建。核验办法：官方页面底部列出每个文件的 SHA-256 与 GPG 签名，下载后核对；同时与 GitHub 发布页的资产名与哈希对照。需要额外提醒：制作系统盘时用到的 Windows 与 Linux 镜像也必须来自厂商官方站点，工具干净而镜像来路不明，结果一样不可控。","U 盘平时是存储设备，把它变成可启动设备的意思是：开机时主板可以直接从它里面读引导程序并进入安装或试用界面，这类用途在重装系统、装 Linux、给没有光驱的机器装驱动时都需要。ISO 是整张光盘的镜像文件，扩展名叫 iso，工具把它“摊”到 U 盘上。理解三组概念就够用了。第一组是分区形式与固件：新机器用 UEFI 固件配 GPT 分区表，十多年前的老机器用传统 BIOS 配 MBR，两者错配的典型表现是制作成功但开机启动菜单里看不到这块盘。第二组是写入方式：标准模式像把文件铺成一个正常分区，之后还能往里放东西；DD 模式是逐扇区照抄镜像，U 盘因此变得“看不见容量”，这是正常现象不是盘坏了。第三组是格式化：制作过程会重写分区表，盘上原有数据全部消失，所以先备份。","1. 先把 U 盘里所有需要保留的文件复制到别处，制作过程会重写整盘
+2. 打开 https://rufus.ie/en/，在 Windows 区取与机型对应的文件：Intel 或 AMD 的 64 位机取 rufus-4.15.exe，骁龙 X 系列笔记本取 rufus-4.15_arm64.exe，需要放到 U 盘随身带就取便携版
+3. 双击运行，它是单文件程序，无需安装，若提示权限请选择以管理员身份运行，否则部分设备无法底层写入
+4. 「设备」下拉确认选中的正是目标 U 盘，别看错成移动硬盘
+5. 「引导类型选择」点「选择」，指向已核对过哈希的官方 ISO 文件
+6. 「分区类型」与「目标系统类型」按目标机器选：近十年的机器用 GPT 加 UEFI，老机器用 MBR 加 BIOS 或 UEFI
+7. 卷标与文件系统保持默认，点击「开始」，若弹出写入方式或清除数据确认框，按需选择并确认盘内已无重要数据
+8. 底部进度条走完并显示「准备就绪」后，用系统托盘的安全弹出移除 U 盘，再插到目标机器上按启动菜单键选择它","1. 备份优先级高于一切：Rufus 会重写分区表，只删除一个分区是不够的，请整盘复制出来
+2. 镜像必须来自官方：Windows 镜像用微软官方介质创建工具获取，Linux 用发行版官网或其镜像列表，拿到后就核对页面公布的 SHA-256
+3. DD 模式写完 U 盘在 Windows 里显示为无法访问或未分配容量属正常，恢复成普通存储盘要用「超级格式化」
+4. 不要边写边拔，也不要用带硬件加密或老旧 USB 集线器的通路，中途断电会让 U 盘处于半写入状态
+5. 制作 Windows 11 安装盘时出现的账户与硬件限制相关选项属可选功能，勾选前想清楚要不要保留默认策略
+6. 它是 Windows 程序，macOS 与 Linux 上请改用系统自带方式或对应工具，不要指望 Wine 下稳定完成底层写盘","1. 现象：U 盘里原来存的照片和文档全部不见｜原因：制作前把可启动盘当成普通复制来理解，未做备份，写盘时分区表被重建｜纠正：拔下目标盘前先把数据整盘复制出来，恢复数据只能在写盘之前谈。
+2. 现象：盘做好了，目标机开机按启动菜单键却看不到它｜原因：分区形式与固件错配，例如给 UEFI 机器写了 MBR 方案｜纠正：重做一次，新机器选 GPT 加 UEFI，十多年前的老机器才用 MBR 加传统 BIOS。
+3. 现象：Linux 镜像写完启动黑屏或进不去安装界面｜原因：标准模式解压写入与该发行版的引导布局不匹配｜纠正：在同一位置改选 DD 方式写入，扇区级镜像的兼容性更高。
+4. 现象：设备列表里看不到插上的 U 盘，或提示无法访问设备｜原因：权限不足或该盘被其他程序占用｜纠正：以管理员身份重新运行 Rufus，换直连主板接口，关闭正在索引该盘的软件后点刷新设备列表。","1. 运行后主界面顶部正常显示版本号 4.15，程序目录不需要安装即出现在下载文件夹，说明拿到的是官方单文件版
+2. 插入 U 盘后「设备」下拉出现该盘的型号与真实容量，容量与标称一致
+3. 选定 ISO 后底部「镜像哈希」或校验栏显示 SHA-256，与厂商公布值逐字符相同
+4. 点击开始后日志面板逐行输出且结尾为绿色「准备就绪」，没有红色错误行
+5. 写完后在磁盘管理里能看到该盘新的分区布局（DD 模式显示为未知或未分配也属正常）
+6. 最终验证在目标机上完成：开机进入启动菜单，列表中出现这块 U 盘的名称，选中后进入安装或试用界面","1. 从一个 Ubuntu 桌面版 ISO 开始练手（从发行版官网下载并核对哈希），准备一枚 8 千兆以上的空 U 盘
+2. 运行 rufus-4.15.exe，设备选这枚 U 盘，引导类型点「选择」指向那个 iso
+3. 分区类型保持 GPT、目标系统类型 UEFI，其余默认，点开始并确认清盘提示
+4. 进度走完后安全弹出，插到一台可以进 BIOS 启动菜单的机器上，开机按启动菜单键选择 U 盘
+5. 进入 Try Ubuntu（试用而不安装）桌面，能在虚拟机之外完整跑起这套系统，说明这块可启动盘可用
+6. 拔回开发机，在 Rufus 里把「引导类型」改为「非引导」再点开始做一次超级格式化，U 盘恢复成普通存储盘，练习结束","Windows|x64 主程序（Intel 与 AMD 64 位，绝大多数机型）|https://rufus.ie/en/
+Windows|便携版（不写注册表，放 U 盘随身带）|https://rufus.ie/en/
+Windows|ARM64（骁龙 X 系列笔记本）|https://rufus.ie/en/
+Windows|x86 32 位旧机|https://rufus.ie/en/
+全部构建|作者维护的官方 GitHub 发布页|https://github.com/pbatard/rufus/releases/latest
+macOS 与 Linux|无原生版本，制作启动盘请改用发行版工具或 dd|https://rufus.ie/en/","Rufus 只运行在 Windows 上，页面提供 x64 主程序、便携版、ARM64 版和 32 位版四种，常见机型下载默认那个 x64 即可，它是单文件绿色程序，运行与否都不安装。ARM 笔记本选 ARM64 版。真正需要分辨的不是 CPU 架构而是目标机器的启动方式：近十年的台式机与笔记本多为 UEFI，配 GPT 分区；十多年前的老机器才用传统 BIOS 加 MBR，选错的表现是制作成功但启动项里看不到这块 U 盘。"
+"Blender","https://www.blender.org","https://www.blender.org/download/","Blender 是 Blender 基金会维护的开源三维创作套件，采用 GPL 许可，免费且无功能限制，个人与商用皆可。它覆盖的是完整的一条流程而不只是建模：网格与曲线建模、数字雕刻、UV 展开与贴图绘制、基于节点的材质与几何节点、骨骼绑定与动画、非线性动画编辑、Cycles 路径追踪渲染器与 Eevee 实时渲染器双轨、合成器、视频序列编辑、以及流体、粒子、软体、烟雾等物理模拟。工程以单个 .blend 文件保存整个场景，内部数据可通过内置 Python 接口读写，插件生态丰富。跨 Windows、macOS 与 Linux，官方对三个平台都给出对应构建：Windows 有 x64 与 ARM64 及免安装 zip，macOS 提供 Intel 与 Apple Silicon 通用包，Linux 提供 x64 的 tar.xz。当前官方下载页列出的版本线为 5.2.x，历史版本在官方镜像服务器上完整保留。","图形与制作","官方域只有 blender.org，二进制同时来自其官方镜像服务器 download.blender.org，这两处之外的分发都算第三方。需要警惕的形态：搜索结果里排在前面、界面仿造官网并挂“高速”“极速”下载按钮的下载站，安装包常被夹带推广软件；标注“Blender 中文特别版”“破解完整版”的网盘资源，官方本就免费且自带简体中文界面，任何“破解”说法本身即矛盾；把旧构建重新打包并冒充最新版，代价是修过的安全与稳定性问题一个都没解决。核验方式：地址栏确认 blender.org，或下载页链接指向 download.blender.org；与官方发布说明里的版本号、文件名对照；Windows 安装包可查看数字签名。做教程素材时要长期用同一版本，建议直接从官方镜像取并记下版本，避免团队成员各装各的。","三维软件做的东西本质是三样：物体、材质、光。物体由面片拼成，最小单位是顶点，顶点连成边、边围成面，一个杯子就是一个闭合的面壳；这就是所谓网格（Mesh）。材质决定面看起来是金属、塑料还是玻璃；光决定明暗与阴影；最后由渲染器把这一切算成一张图，这一步叫渲染。Blender 里有两个渲染器，可以这样理解取舍：Cycles 按真实光线传播去算，画面准确、有柔和的反射与阴影，慢；Eevee 用近似手段实时出图，快，适合看布局和做动画预览，效果略逊。另外常混淆的一类是 CAD 软件：CAD 用参数与实体描述精确尺寸，用于工程图纸与加工；Blender 用的是自由网格，优势在造型、雕刻、动画与影视类工作，不追求尺寸精度。默认打开时场景里已有立方体、相机和灯，相机是“你的取景眼睛”，灯是光源，删掉任一个画面就会出问题。","1. 打开官方下载页 https://www.blender.org/download/，按系统区选：Windows 取 x64 安装器（免安装选 zip 便携包），骁龙 X 笔记本选 ARM64，macOS 一个通用包 Intel 与 M 系列都能用，Linux 取 x64 的 tar.xz
+2. Windows 上双击安装器，安装路径避免中文与过深目录，勾选创建桌面快捷方式
+3. 首次启动进入欢迎界面，界面语言可在 Edit（编辑）→Preferences（偏好设置）→Interface（界面）→Language（语言）里选简体中文，同时勾选 Translations（翻译）
+4. 还是偏好设置里，进 System（系统）勾选可用的 GPU 设备（NVIDIA 选 CUDA 或 OptiX，AMD 与部分核显按列表选，Apple Silicon 选 Metal），Cycles 渲染速度差别主要在这一步
+5. 在 Save & Load（保存与加载）里确认自动保存间隔与文件路径，默认每两分钟存一次，建议保留
+6. 新建文件先按默认模板进入工作区，用中键拖动旋转视图、滚轮缩放、小键盘 0 进入相机视角，熟悉操作后再改键位
+7. 需要插件时在「编辑→偏好设置→插件」里安装，插件版本必须与主程序版本匹配","1. 工程文件向前兼容但不向后兼容：5.2 存的 .blend 打不开在 4.x 上，团队协作先统一版本号，再考虑跨版本交付时用导出格式
+2. 贴图与外部数据用相对路径管理，把工程与素材放同一目录再整体移动，否则换机器打开会一堆丢失
+3. Blender 的许多快捷键依赖小键盘数字键，没有独立小键盘的笔记本要在偏好设置里勾选「模拟小键盘」，不然会表现为某些键按了没反应
+4. 渲染吃显卡显存，大场景在显存不足时会退回 CPU 或直接崩溃，先降采样与分辨率试跑
+5. 崩溃或强制关闭后，恢复依赖自动保存与 .blend1 备份文件，重要工程建议同时纳入版本管理或定期另存递增编号
+6. 官网列出的系统要求会随版本提高，旧机器打不开新版时可从官方镜像取历史版本，不要从第三方版本库下载","1. 现象：打开同事发来的 .blend 时提示由更新版本创建、无法读取｜原因：Blender 工程文件不向后兼容｜纠正：把本机升级到与文件一致的版本，或请对方用导出格式（如 glTF、OBJ、Alembic）交付。
+2. 现象：按 F12 渲染出来一片黑，或只看到默认立方体之外什么都没有｜原因：场景里没有灯，或相机位置与物体不重叠｜纠正：加一盏灯（Add→Light），按小键盘 0 进相机视角确认取景，再重新渲染。
+3. 现象：模型表面出现不该有的黑边、破面或明暗斑｜原因：法线方向不一致，或重叠顶点造成计算错误｜纠正：进入编辑模式全选面，用「网格→法线→重新计算外侧」统一朝向，并做一次按距离合并顶点。
+4. 现象：从非官方渠道装完后插件目录多出陌生文件、更新提示异常｜原因：二次打包改动过程序，更新链被他人控制｜纠正：卸载后从 blender.org 或 download.blender.org 重装，与官方版本号、签名逐一核对。","1. 启动后在「编辑→偏好设置→关于」或标题栏能看到完整版本信息，含版本号与构建提交号
+2. 命令行执行 blender --version（Windows 需在安装目录的完整路径下执行），输出版本号且不报缺失运行库
+3. 新建文件后按 F12 能渲染出一张包含默认立方体、相机与灯的画面，说明渲染与视图链路正常
+4. 在偏好设置的 System 面板中能看到已勾选的 GPU 设备；把渲染引擎切到 Cycles 后采样不再回落到 CPU
+5. 文件→保存为一个 .blend，关闭再重新打开该文件，物体、材质、灯光位置完全保留
+6. 用「窗口→置顶区域编辑」调整一次工作区布局不报错，说明图形界面与显示驱动工作正常","1. 启动后进入默认场景，选中那个立方体，按 X 或 Delete 删除，场景清空
+2. 按 Add→网格→UV 球体，鼠标点一下确定位置，右键结束放置，再按 N 打开侧栏，在变换项里把半径改为 1
+3. 按 Tab 进入编辑模式，选中球体上半部的若干面，按 E 挤出，得到一个凸起，再按 Tab 退出，这就是建模的最小闭环
+4. 右侧属性面板切到材质，点新建，把基础色调成红色，粗糙度降到 0.3，让球看起来像塑料
+5. 渲染引擎选 Cycles，采样数先设 64，按 F12 渲染，等待若干秒得到一张有光影的图；再切 Eevee 按 F12 对比出图速度
+6. 用「图像编辑器」窗口的「图像→另存为」把渲染结果存成 PNG，最后把工程存成 hello.blend，第一个完整作品结束","Windows|x64 安装器（Intel 与 AMD 64 位）|https://www.blender.org/download/
+Windows|ARM64（骁龙 X 系列笔记本，官方另列条目）|https://www.blender.org/download/
+Windows|便携 zip（免安装，用于机房与移动硬盘）|https://www.blender.org/download/
+macOS|Apple Silicon 与 Intel 通用 dmg|https://www.blender.org/download/
+Linux|x64 tar.xz，另有各发行版仓库与 Snap|https://www.blender.org/download/
+源码与其他平台|官方构建服务器上的全部产物|https://download.blender.org/
+龙芯 LoongArch|官方无预编译包，需自行编译|https://download.blender.org/","下载页按系统分三栏：Windows 除 x64 外单列 ARM64 与便携 zip，macOS 提供通用二进制，Intel 与 M 系列芯片用同一个包，Linux 给 x64 的 tar.xz，并可从各发行版仓库或 Snap 安装。Apple Silicon 上渲染走 Metal，与 Windows 上走 CUDA 或 HIP 的配置不同，导出设置不能照抄。龙芯等国产平台官方不发布预编译包，需要自行编译或用系统仓库版本。"
+"VMware Workstation Pro","https://www.vmware.com/products/workstation-pro.html","https://support.broadcom.com/group/ecx/productdownloads?subfamily=VMware%20Workstation%20Pro&freeDownloads=true","VMware Workstation Pro 是桌面级虚拟机（Virtual Machine）软件，在一台 Windows 或 Linux 物理机内同时运行多台完整的客户机系统。核心能力是快照（Snapshot，保存整机状态可回退）、三种虚拟网络（NAT、桥接、仅主机）、共享文件夹与 USB 直通、虚拟磁盘动态分配，以及用简易安装（Easy Install）自动部署客户机。自 17.5 版起个人使用免费，商用需经博通（Broadcom）订阅授权。关键事实：VMware 被博通收购后，vmware.com 产品页不再直接提供下载，官方入口迁至 Broadcom 支持门户，须注册登录后选择版本，故本页下载直链指向该门户而非 exe 文件。它与 VirtualBox 属同类工具，与 Docker 一类容器不同类。","虚拟机与容器;计算机系统工具","官方域只有 vmware.com 与 support.broadcom.com 两处，二者互相跳转属正常官方链路：vmware.com 产品页如今会引导到博通，下载必须在 support.broadcom.com 登录账号后完成，这并不代表官网是假的。需警惕：以“VMware 中文官网”名义挂下载器的站点，多为二次打包并附带浏览器插件；把 vmware 换成相近字符或追加 cn、download 后缀的仿冒域；宣称“永久激活码”“绿色精简版”“免登录直链”的网盘帖，博通门户要求登录，绕过登录的分发都不来自官方；下载站的历史版本库，版本藏旧且无签名可核。凡带 download、official 字样而域名不在上述两处的，先存疑并核对地址栏。","虚拟机是用软件在一台真实电脑里模拟出的另一台完整电脑：它有虚拟的 CPU、内存、硬盘和网卡，上面运行的是货真价实的客户机操作系统，与宿主机之间隔着一层虚拟化管理程序（Hypervisor）。容器（Container）与此不同：它只打包应用及其依赖库，内核仍复用宿主机的，体积以 MB 计、启动以秒计，但只能运行与宿主机同类内核的系统；虚拟机把整套操作系统一并虚拟化，可以运行与宿主机完全不同的系统，代价是数 GB 磁盘与较慢的启动。快照相当于给整台虚拟机拍一张照片，做高风险操作前先拍一张，系统被破坏后可一键回到拍照时刻。用虚拟机的理由主要有两个：一是隔离，试装来源可疑的软件、复现恶意样本或修改底层设置都被限制在虚拟硬件内，不会污染真实环境；二是跨系统与多机拓扑，在一台 Windows 笔记本上跑 Linux 教学环境，或用几台虚拟机模拟一个小型网络。","1. 在 support.broadcom.com 注册博通账号并完成邮箱验证，个人用途按提示选择相应许可类型
+2. 打开本页下载直链进入 VMware Workstation Pro 产品下载页（链接中已带 freeDownloads 筛选），在当前版本的列表中选 Windows 宿主（host）的 .exe 全量安装包
+3. 下载完成后双击运行安装向导，安装路径可改到非系统盘，但避免中文与空格目录
+4. 在可选组件页取消勾选：加入客户体验改善计划（CEIP）与用户体验改善计划、启动时检查产品更新，这些均为可选件，不影响使用
+5. 安装完成后首次启动，在许可证界面选择 “Use for personal purposes”（个人用途），个人使用无需序列号，不要使用来路不明的激活码
+6. 重启一次系统，在任务管理器→性能→CPU 确认“虚拟化：已启用”，随后即可新建虚拟机","1. 授权边界：个人学习与非营利使用免费，企业或商用环境需通过博通订阅获取许可，公司电脑安装前先与 IT 及合规确认
+2. 硬件虚拟化：需在 BIOS/UEFI 中开启 Intel VT-x 或 AMD-V，未开启时无法创建虚拟机；个别机型还需调整安全启动（Secure Boot）策略
+3. 与 Hyper-V 的关系：16.x 及更早版本与 Windows 的 Hyper-V、虚拟机平台（Virtual Machine Platform）、内存完整性（Core Isolation，即 HVCI）互斥，启用这些功能后虚拟机启动失败甚至蓝屏；自 17.5.0 起官方支持在已启用 Hyper-V 的 Windows 11 上与系统 Hypervisor 并存，因此遇到冲突应先升级到 17.x，而不是关闭系统安全项
+4. 下载必须登录博通门户，账号注册与邮箱验证不可跳过；列表中同一版本常有多个条目，认准 Windows host 的完整安装包
+5. Linux 宿主机在系统内核升级后需重新编译 vmmon 与 vmnet 内核模块，否则服务无法加载
+6. 虚拟机目录体积大且随快照增长，规划存放分区时预留 100GB 以上，并把它纳入备份范围而不是只备份宿主文件","1. 现象：从搜索前排的“VMware 官网”下到的安装包体积明显偏大，装完浏览器主页被改｜原因：该站点为二次打包，附带推广组件｜纠正：只在 vmware.com 与 support.broadcom.com 两个域内完成登录与下载。
+2. 现象：启动时弹出要求输入序列号或进入 30 天试用｜原因：首屏许可证界面未选择个人用途｜纠正：选择 “Use for personal purposes”，个人用途免序列号，切勿使用第三方“激活工具”。
+3. 现象：新建虚拟机报“此主机不支持 Intel VT-x”或提示虚拟化已关闭｜原因：BIOS/UEFI 未开启 VT-x/AMD-V，或被安全策略禁用｜纠正：重启进入 BIOS 开启虚拟化开关，再到任务管理器→性能→CPU 查看“虚拟化：已启用”。
+4. 现象：升级 Windows 11 并开启内存完整性后，旧版 Workstation 打不开虚拟机｜原因：16.x 与 HVCI、Hyper-V 争抢硬件虚拟化层｜纠正：升级到 17.5 及以上版本，而不是关闭系统安全功能。
+5. 现象：客户机无法上网，或局域网其他机器访问不到客户机｜原因：NAT、桥接、仅主机三种虚拟网络选错｜纠正：仅本机访问用 NAT，需被局域网发现用桥接，完全隔离实验用仅主机。
+6. 现象：虚拟机放在 OneDrive 等同步目录后报文件被占用，甚至虚拟磁盘损坏｜原因：同步程序与虚拟机独占锁持续争抢大文件｜纠正：把虚拟机目录移出同步盘、网盘与网络共享路径。
+7. 现象：磁盘莫名其妙被占满，客户机实际使用量远小于目录体积｜原因：快照链把每次改动记成增量文件且长期不清理｜纠正：删除无效快照，需要长期保留的状态改用完整克隆或离线备份。","1. 打开命令提示符执行 vmware -v，期望输出形如 VMware Workstation 17.6.0 build-24319060
+2. 若提示 vmware 不是内部或外部命令，说明未加入 PATH，改用完整路径执行 ""C:\Program Files (x86)\VMware\VMware Workstation\vmware.exe"" -v
+3. 在客户端菜单点 帮助→关于，能看到版本号与构建号，且许可类型为个人用途而非试用倒计时
+4. 执行 ""C:\Program Files (x86)\VMware\VMware Workstation\vmrun.exe"" -T ws list，返回 Running VMs: 空列表且不报错，说明后台服务与驱动正常
+5. Windows 网络连接列表中出现 VMware Virtual Ethernet Adapter for VMnet1 与 VMnet8 两块虚拟网卡，说明虚拟网络已装好
+6. 新建一台虚拟机并开机进入客户机桌面，即全流程验证通过","1. 主页点“创建新的虚拟机”→配置选“典型”→安装来源选“安装程序光盘映像文件（iso）”，指向从 ubuntu.com 下载的桌面版 ISO
+2. 客户机系统选 Linux → Ubuntu 64 位，磁盘给 25GB 并选择单个文件与动态分配，按提示完成创建
+3. 开机后 Workstation 用简易安装（Easy Install）自动走完分区与建账号，等待进入 Ubuntu 桌面，这台虚拟电脑就算真正跑起来了
+4. 在客户机终端执行 cat /etc/os-release，能打印发行版信息即说明系统完整可用
+5. 回到菜单 虚拟机→快照→拍摄快照，命名为“干净系统”，然后在客户机里删掉几个系统文件或改乱桌面
+6. 关机后点“转到快照”选“干净系统”，重新开机确认一切回到拍照时刻——可试错、可回退，正是虚拟机存在的意义","Windows|amd64（Intel 与 AMD 64 位桌面 CPU，登录博通门户后取 Windows host 安装包）|https://support.broadcom.com/group/ecx/productdownloads?subfamily=VMware%20Workstation%20Pro&freeDownloads=true
+Linux|amd64（Linux 宿主机，同一门户列表中取 .bundle 包）|https://support.broadcom.com/group/ecx/productdownloads?subfamily=VMware%20Workstation%20Pro&freeDownloads=true
+Windows on ARM（骁龙 X 系列笔记本）|无宿主版本，改用系统自带 Hyper-V|https://learn.microsoft.com/windows-server/virtualization/hyper-v/hyper-v-technology-overview
+macOS（Intel 与 Apple Silicon）|Workstation Pro 无 macOS 宿主版本，macOS 上改用 VMware Fusion（博通门户中把 subfamily 换成 VMware Fusion）|https://www.vmware.com/products/workstation-pro.html
+龙芯 LoongArch 与国产 ARM 平台|官方无对应构建，x86 安装包不可运行，改用厂商提供的虚拟化方案|https://www.vmware.com/products/workstation-pro.html
+历史版本（17.5 以前）|需登录博通门户在版本列表中按许可获取，不要从第三方版本库存下载|https://support.broadcom.com/group/ecx/productdownloads?subfamily=VMware%20Workstation%20Pro&freeDownloads=true","本软件只有 amd64 的 Windows 与 Linux 宿主构建，Intel 与 AMD 的 64 位机型通用。骁龙 X 系列这类 ARM64 笔记本没有宿主版本，改用系统自带的 Hyper-V；Mac 也不能装 Workstation，苹果机型对应的产品是 VMware Fusion，同样要在博通门户登录后取。龙芯与国产 ARM 平台没有对应构建，x86 安装包不可运行。下载入口只有一个：support.broadcom.com 的产品下载页，注册并验证邮箱后按列表选 Windows host 全量包。"
+"VirtualBox","https://www.virtualbox.org/","https://www.virtualbox.org/wiki/Downloads","VirtualBox 是甲骨文（Oracle）维护的开源虚拟机（Virtual Machine）软件，虚拟机内核按 GPL v2 许可证发布，扩展包（Extension Pack）为 PUEL 许可。宿主覆盖 Windows、Linux、macOS（Intel 与 Apple Silicon 两种机型都有宿主构建）与 Solaris，客户机覆盖 Windows、Linux 与 BSD。它提供图形管理器与命令行工具 VBoxManage，支持快照与完整克隆、虚拟介质格式互转（VDI/VMDK/VHDX）、NAT 与桥接等五类虚拟网络、USB 直通、共享文件夹与远程桌面。Windows 宿主安装包在该页列为 “VirtualBox x.X Platform Packages → Windows hosts”，扩展包在同页 Extension Pack 条目下；它没有 Windows ARM64 宿主版本。","虚拟机与容器;计算机系统工具","官方域只有 virtualbox.org，其 wiki 子路径与下载域 download.virtualbox.org 均属官方链路，点官网按钮跳到下载域是正常现象。需警惕：“VirtualBox 中文官网”“VirtualBox 下载站”提供的多是重新打包的安装程序，会改默认设置并附带推广；“汉化绿色版”“免安装整合版”破坏更新链路且无法核对签名；把主程序与扩展包合并分发的“全能版”常版本错配并夹带外部脚本，而扩展包必须与主程序版本号严格一致；字符替换或追加 cn、soft、down 后缀的仿冒域。判别办法：全平台只有一个 wiki 下载页，安装包是一百 MB 上下的单个可执行文件且不带下载器，凡要求先装高速下载组件的都不是官方。","虚拟机是用软件在一台真实电脑内模拟出的另一台完整电脑：它有虚拟的 CPU、内存、硬盘与网卡，运行货真价实的客户机操作系统，与宿主机之间隔着一层虚拟化管理程序（Hypervisor）。容器（Container）走的是另一条路：只把应用连同依赖库打包，内核仍复用宿主机的，所以启动快、体积小，但只能运行与宿主机同类内核的系统；虚拟机把整套操作系统一起虚拟化，可运行完全不同的系统，代价是数 GB 磁盘与较慢的启动。快照是虚拟机的时间标记，记录某一时刻整机状态，改坏后可回到该时刻。用虚拟机的理由有两个：一是隔离，来源可疑的软件、恶意样本复现与危险的系统实验都被限制在虚拟硬件之内；二是跨系统与多机拓扑，在 Windows 笔记本上跑 Linux 教学环境，或同时开几台虚拟机模拟小型网络。VirtualBox 的特点是免费开源、命令行可脚本化，适合批量建机。","1. 打开官方下载页，在 “VirtualBox x.X Platform Packages” 下点 Windows hosts，得到 VirtualBox-x.X.X-win-amd64.exe
+2. 双击运行，Installation Options 页保持默认组件（VirtualBox 压缩工具、Python API 等按需），继续后在自定义页可改安装路径，默认为 C:\Program Files\Oracle\VirtualBox，避免中文与空格目录
+3. 接着出现网络界面提示：安装将临时禁用网络连接，因为要装入 VirtualBox NDIS6 Bridged Networking Driver（用于桥接模式的虚拟网卡驱动），确认继续，期间本机短暂断网属正常
+4. 驱动签名与 VirtualBox USB 相关组件按提示放行，完成安装并重启一次
+5. 如需 USB 2.0/3.0 支持、磁盘加密、远程桌面、NVMe 与串口仿真等能力，回到下载页在 “VirtualBox x.X Extension Pack” 处下载 .vbox-extpack，其版本号必须与主程序完全一致，双击该文件或管理器→管理→扩展 安装并同意 PUEL 条款
+6. 首次启动管理器，先在 文件→偏好设置→更新 关闭自动检查（可选），随后新建虚拟机","1. 平台边界：VirtualBox 没有 Windows ARM64 宿主版本，骁龙 X 系列笔记本无法安装，请改用系统自带的 Hyper-V；macOS 侧 Intel 与 Apple Silicon 两种机型都有官方宿主构建，按 关于本机 里显示的芯片选对应那一个；龙芯（LoongArch）与其他国产 ARM 平台没有官方构建，x86 安装包不可运行
+2. 许可分层：主程序是 GPL v2，可自由使用；扩展包是 PUEL，个人学习与评估免费，但不得再分发，企业批量部署前需核对条款
+3. 与 Hyper-V 及内存完整性的关系：6.1 及更早版本与 Windows 的 Hyper-V、虚拟机平台、内存完整性（Core Isolation，即 HVCI）互斥，启用后客户机启动失败甚至蓝屏；7.0 起可在开启 Hyper-V 的 Windows 11 上运行，走 Windows Hypervisor Platform 与系统 Hypervisor 共存，但官方仍提示部分功能与性能受限，追求最佳兼容时按需关闭 Hyper-V
+4. 硬件前提：需在 BIOS/UEFI 开启 Intel VT-x 或 AMD-V，未开启时报错且无法开机
+5. Linux 宿主机安装后需执行 sudo /sbin/vboxconfig 构建内核模块，每次系统内核升级后需重新执行，并确保已安装 kernel-devel、gcc、make 等构建依赖
+6. 快照与虚拟磁盘不等于备份：完整保留请导出为 appliances 或做完整克隆，快照链过长会显著拖慢并占满磁盘","1. 现象：双击扩展包提示版本不匹配或安装后功能仍不可用｜原因：主程序与 Extension Pack 版本号不一致，扩展包按精确版本匹配｜纠正：从下载页取与 VBoxManage --version 完全相同的 .vbox-extpack，卸载旧扩展包后重装。
+2. 现象：虚拟机设置里 USB 3.0（xHCI）单选框是灰的，U 盘无法直通｜原因：未安装扩展包，xHCI 与 EHCI 增强能力在 PUEL 包里｜纠正：装同版本扩展包，并在客户机内装对应驱动。
+3. 现象：开机报 “VT-x is disabled in the BIOS” 或 “VERR_SVM_DISABLED”｜原因：BIOS/UEFI 未开启 Intel VT-x 或 AMD-V｜纠正：重启进 BIOS 打开虚拟化开关，Windows 下可在任务管理器→性能→CPU 查看“虚拟化：已启用”。
+4. 现象：Windows 11 打开内存完整性后老版本 VirtualBox 客户机起不来｜原因：6.1 及更早版本与 HVCI、Hyper-V 争抢硬件虚拟化层｜纠正：升级到 7.x，或按需关闭 Hyper-V 相关功能。
+5. 现象：安装桥接驱动时网络瞬断，用户强行取消后客户机只能用 NAT｜原因：中途放弃导致 NDIS6 虚拟网卡驱动未装全｜纠正：重新运行安装包选 Modify 修复，再在 管理→网络 里确认宿主机网卡可选。
+6. 现象：Linux 宿主机装完报 “Kernel driver not installed (rc=-190)”｜原因：内核模块未构建或缺少 kernel-devel 等依赖｜纠正：安装构建依赖后执行 sudo /sbin/vboxconfig。
+7. 现象：虚拟机放在移动硬盘或同步目录，频繁出现介质锁定错误甚至磁盘损坏｜原因：可移动介质与同步程序打断了虚拟磁盘的独占写入｜纠正：把虚拟磁盘放在本机固定硬盘，并移出同步目录。
+8. 现象：客户机卡顿、宿主机整体变慢或客户机自行重启｜原因：给虚拟机分配的内存或 CPU 核数超过宿主可用量｜纠正：内存保留宿主机至少 4GB，虚拟 CPU 数不超过物理核心的一半。","1. 在命令提示符执行 VBoxManage --version，期望输出形如 7.1.10r166475（r 后为构建号）；若提示不是内部或外部命令，改用完整路径 ""C:\Program Files\Oracle\VirtualBox\VBoxManage.exe"" --version
+2. 执行 VBoxManage list hostcpus，能列出宿主 CPU 信息，说明内核驱动已正确加载
+3. 执行 VBoxManage list vms，返回空列表且不报错属正常，说明命令行与管理器通信通畅
+4. 图形界面启动后 控制→系统信息 能看到本机版本、修订号与许可说明
+5. 管理器→管理→扩展 中列出与主程序版本号一致的 Oracle VM VirtualBox Extension Pack，此时新建虚拟机的 USB 3.0（xHCI）单选框不再置灰
+6. 新建虚拟机并开机进入客户机桌面，宿主机与客户机之间共享文件夹可读写，即全流程通过","1. 管理器点“新建”，名称填 ubuntu-demo，类型自动识别为 Linux / Ubuntu (64-bit)，其余点下一步
+2. 内存给 4096MB（宿主机 16GB 时安全），虚拟硬盘选 VDI、固定大小或动态分配均可，容量 25GB
+3. 选中这台虚拟机点“设置→存储”，在光驱图标处右键“选择文件”，指向从 ubuntu.com 下载的桌面版 ISO
+4. 点“设置→USB”启用 USB 控制器并选 USB 3.0（xHCI）（需扩展包已装），然后点“开始”开机，按正常流程装完 Ubuntu
+5. 在客户机终端执行 uname -a，能返回本机内核信息，说明这台虚拟电脑已经真正跑起来
+6. 关机前在管理器右键该虚拟机→拍快照，命名“干净系统”，随后故意改乱系统，再点“恢复快照”回到该状态；想批量脚本化时，同一条流程可用 VBoxManage createvm、storageattach、startvm 三条命令复现","Windows|amd64（Intel 与 AMD 64 位桌面 CPU，下载页 Windows hosts 一项）|https://www.virtualbox.org/wiki/Downloads
+Windows on ARM（骁龙 X 系列笔记本）|无宿主版本，改用系统自带 Hyper-V|https://learn.microsoft.com/windows-server/virtualization/hyper-v/hyper-v-technology-overview
+macOS|Intel 与 Apple Silicon 都有官方宿主构建，下载页按机型分别列出|https://www.virtualbox.org/wiki/Downloads
+Linux|amd64，按发行版分 deb 与 rpm 两类包（Ubuntu/Debian 用 deb，Fedora/openSUSE 等用 rpm）|https://www.virtualbox.org/wiki/Downloads
+Linux|arm64（AArch64，含部分国产 ARM 设备与树莓派类主板）无官方宿主构建，需自行编译或改用 KVM/QEMU|https://www.virtualbox.org/wiki/Downloads
+Linux|LoongArch（龙芯 3A5000、3A6000 等）无官方构建，x86 与 ARM 安装包均不可用|https://www.virtualbox.org/wiki/Downloads
+Oracle Solaris|amd64，宿主构建见下载页 Distributions 区|https://www.virtualbox.org/wiki/Downloads
+全平台通用|Extension Pack 扩展包（.vbox-extpack，须与主程序版本号严格一致）|https://www.virtualbox.org/wiki/Downloads
+源码与历史版本|Source 源码包与旧版本归档，均从官方下载页取|https://www.virtualbox.org/wiki/Downloads","Windows 与 Linux 宿主面向 amd64；macOS 比较特殊，Intel 与 Apple Silicon 都有官方宿主构建，下载页按机型分别列出，M 系列芯片要取 macOS 下标注 Apple Silicon 的那一条。Windows on ARM 没有宿主版本，骁龙笔记本改用 Hyper-V。Linux 侧 arm64 与 LoongArch 同样没有官方二进制包，需要自行编译或使用 KVM/QEMU；Extension Pack 扩展包必须与主程序版本号完全一致，混用旧版扩展包会导致 USB 与磁盘加密功能失效。"
+"Windows Sandbox","https://learn.microsoft.com/windows/security/application-security/application-isolation/windows-sandbox/","https://learn.microsoft.com/windows/security/application-security/application-isolation/windows-sandbox/windows-sandbox-install","Windows Sandbox（Windows 沙盒）是 Windows 10 与 Windows 11 内置的一次性隔离桌面环境，属于系统的可选功能（Optional Feature），组件随系统镜像一起分发，没有独立安装包，也无法从任何网站下载。它借助虚拟化管理程序（Hypervisor）与容器技术，在宿主之外拉起一套独立内核的 Windows 会话：沙盒内的注册表、文件与软件安装都不影响宿主，窗口关闭即整体销毁，每次启动都是全新实例，官方把它归入应用隔离（Application Isolation）一类能力。仅 Pro、Enterprise、Pro Education/SE 与 Education 版本提供，官方明确不支持 Home 版。默认分配至多 4GB 内存，以启用硬件虚拟化为前提，同一时刻只能运行一个实例，可通过扩展名为 .wsb 的配置文件调整网络、内存与目录映射。典型用途是打开来路不明的链接与附件、试装可疑或预览版软件、做会污染系统的实验。本页所列下载直链实为官方启用指引，因为该功能本无下载物。","计算机系统工具;虚拟机与容器","Windows 沙盒没有独立官网产品页，也没有下载地址：它是系统内置的可选功能，唯一官方指引在 learn.microsoft.com 的 Windows 文档中，因此判别标准很直接——凡出现“Windows Sandbox 下载”“Windows 沙盒独立安装包”“沙盒绿色版、精简版、便携版”“Home 版沙盒补丁或开启工具”的页面与文件，一律不是官方，无论域名看着多像微软。常见形态有四类：把系统里的可选功能包装成 exe 分发的下载站；借“沙盒”之名推广第三方便签工具或另一套虚拟机壳子；把 microsoft 换成相近字符、追加 cn 或 download 后缀的仿冒域；教程站挂出的“高速下载器”，而真正的功能启用只需在系统内勾选或一条 PowerShell 命令。另注意 docs.microsoft.com 与 learn.microsoft.com 同属微软文档域，历史链接自动跳转属正常，不代表站点有问题。","可以把它理解成临时租来的一台桌面：每次打开都是一套全新的 Windows，用完直接退还，里面做过的一切——下载的文件、装好的软件、改过的设置——随之消失，宿主电脑不受影响。它与虚拟机（Virtual Machine）的差别在于：不用下载 ISO 镜像，不用创建虚拟硬盘，也不用安装客户机系统，用的就是本机这一套 Windows 组件，靠虚拟化管理程序隔出独立内核，因此启动只需几秒、内存占用明显小于完整虚拟机；代价是不能持久保存，关掉即归零（Windows 11 22H2 起，在沙盒内部主动重启可保留数据，属例外）。宿主机已装的软件在沙盒里并不存在，需要就当场安装。什么时候该用它：收到来历不明的链接或附件、想试某个可疑软件、要做会污染系统的操作（改 hosts、装证书、跑脚本），或需要一个不留痕迹的临时浏览环境。它不是加密保险箱，也不是永久虚拟机：想留下成果就在关闭前把文件复制回宿主。","1. 先确认版本：设置→系统→关于→Windows 规格，看版本是否为 Pro、Enterprise、Education 或 Pro Education/SE；Home 版不具备该功能，无官方开启途径
+2. 再确认前提条件：64 位 CPU（AMD64，或 Windows 11 22H2 及以上的 ARM64）、固件（BIOS/UEFI）中已开启虚拟化、内存至少 4GB（推荐 8GB）、至少 1GB 空闲磁盘（推荐 SSD）、至少 2 个 CPU 核心（推荐 4 核超线程）
+3. 图形界面开启：任务栏搜索“启用或关闭 Windows 功能”（等价路径为 控制面板→程序→启用或关闭 Windows 功能），在列表中勾选 “Windows Sandbox”，点确定，按提示重启计算机
+4. 命令行开启：以管理员身份运行 PowerShell，执行 Enable-WindowsOptionalFeature -Online -FeatureName Containers-DisposableClientVM -All，完成后重启
+5. 重启后在开始菜单搜索 “Windows Sandbox” 并启动，首次启动需要数分钟准备镜像与组件，此后每次打开通常只需几秒
+6. 如需固化配置（禁用网络、只读映射目录、限制内存），另存一个扩展名为 .wsb 的 XML 文件，双击即可按该配置启动沙盒","1. 版本边界：Home 版（家庭版）不含该功能，官方不支持。不要按网上教程去改注册表，更不要下载所谓“Home 版沙盒补丁”“开启工具”，这类文件不在任何官方分发链路上
+2. 受管设备：公司电脑可能被组策略或 MDM（移动设备管理，Mobile Device Management）限制，表现为列表里该项缺失或置灰、勾选后不生效、启用时报错（如 0x80070003 一类的组件启用失败）。Policy CSP 中的 WindowsSandbox 一组 Allow 策略可单独关闭剪贴板共享、文件夹映射、网络与虚拟 GPU；遇到这类限制应联系设备管理员，而不是自行改策略
+3. 功能依赖：该功能建立在 Hyper-V 架构可用性、虚拟机平台（Virtual Machine Platform）与虚拟机器监控程序平台（Hypervisor Platform）之上，这些组件被禁用时沙盒无法启动；在虚拟机里再开沙盒需要宿主为该虚拟机开启嵌套虚拟化（Nested Virtualization）
+4. 内存余量：默认会话最多使用约 4GB 内存；.wsb 里的 MemoryInMB 若低于可启动下限，系统会自动提升到 2048MB。宿主空闲内存不足会导致启动缓慢或连接丢失，建议在宿主保留 1GB 以上空闲余量的前提下再启用，物理内存 8GB 更稳妥
+5. 文件进出：默认开启剪贴板重定向（Clipboard Redirection），可直接跨窗口复制粘贴文本与文件；需要整目录共享时在 .wsb 的 MappedFolders 中填写绝对路径，例如 HostFolder 写 C:\Users\Public\Downloads、SandboxFolder 写 C:\temp、ReadOnly 写 true，Windows 11 23H2 起路径中允许使用环境变量。带写权限的映射目录中的改动会在沙盒销毁后留在宿主上，这是唯一会“漏”出来的通道
+6. 网络与实例数：默认启用网络（宿主上创建虚拟交换机），测试可疑样本时应在 .wsb 中设 Networking 为 Disable 以缩小暴露面；同一时刻只能运行一个沙盒实例
+7. 系统版本差异：Windows 11 24H2 起沙盒内不再提供计算器、照片、记事本、终端等内置商店应用，需要时自行在沙盒内安装
+8. 安全预期：沙盒隔离的是系统改动，不替代账号安全与数据保护。不要把真实凭据、公司内网口令输入到沙盒内运行的不可信程序中","1. 现象：在“启用或关闭 Windows 功能”列表里找不到 Windows Sandbox 这一项，或该项置灰无法勾选｜原因：系统为 Home 版，或固件未开启硬件虚拟化，或设备被组织策略限制｜纠正：先在 设置→系统→关于 核对版本、在任务管理器→性能→CPU 查看“虚拟化：已启用”；Home 版没有官方开启途径，受管设备联系设备管理员。
+2. 现象：从网上下载了“Windows Sandbox 独立安装包”或“绿色版”，装完出现陌生后台进程、浏览器主页被改｜原因：该功能本无独立安装包，下载物必然是二次打包或冒名程序｜纠正：卸载可疑程序，改用系统内的可选功能勾选或管理员 PowerShell 的 Enable-WindowsOptionalFeature 命令。
+3. 现象：沙盒里下载的文件与安装的软件在关闭窗口后全部消失，误认为保存失败或软件损坏｜原因：一次性（Disposable）设计本就在关闭时销毁全部内容｜纠正：需要留存的产物在关闭前复制回宿主，或预先用 .wsb 映射一个可写目录；只想要“下次还在”的用途应改用完整虚拟机。
+4. 现象：把宿主目录以可写方式映射进沙盒后，宿主上的文件被篡改或加密｜原因：映射目录把宿主真实文件系统暴露给了沙盒内的不可信程序｜纠正：以 ReadOnly 为 true 的只读方式映射，测试可疑样本时同时把 Networking 设为 Disable，用完立刻检查宿主目录。","1. 开始菜单能搜到 “Windows Sandbox” 并成功启动，数秒至数十秒后弹出新窗口，标题栏显示 Windows Sandbox，沙盒内的桌面、任务栏与 Edge 浏览器均可用
+2. 沙盒内是干净系统：开始菜单里看不到宿主机安装的软件，用户目录为空，说明会话与宿主相互隔离
+3. 在沙盒里用浏览器下载任意一个文件到其桌面，随后关闭沙盒窗口，在确认对话框点“确定”
+4. 回到宿主检查：刚才那个文件在宿主对应位置并不存在，宿主桌面、浏览器记录与已装软件列表均无变化，说明会话已被彻底丢弃
+5. 再次启动沙盒，先前安装的软件与所有改动都不复存在，即“隔离执行、整体丢弃”全流程验证通过","1. 目标：把一次不打算在本机留下任何东西的任务放进沙盒完成，例如打开一条来路不明的链接
+2. 在开始菜单搜索并启动 Windows Sandbox，首次等待数分钟准备完成，看到独立窗口即已就绪
+3. 在沙盒桌面里双击 Edge，输入那条可疑网址正常浏览：页面脚本、下载与 Cookie 都只存在于沙盒内
+4. 想验证隔离效果，就在沙盒内下载一个文件，确认它出现在沙盒自己的桌面上，而宿主毫无变化
+5. 若要测试一个可疑安装包：用记事本写一个 .wsb 配置文件，在 MappedFolders 中以只读方式映射放安装包的宿主目录，并把 Networking 设为 Disable，保存为 read-only.wsb 后双击启动，在沙盒内安装并运行该程序
+6. 关闭沙盒窗口并点“确定”销毁会话，回到宿主确认无残留程序、无设置改动、无新增文件——一次完整的“隔离执行到整体丢弃”闭环就走通了","Windows 10 版本 1903 及以上与 Windows 11|AMD64（Intel 与 AMD 64 位桌面 CPU）；系统内置可选功能，无独立安装包，按官方指引启用|https://learn.microsoft.com/windows/security/application-security/application-isolation/windows-sandbox/windows-sandbox-install
+Windows 11 版本 22H2 及以上|ARM64（骁龙 X 系列等 Windows on ARM 设备）；同为内置可选功能，仅 Pro/Enterprise/Education 可用|https://learn.microsoft.com/windows/security/application-security/application-isolation/windows-sandbox/windows-sandbox-install
+Windows 10 与 Windows 11 Home（家庭版）|官方不支持该功能，无任何下载或补丁途径|https://learn.microsoft.com/windows/security/application-security/application-isolation/windows-sandbox/
+企业或学校受管设备|版本支持但被组策略或 MDM 限制时，功能项缺失、置灰或启用报错|https://learn.microsoft.com/windows/client-management/mdm/policy-csp-windowssandbox
+需要自定义会话（禁用网络、只读映射目录、限制内存）|任意受支持版本，使用扩展名为 .wsb 的 XML 配置文件|https://learn.microsoft.com/windows/security/application-security/application-isolation/windows-sandbox/windows-sandbox-sample-configuration
+macOS 与 Linux 桌面|该功能仅存在于 Windows，官方无对应构建，跨平台隔离需另寻方案|https://learn.microsoft.com/windows/security/application-security/application-isolation/windows-sandbox/","这不是下载软件，而是 Windows 的内置可选功能，因此不存在选安装包的问题：AMD64 设备在 Windows 10 1903 及以上或 Windows 11 的 Pro、Enterprise、Education 版中直接启用即可；ARM64 设备要求 Windows 11 22H2 及以上。Home 家庭版不支持，也没有官方补丁途径；32 位 x86 与龙芯、飞腾等平台同样没有该功能。macOS 与 Linux 不存在对应能力，跨平台隔离请用容器或虚拟机方案。"
+"PowerToys","https://learn.microsoft.com/windows/powertoys/","https://github.com/microsoft/PowerToys/releases/latest","PowerToys 是微软维护的开源（Open Source）Windows 效率工具集，源码仓库为 github.com/microsoft/PowerToys，采用 MIT 许可证，当前最新发行版为 v0.101.2362.0。它不是单一功能软件，而是数十个小工具的集合：窗口分区管理器 FancyZones、窗口置顶 Always on Top、屏幕取字 OCR 工具 Text Extractor、批量重命名 PowerRename、按键与快捷映射 Keyboard Manager、一台键鼠控制多台机器的 Mouse Without Borders、快速启动器 PowerToys Run、屏幕取色器 Color Picker、粘贴格式转换 Advanced Paste、右键压缩图片的 Image Resizer、工作区布局 Workspaces、保持唤醒 Awake 等。安装后在系统托盘常驻一个设置进程，各模块在设置窗口里单独开关，只启用需要的部分。运行要求为 Windows 11 或 Windows 10 版本 2004（Build 19041）及以上的 64 位系统（x64 或 ARM64）。官方分发渠道只有 GitHub Releases、微软商店与微软的 aka.ms 短链，全程免费，无需注册与激活，属系统增强工具而非独立应用替代品。它与系统自带能力的关系是补齐而非替代：窗口分区、批量改名、屏幕取字这类需求在原版 Windows 里只能靠多个第三方小工具拼凑，这里集中进同一个设置界面统一维护。版本按固定节奏迭代，每次发布在 Releases 页列出新增与修复的模块，历史版本与源码均可公开核对。","计算机系统工具;开发工具","官方来源只有三处：github.com/microsoft/PowerToys（含其 Releases 页，以及微软短链 https://aka.ms/installpowertoys 的跳转目标）、短链 https://aka.ms/getPowertoys 指向的 apps.microsoft.com 商店页，以及 learn.microsoft.com 下的官方文档。需要警惕的形态：“PowerToys 中文整合版”“一键装机包”“汉化绿色版”，实质是把官方安装器与推广组件、脚本一起二次打包；各类“高速下载器”，而真实安装包是一百多 MB 的单个 exe，从不通过下载器分发；把 microsoft 换成相近字符或追加 cn、down、soft 后缀的仿冒域；以及“PowerToys 激活码永久版”，本软件免费开源，根本不存在激活环节。判别要点：官方页面不会要求先装管家、先注册第三方站点或先下载启动器；镜像源拿来做包管理加速是一回事，把安装包当分发渠道又是另一回事。","可以把它想成给 Windows 补一小块常用能力的模块集合：系统本来没有“把窗口钉在最前面”“按自定义网格分屏”“从屏幕任意位置抠出文字”这些开关，PowerToys 就一个一个补上，每个模块在设置里单独开启或关闭，不用的就关掉，它并不是必须整包启用的全家桶软件。代价是会往系统里注入两样东西：一个常驻后台的设置进程，以及若干全局快捷键（例如窗口置顶、快速启动器、分区布局编辑器）。这些快捷键是系统级拦截，可能与显卡驱动面板、输入法或截图工具抢占同一个组合，这是新手最容易遇到的困扰。它面向“天天要用”的小场景，不替代任何主程序：不管理文件内容，也不剪辑视频。开源意味着代码公开、按版本迭代，更新来自 GitHub 或商店，不需要激活与注册。第一次装完会弹出引导页（Overview），列出的模块默认只开启一部分，建议逐个试用后再决定保留哪些，而不是全开。","1. 确认系统：设置→系统→关于，需要 Windows 11 或 Windows 10 版本 2004（Build 19041）及以上，且为 64 位（x64 或 ARM64）
+2. 打开官方入口：点本页下载直链，或访问微软短链 https://aka.ms/installpowertoys，都会进入 github.com/microsoft/PowerToys 的最新 Releases 页，展开 Assets 列表
+3. 按架构与安装范围选文件：本机所有用户可用取 PowerToysSetup-版本-x64.exe 或 PowerToysSetup-版本-arm64.exe（装入 Program Files）；仅当前用户取 PowerToysUserSetup-版本-x64.exe 或 PowerToysUserSetup-版本-arm64.exe（装入 %LocalAppData%），两种渠道都能正常收到更新
+4. 双击运行安装向导，按提示完成；安装过程会由引导程序顺带装入 Microsoft Edge WebView2 运行时，部分界面依赖它
+5. 安装完成后自动打开引导页（Overview），先只开启两三个确实要用的模块，其余保持关闭，避免不必要的快捷键与后台占用
+6. 偏好命令行安装时执行 winget install --id Microsoft.PowerToys --source winget；希望自动更新的用户可从 apps.microsoft.com 的商店页安装，更新由商店托管","1. 快捷键冲突：模块的全局快捷键可能与显卡驱动面板、输入法、截图工具或其他窗口管理器被抢占；FancyZones 勾选 Override Windows Snap hotkeys 后还会接管 Win+方向键，习惯系统吸附的用户需留意。冲突时在该模块设置里改键，或把不用的模块整体关掉
+2. 更新渠道：GitHub 版走内置更新检查（可在设置的更新页手动检查），商店版由商店自动更新。两条渠道不要同时安装，卸载其中一条前先退出托盘程序，否则易出现更新失败与设置界面异常
+3. 运行权限：要对以管理员身份运行的窗口（如任务管理器）做置顶或分区，需要把 PowerToys 本身也以管理员身份运行，这会让所有模块进入提权进程，按需再开
+4. 依赖与模块前提：安装器会带 WebView2 运行时；个别模块另有前提，Text Extractor 依赖对应系统的 OCR 语言包，未安装时识别不出生字，Command Not Found 需要 PowerShell 7，Mouse Without Borders 要求多台机器网络可达且版本一致
+5. 兼容限制：Citrix、VMware、远程桌面等一类窗口无法被 FancyZones 精确分区；Always on Top 遇到本身就是顶层（topmost）属性的窗口会失效，属已知限制而非损坏
+6. 企业设备：受管终端可能限制安装未审批软件，装机前与 IT 确认；本软件开源免费，不需要任何许可、激活码或账号
+7. 卸载与残留：从 设置→应用 或商店卸载，如遇残留服务可用仓库 tools 目录下的 CleanUp 工具，不要手工删注册表键值
+8. 磁盘与配置位置：用户版装在 %LocalAppData%\Programs 下，机器版装在 %ProgramFiles%；FancyZones 的自定义布局保存在 %LocalAppData%\Microsoft\PowerToys\FancyZones 内的 JSON 文件中，手动改配有风险","1. 现象：从“PowerToys 中文整合版”或“一键装机包”装完，托盘多出陌生程序、浏览器主页被改｜原因：二次打包在官方安装器之外附带了推广组件与脚本｜纠正：只用 github.com/microsoft/PowerToys 的 Releases 页、aka.ms 官方短链或微软商店重新安装。
+2. 现象：按 Win+方向键的分屏行为突然变了，或某个组合键在别的软件里失灵｜原因：FancyZones 接管了 Windows 吸附热键，或模块快捷键与第三方软件冲突｜纠正：取消勾选 Override Windows Snap hotkeys，或在该模块设置中改用不冲突的快捷键。
+3. 现象：更新提示反复失败，或设置窗口打开后一片空白｜原因：商店版与 GitHub 版并存导致更新渠道冲突，或缺少 WebView2 运行时｜纠正：保留一条渠道并彻底卸载另一条，再到 设置→应用 修复或重装 WebView2 运行时。
+4. 现象：给任务管理器窗口做分区或置顶时完全没有反应，模块设置项也是灰的｜原因：目标窗口以管理员身份运行，而 PowerToys 进程权限低于它｜纠正：把 PowerToys 以管理员身份运行后再试，用完切回普通权限。","1. 系统托盘出现 PowerToys 图标，双击可打开设置窗口
+2. 设置窗口左侧列出全部模块，关于页显示的版本号形如 0.101.xxxx，与 GitHub Releases 页的最新发行标签一致
+3. 开启 Always on Top 后，聚焦任意窗口按 Win+Ctrl+T，该窗口出现高亮边框并始终浮在其他窗口之上，再按一次取消
+4. 按 Win+Shift+波浪键（Tab 上方那个反引号键）能弹出 FancyZones 布局编辑器，选中一个模板后桌面出现分区线
+5. 在设置的更新页手动检查更新能得到响应，说明更新链路通畅；此时卸载列表与 设置→应用 中只有一个 PowerToys 条目，未与商店版并存","1. 装完先只开两个模块做十分钟验证，其余保持关闭
+2. 打开记事本一类窗口，按 Win+Ctrl+T：窗口出现彩色边框并置顶，切到别的应用它仍在最上层；再按一次取消置顶
+3. 在设置里启用 FancyZones，按 Win+Shift+波浪键打开布局编辑器，点 Create new layout 选 Grid，用鼠标点击把某一格再切一刀，按住 Shift 点击可旋转分隔线，保存后选中这套自定义布局
+4. 按住 Shift 拖动窗口，桌面浮出分区，松手即吸附进格子；同一格里叠两个窗口时用 Win+PgUp 或 Win+PgDn 来回切换
+5. 再试 Text Extractor：启用后按 Win+Shift+T，屏幕出现取词遮罩，拖框圈住一张图片或视频帧里的文字，松开即把识别结果放进剪贴板，到记事本 Ctrl+V 得到纯文本
+6. 验证完回到设置，把暂时不用的模块逐个关掉——按需开关模块才是这套工具的正确用法","Windows 10 版本 2004 及以上与 Windows 11|AMD64（Intel 与 AMD 64 位桌面 CPU），机器版取 PowerToysSetup-*-x64.exe，仅当前用户取 PowerToysUserSetup-*-x64.exe|https://github.com/microsoft/PowerToys/releases/latest
+Windows 11 on ARM|ARM64（骁龙 X 系列等 Windows on ARM 笔记本），取 PowerToysSetup-*-arm64.exe 或 PowerToysUserSetup-*-arm64.exe|https://github.com/microsoft/PowerToys/releases/latest
+微软商店版|x64 与 ARM64 由商店按设备自动匹配，更新由商店托管|https://apps.microsoft.com/store/detail/microsoft-powertoys/XP89DCGQ3K6VLD
+官方一键入口（短链）|跳转至上列 GitHub Releases 最新页，架构与安装范围体现在安装包文件名里|https://aka.ms/installpowertoys
+命令行安装|64 位 Windows 通用，执行 winget install --id Microsoft.PowerToys --source winget|https://learn.microsoft.com/windows/powertoys/install
+32 位 x86 系统与 Windows 10 版本 1909 及更早|不满足运行要求，官方无对应安装包|https://learn.microsoft.com/windows/powertoys/install
+macOS 与 Linux|不适用，PowerToys 仅面向 Windows，无对应构建|https://github.com/microsoft/PowerToys","只有 64 位 Windows 构建：Intel/AMD 机型选 x64 安装包，骁龙 X 等 ARM64 设备选 arm64 安装包；同一版本还提供机器版与仅当前用户版两种封装，后者免管理员权限。微软商店版会按设备自动匹配架构，省去手选，代价是更新节奏由商店托管。32 位系统、Windows 10 1909 及更早版本、龙芯与飞腾平台没有可用版本；macOS 与 Linux 不提供 PowerToys，需要同类功能时另找跨平台工具。"

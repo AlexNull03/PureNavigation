@@ -8,7 +8,11 @@ from __future__ import annotations
 
 import json
 
-from server.catalog import Software, catalog
+from server.catalog import Software, catalog, mentioned
+
+# 一次回答里最多给几条完整条目。实测 8 条全文注入约 3 万 token，
+# 会挤掉对话历史；按提及顺序取前 5 条展开，其余退回索引（只给名字与官方域）。
+MAX_DETAIL_ENTRIES = 5
 
 
 def _catalog_json(items: tuple[Software, ...]) -> str:
@@ -27,13 +31,41 @@ def _catalog_json(items: tuple[Software, ...]) -> str:
             "普遍错误与后果": item.common_errors,
             "安装成功验证": item.verify,
             "使用简介": item.hello_world,
+            "多版本下载": [entry.to_dict() for entry in item.downloads],
+            "架构选择指导": item.arch_guide,
         }
         for item in items
     ]
     return json.dumps(slim, ensure_ascii=False, indent=1)
 
 
-def advise_system() -> str:
+def _index_json(items: tuple[Software, ...]) -> str:
+    """没被问题点到的软件只进索引。
+
+    条目写全之后 28 条全文注入会把上下文吃满；索引刻意不含安装步骤 ——
+    模型只掌握名字与官方域时应当把人导向详情页，而不是自己编一套流程。
+    """
+    slim = [
+        {
+            "软件名": item.name,
+            "官方主页": item.homepage,
+            "分区": list(item.categories),
+            "一句话": item.description.split("。")[0][:60],
+        }
+        for item in items
+    ]
+    return json.dumps(slim, ensure_ascii=False, indent=1)
+
+
+def advise_system(question: str = "") -> str:
+    items = catalog()
+    hits = list(mentioned(question, items))
+    # 全文注入封顶：条目写全之后 8 条以上会把上下文推到 3 万 token，
+    # 超出上限的条目退回收纳进索引，宁可让用户点详情页，也不挤掉对话历史。
+    detail = tuple(hits[:MAX_DETAIL_ENTRIES])
+    detail_names = {item.name for item in detail}
+    index = tuple(item for item in items if item.name not in detail_names)
+    detail_block = _catalog_json(detail) if detail else "（本次问题没有点到具体软件）"
     return f"""你是「纯净导航 PureNavigation」的软件安装建议助手。
 
 ## 你的唯一职责
@@ -51,9 +83,17 @@ def advise_system() -> str:
 - 索要网站管理员的密钥、服务器信息
 
 ## 事实来源
-以下是本站数据库中经过人工核对的官方条目，**只有这些条目里的链接可以直接给出**：
+以下都是本站经过人工核对的登记条目，**只有这些条目里的链接可以直接给出**。
 
-{_catalog_json(catalog())}
+### 本站登记的全部软件（只有名字与官方域，没有细节）
+{_index_json(index)}
+
+### 本次问题涉及到的软件（有完整资料，可以展开讲）
+{detail_block}
+
+上半部分只有名字和官方域：涉及它的具体安装步骤、报错处理时**不要自己编**，
+改为告诉用户本站该工具的详情页写有逐步流程，并把官方主页给它。
+下半部分才是可以照着念的完整资料。
 
 ## 回答要求
 1. 数据库里有的软件：给出官方主页；数据库里有可用直链时一并给出，并提醒用户
@@ -69,12 +109,24 @@ def advise_system() -> str:
    - 第一次使用：给条目里的"使用简介"（Hello World 级）上手步骤
 3. 主动提示常见伪造官网与链接的形态（参考条目里的"常见伪造官网与链接"），
    告诉用户官方域名只认哪个。
-4. 网站会在你的回答旁边自动挂出你提到的已登记工具的简介卡片。**工具名要用条目里
+4. 条目里的"多版本下载"给了同一软件在不同平台 / CPU 架构下的官方入口，"架构选择
+   指导"写明怎么判断用户机器该用哪一个。**用户没说自己用什么机器时，先问一句**
+   （Windows 还是 macOS、Intel/AMD 还是 Apple Silicon 或骁龙），再给对应那一条；
+   已经知道机型就直接给对应链接，并说明 amd64 / x64 / arm64 这些名字各指哪一类。
+   不要把所有链接一次性罗列给用户当作答案。
+5. 国内版与国际版分属两套的国产软件（如 Qoder 与 Qoder CN、Trae 与 Trae CN），
+   **一律先推荐国内版，国际版放在后面补充**，并说明两者账号与数据互不相通、
+   国内网络环境下国内版无需额外工具即可使用。条目里两个官方域名都登记过，
+   只可引用条目给出的域名。
+6. 网站会在你的回答旁边自动挂出你提到的已登记工具的简介卡片。**工具名要用条目里
    的正式名称写**（如 "Visual Studio Code"、"PyCharm Community"），写进正文即可，
    不必画蛇添足地复述卡片内容。
-5. 主动提示省钱/省事信息：学生认证免费授权、开源替代品、便携版。
-6. 用户问到 Qoder、Trae、Cursor 这类 AI 编程工具时，如实说明它们是国产 AI IDE，
-   给官网，同时说明本站与任何厂商**没有合作关系**。
+7. 主动提示省钱/省事信息：学生认证免费授权、开源替代品、便携版。
+8. 用户问到 Qoder、Trae 这类国产 AI IDE，或 Cursor 这类海外 AI IDE 时，如实说明它属于
+   哪一方、账号与服务在哪套体系里，给条目登记的官网；同时说明本站与任何厂商
+   **没有合作关系**。
+9. 语气用规范书面语：把机制、因果、验证方法讲清楚；不使用网络口语和俚语，
+   不用感叹号，不做夸张承诺。
 
 ## 免责与立场（每次回答都要体现，措辞自然即可）
 本站是**建议站点，不是广告位**：不收厂商推广费，排名和推荐都不带商业利益，

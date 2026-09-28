@@ -1,5 +1,5 @@
 import { LoaderCircle, Send } from "lucide-react";
-import { useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import type { ChatMessage } from "@/types";
 
@@ -11,6 +11,8 @@ export function ChatPanel({
   starters,
   onSend,
   compact = false,
+  fill = false,
+  autoFocus = false,
 }: {
   placeholder: string;
   hint: string;
@@ -20,11 +22,22 @@ export function ChatPanel({
   ) => Promise<{ reply: string; note?: string; extra?: ReactNode }>;
   /** 首页双栏里的窄形态：限高滚动，不抢整页空间。 */
   compact?: boolean;
+  /** 弹层里的形态：高度由父容器决定，自己只负责填满。 */
+  fill?: boolean;
+  /** 打开即在输入框里待命（弹层用，省一次点击）。 */
+  autoFocus?: boolean;
 }) {
   const [turns, setTurns] = useState<ChatTurn[]>([]);
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
   const scroller = useRef<HTMLDivElement>(null);
+  const input = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (autoFocus) {
+      input.current?.focus();
+    }
+  }, [autoFocus]);
 
   async function submit(text: string) {
     const content = text.trim();
@@ -57,8 +70,19 @@ export function ChatPanel({
   }
 
   return (
-    <div className={compact ? "flex h-[46vh] min-h-[340px] flex-col gap-3" : "flex min-h-[62vh] flex-col gap-4"}>
-      <div ref={scroller} className={`flex-1 space-y-4 overflow-y-auto pr-1${compact ? " max-h-full" : ""}`}>
+    <div
+      className={
+        fill
+          ? "flex h-full min-h-0 flex-col gap-3"
+          : compact
+            ? "flex h-[46vh] min-h-[340px] flex-col gap-3"
+            : "flex min-h-[62vh] flex-col gap-4"
+      }
+    >
+      <div
+        ref={scroller}
+        className={`min-h-0 flex-1 space-y-4 overflow-y-auto pr-1${compact ? " max-h-full" : ""}`}
+      >
         {turns.length === 0 ? (
           <div className="panel rounded-2xl px-5 py-6">
             <p className="text-[14px] text-ink">{hint}</p>
@@ -90,6 +114,7 @@ export function ChatPanel({
         className="panel flex items-end gap-3 rounded-2xl p-3 focus-within:border-cyan/45"
       >
         <textarea
+          ref={input}
           value={draft}
           onChange={(event) => setDraft(event.target.value)}
           onKeyDown={(event) => {

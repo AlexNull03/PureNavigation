@@ -91,7 +91,12 @@ def software(q: str = Query(default="", max_length=80)) -> dict[str, object]:
 
 @app.post("/api/advise")
 def advise(body: AdviseRequest) -> dict[str, object]:
-    messages = [{"role": "system", "content": advise_system()}, *_as_llm_messages(body.messages)]
+    # 把用户说过的话合起来做匹配：追问"那 VS Code 呢"时，前面的需求也要能带出资料。
+    question = "\n".join(message.content for message in body.messages if message.role == "user")
+    messages = [
+        {"role": "system", "content": advise_system(question)},
+        *_as_llm_messages(body.messages),
+    ]
     try:
         reply = llm.chat(messages)
     except llm.LlmNotConfigured as exc:

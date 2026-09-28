@@ -1,3 +1,9 @@
+export type Download = {
+  platform: string;
+  arch: string;
+  url: string;
+};
+
 export type Software = {
   name: string;
   homepage: string;
@@ -11,6 +17,8 @@ export type Software = {
   common_errors: string;
   verify: string;
   hello_world: string;
+  downloads: Download[];
+  arch_guide: string;
   domain: string;
   host: string;
 };

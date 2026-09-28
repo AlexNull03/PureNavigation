@@ -1,8 +1,9 @@
 """软件目录：db/data.csv 的读取、缓存、检索与「回复里提到了哪些已登记工具」的匹配。
 
-CSV 是唯一数据源，十二列固定：
+CSV 是唯一数据源，十四列固定：
 软件名,官方主页,下载直链,该软件功能与描述,分区,常见伪造官网与链接,通俗化解释,
-安装基本流程,特别注意事项,普遍错误与后果,安装成功验证,使用简介与Hello World
+安装基本流程,特别注意事项,普遍错误与后果,安装成功验证,使用简介与Hello World,
+多版本下载,架构选择指导
 
 单元格内允许换行（安装流程按行分步），所以解析必须走 StringIO 整本文本，
 不能用 splitlines —— 后者会把引号内的多行字段切碎。
@@ -33,9 +34,27 @@ EXPECTED_HEADER = [
     "普遍错误与后果",
     "安装成功验证",
     "使用简介与Hello World",
+    "多版本下载",
+    "架构选择指导",
 ]
 
 CATEGORY_SEPARATOR = ";"
+DOWNLOAD_FIELD_SEPARATOR = "|"
+
+
+@dataclass(frozen=True)
+class Download:
+    """一条「某平台 + 某架构」的官方获取入口。
+
+    链接一律取自 CSV，后端不拼 URL —— 拼出来的地址看着像真的，反而最危险。
+    """
+
+    platform: str
+    arch: str
+    url: str
+
+    def to_dict(self) -> dict[str, str]:
+        return {"platform": self.platform, "arch": self.arch, "url": self.url}
 
 
 @dataclass(frozen=True)
@@ -52,6 +71,8 @@ class Software:
     common_errors: str
     verify: str
     hello_world: str
+    downloads: tuple[Download, ...]
+    arch_guide: str
     domain: str
     host: str
 
@@ -69,9 +90,25 @@ class Software:
             "common_errors": self.common_errors,
             "verify": self.verify,
             "hello_world": self.hello_world,
+            "downloads": [entry.to_dict() for entry in self.downloads],
+            "arch_guide": self.arch_guide,
             "domain": self.domain,
             "host": self.host,
         }
+
+
+def _parse_downloads(text: str) -> tuple[Download, ...]:
+    """「平台|架构|链接」逐行解析；不合规的行直接丢掉而不是让整张表报错。
+
+    丢行是有意的宽松：这一列只影响展示，不能让一个少写字段的行把 /api/software 打成 500。
+    """
+    entries: list[Download] = []
+    for line in text.splitlines():
+        parts = [part.strip() for part in line.split(DOWNLOAD_FIELD_SEPARATOR)]
+        if len(parts) != 3 or not parts[2].startswith("http"):
+            continue
+        entries.append(Download(platform=parts[0], arch=parts[1], url=parts[2]))
+    return tuple(entries)
 
 
 @cache
@@ -114,6 +151,8 @@ def _parse(version: float) -> tuple[Software, ...]:
             common_errors,
             verify,
             hello_world,
+            downloads,
+            arch_guide,
         ) = (cell.strip() for cell in row)
         if not name or not homepage:
             continue
@@ -136,6 +175,8 @@ def _parse(version: float) -> tuple[Software, ...]:
                 common_errors=common_errors,
                 verify=verify,
                 hello_world=hello_world,
+                downloads=_parse_downloads(downloads),
+                arch_guide=arch_guide,
                 domain=domain,
                 host=host,
             )
@@ -210,6 +251,11 @@ _ALIAS_TABLE: dict[str, tuple[str, ...]] = {
     "Everything": ("Everything",),
     "Rufus": ("rufus",),
     "Blender": ("blender",),
+    "VMware Workstation Pro": ("vmware workstation", "vmware"),
+    "VirtualBox": ("virtualbox", "virtual box"),
+    # 「沙盒」在日常中文里太泛（浏览器沙盒、Android 沙盒），只认带 Windows 的写法。
+    "Windows Sandbox": ("windows sandbox", "windows 沙盒", "windows沙盒"),
+    "PowerToys": ("powertoys", "power toys"),
 }
 
 # everything 这个小写词在英文句子里太常见（“install everything”），

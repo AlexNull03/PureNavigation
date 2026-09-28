@@ -12,7 +12,9 @@ DEFAULT_BASE_URL = "https://api.deepseek.com"
 DEFAULT_MODEL = "deepseek-chat"
 REQUEST_TIMEOUT = 60.0
 # 建议回答现在要按"是什么→流程→注意→错误→验证→上手"结构展开，1200 容易被截断。
-MAX_OUTPUT_TOKENS = 2000
+# 条目文案写详实之后，一次"选软件 + 安装 + 验证 + 上手"的回答经常超过 1500 字，
+# 上限太低会把最后那段上手步骤切掉，而用户看不出这是被截断的。
+MAX_OUTPUT_TOKENS = 3000
 
 
 class LlmNotConfigured(RuntimeError):

@@ -1,4 +1,12 @@
-import { ArrowUpRight, LayoutGrid, ListOrdered, Search, Sparkles, X } from "lucide-react";
+import {
+  ArrowUpRight,
+  CornerDownLeft,
+  LayoutGrid,
+  ListOrdered,
+  Search,
+  Sparkles,
+  X,
+} from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 
@@ -7,7 +15,7 @@ import { RecommendedCards } from "@/components/RecommendedCards";
 import { ToolCard } from "@/components/ToolCard";
 import { fetchSoftware, sendAdvise } from "@/lib/api";
 import { CATEGORIES, groupByInitial } from "@/lib/categories";
-import type { Software } from "@/types";
+import type { ChatMessage, Software } from "@/types";
 
 const ADVISE_STARTERS = [
   "我要学 Python，帮我把环境装好",
@@ -15,37 +23,105 @@ const ADVISE_STARTERS = [
   "我想在本地跑一个大模型",
 ];
 
-function AdviseBox() {
+function askOutcome(history: ChatMessage[]) {
+  return sendAdvise(history).then((outcome) => ({
+    reply: outcome.reply,
+    note: outcome.disclaimer,
+    extra: <RecommendedCards items={outcome.recommended} />,
+  }));
+}
+
+/**
+ * 首页的 AI 入口：只占一条输入框的高度。
+ * 对话本身放到弹层里 —— 常驻大面板会把首屏的分区卡片挤到看不见的地方。
+ */
+function AiEntryBar({ onOpen }: { onOpen: () => void }) {
   return (
-    <div className="panel flex flex-col gap-3 rounded-2xl p-4 sm:p-5">
-      <div className="flex items-center gap-2">
-        <span className="flex size-7 items-center justify-center rounded-lg border border-cyan/35 bg-cyan/10">
-          <Sparkles size={14} className="text-cyan" />
-        </span>
-        <p className="text-[14px] font-semibold text-ink">AI 协助配置</p>
-        <span className="ml-auto hidden text-[11px] text-faint sm:block">
-          只管装软件与配环境
-        </span>
+    <button
+      type="button"
+      onClick={onOpen}
+      className="panel flex h-11 w-full items-center gap-2.5 rounded-xl px-4 text-left transition-colors hover:border-cyan/45"
+    >
+      <Sparkles size={15} className="shrink-0 text-cyan" />
+      <span className="min-w-0 flex-1 truncate text-[13.5px] text-faint">
+        问我装什么、去哪装、怎么验证
+      </span>
+      <span className="hidden shrink-0 items-center gap-1 font-mono text-[11px] text-faint sm:flex">
+        点开对话 <CornerDownLeft size={12} />
+      </span>
+    </button>
+  );
+}
+
+/**
+ * 对话弹层。关闭时只是不显示，不卸载 —— 卸载会把已经问过几轮的内容整段丢掉，
+ * 用户点开又关掉，等于什么都没留下。
+ */
+function AiDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [open, onClose]);
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="AI 协助配置"
+      onClick={onClose}
+      className={
+        open
+          ? "fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          : "hidden"
+      }
+    >
+      <div
+        onClick={(event) => event.stopPropagation()}
+        className="panel flex w-full max-w-3xl flex-col gap-3 rounded-2xl p-4 sm:p-5"
+      >
+        <div className="flex items-center gap-2">
+          <span className="flex size-7 items-center justify-center rounded-lg border border-cyan/35 bg-cyan/10">
+            <Sparkles size={14} className="text-cyan" />
+          </span>
+          <p className="text-[14px] font-semibold text-ink">AI 协助配置</p>
+          <p className="ml-auto hidden text-[11px] text-faint sm:block">只管装软件与配环境</p>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="关闭对话"
+            className="flex size-7 items-center justify-center rounded-lg border border-line text-faint transition-colors hover:border-cyan/45 hover:text-cyan"
+          >
+            <X size={14} />
+          </button>
+        </div>
+        <div className="h-[56vh] min-h-[300px]">
+          <ChatPanel
+            fill
+            autoFocus={open}
+            hint="请输入你需要安装的软件和功能"
+            placeholder="例如：我要学 Python，帮我把环境装好（Enter 发送）"
+            starters={ADVISE_STARTERS}
+            onSend={askOutcome}
+          />
+        </div>
       </div>
-      <ChatPanel
-        compact
-        hint="请输入你需要安装的软件和功能"
-        placeholder="例如：我要学 Python，帮我把环境装好（Enter 发送）"
-        starters={ADVISE_STARTERS}
-        onSend={async (history) => {
-          const outcome = await sendAdvise(history);
-          return {
-            reply: outcome.reply,
-            note: outcome.disclaimer,
-            extra: <RecommendedCards items={outcome.recommended} />,
-          };
-        }}
-      />
     </div>
   );
 }
 
-function SearchBox({
+function SearchBar({
   query,
   onChange,
 }: {
@@ -53,34 +129,24 @@ function SearchBox({
   onChange: (value: string) => void;
 }) {
   return (
-    <div className="panel flex flex-col gap-3 rounded-2xl p-4 sm:p-5">
-      <div className="flex items-center gap-2">
-        <span className="flex size-7 items-center justify-center rounded-lg border border-violet/35 bg-violet/10">
-          <Search size={14} className="text-violet" />
-        </span>
-        <p className="text-[14px] font-semibold text-ink">搜索工具</p>
-      </div>
-      <label className="flex items-center gap-3 rounded-xl border border-line bg-base-2 px-4 py-3 focus-within:border-violet/50">
-        <input
-          value={query}
-          onChange={(event) => onChange(event.target.value)}
-          placeholder="按工具名或简介模糊搜索，例如 python、压缩"
-          className="w-full bg-transparent text-[14px] text-ink outline-none placeholder:text-faint"
-        />
-        {query ? (
-          <button
-            type="button"
-            onClick={() => onChange("")}
-            className="shrink-0 text-faint transition-colors hover:text-violet"
-            aria-label="清空搜索"
-          >
-            <X size={15} />
-          </button>
-        ) : null}
-      </label>
-      <p className="text-[11.5px] leading-relaxed text-faint">
-        在工具名字与简介内容里做模糊匹配；清空后回到分区视图。
-      </p>
+    <div className="panel flex h-11 w-full items-center gap-2.5 rounded-xl px-4 focus-within:border-violet/50">
+      <Search size={15} className="shrink-0 text-violet" />
+      <input
+        value={query}
+        onChange={(event) => onChange(event.target.value)}
+        placeholder="搜索工具名或简介，例如 python、压缩"
+        className="w-full min-w-0 bg-transparent text-[13.5px] text-ink outline-none placeholder:text-faint"
+      />
+      {query ? (
+        <button
+          type="button"
+          onClick={() => onChange("")}
+          className="shrink-0 text-faint transition-colors hover:text-violet"
+          aria-label="清空搜索"
+        >
+          <X size={15} />
+        </button>
+      ) : null}
     </div>
   );
 }
@@ -131,6 +197,7 @@ export function HomePage() {
   const [searchItems, setSearchItems] = useState<Software[] | null>(null);
   const [searchFailed, setSearchFailed] = useState("");
   const [byLetter, setByLetter] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -222,7 +289,7 @@ export function HomePage() {
       <div className="panel flex flex-col items-start gap-2 rounded-xl px-5 py-8">
         <p className="text-[14px] text-ink">数据库里暂时没有匹配「{query.trim()}」的条目。</p>
         <p className="text-[12.5px] leading-relaxed text-muted">
-          可以试试左边对话框问 AI；本站不会为了凑数而给出未经验证的链接。
+          也可以用上面的「AI 协助配置」问一句；本站不会为了凑数而给出未经验证的链接。
         </p>
       </div>
     );
@@ -279,10 +346,10 @@ export function HomePage() {
           </p>
         </div>
 
-        {/* 标题之下、分区显示区之上：左边 AI 协助配置，右边搜索框。 */}
-        <div className="grid w-full gap-4 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
-          <AdviseBox />
-          <SearchBox query={query} onChange={setQuery} />
+        {/* 标题之下、分区显示区之上：两条紧凑输入条。AI 那条点开是弹层对话。 */}
+        <div className="grid w-full max-w-4xl gap-3 sm:grid-cols-2">
+          <AiEntryBar onOpen={() => setAiOpen(true)} />
+          <SearchBar query={query} onChange={setQuery} />
         </div>
 
         {/* 首页切换：分区视图 ↔ 首字母排序视图 */}
@@ -315,6 +382,8 @@ export function HomePage() {
       </section>
 
       {body}
+
+      <AiDialog open={aiOpen} onClose={() => setAiOpen(false)} />
     </div>
   );
 }

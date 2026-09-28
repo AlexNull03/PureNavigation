@@ -1,5 +1,4 @@
 import type { ChatMessage, Evidence, Health, Software } from "@/types";
-
 // 相对路径而不是 "/api"：站点要能挂在任意子路径下（如 /PureNavigation/main/），
 // 绝对路径会跳出前缀打到域名根目录。与 vite 的 base: './' 是同一个约定。
 const BASE = "api";
@@ -48,7 +47,9 @@ export function fetchSoftware(query: string): Promise<{ items: Software[]; discl
   return request(`/software${suffix}`);
 }
 
-export function sendAdvise(messages: ChatMessage[]): Promise<{ reply: string; disclaimer: string }> {
+export function sendAdvise(
+  messages: ChatMessage[]
+): Promise<{ reply: string; disclaimer: string; recommended: Software[] }> {
   return request("/advise", { method: "POST", body: JSON.stringify({ messages }) });
 }
 

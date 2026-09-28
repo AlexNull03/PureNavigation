@@ -1,4 +1,5 @@
 import { ChatPanel } from "@/components/ChatPanel";
+import { RecommendedCards } from "@/components/RecommendedCards";
 import { sendAdvise } from "@/lib/api";
 
 const STARTERS = [
@@ -34,7 +35,11 @@ export function AdvisePage() {
         starters={STARTERS}
         onSend={async (history) => {
           const outcome = await sendAdvise(history);
-          return { reply: outcome.reply, note: outcome.disclaimer };
+          return {
+            reply: outcome.reply,
+            note: outcome.disclaimer,
+            extra: <RecommendedCards items={outcome.recommended} />,
+          };
         }}
       />
     </div>

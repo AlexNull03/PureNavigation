@@ -10,6 +10,7 @@ export function ChatPanel({
   hint,
   starters,
   onSend,
+  compact = false,
 }: {
   placeholder: string;
   hint: string;
@@ -17,6 +18,8 @@ export function ChatPanel({
   onSend: (
     history: ChatMessage[]
   ) => Promise<{ reply: string; note?: string; extra?: ReactNode }>;
+  /** 首页双栏里的窄形态：限高滚动，不抢整页空间。 */
+  compact?: boolean;
 }) {
   const [turns, setTurns] = useState<ChatTurn[]>([]);
   const [draft, setDraft] = useState("");
@@ -54,8 +57,8 @@ export function ChatPanel({
   }
 
   return (
-    <div className="flex min-h-[62vh] flex-col gap-4">
-      <div ref={scroller} className="flex-1 space-y-4 overflow-y-auto pr-1">
+    <div className={compact ? "flex h-[46vh] min-h-[340px] flex-col gap-3" : "flex min-h-[62vh] flex-col gap-4"}>
+      <div ref={scroller} className={`flex-1 space-y-4 overflow-y-auto pr-1${compact ? " max-h-full" : ""}`}>
         {turns.length === 0 ? (
           <div className="panel rounded-2xl px-5 py-6">
             <p className="text-[14px] text-ink">{hint}</p>
@@ -131,6 +134,7 @@ function Bubble({ turn }: { turn: ChatTurn }) {
         ) : (
           <RichText content={turn.content} />
         )}
+        {turn.extra ? <div className="mt-3 border-t border-line pt-3">{turn.extra}</div> : null}
         {turn.note ? (
           <p className="mt-2 border-t border-line pt-2 font-mono text-[11px] text-faint">
             {turn.note}

@@ -11,7 +11,8 @@ from dotenv import load_dotenv
 DEFAULT_BASE_URL = "https://api.deepseek.com"
 DEFAULT_MODEL = "deepseek-chat"
 REQUEST_TIMEOUT = 60.0
-MAX_OUTPUT_TOKENS = 1200
+# 建议回答现在要按"是什么→流程→注意→错误→验证→上手"结构展开，1200 容易被截断。
+MAX_OUTPUT_TOKENS = 2000
 
 
 class LlmNotConfigured(RuntimeError):

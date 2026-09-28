@@ -3,6 +3,14 @@ export type Software = {
   homepage: string;
   download: string;
   description: string;
+  categories: string[];
+  fakes: string;
+  plain_explain: string;
+  install_steps: string;
+  cautions: string;
+  common_errors: string;
+  verify: string;
+  hello_world: string;
   domain: string;
   host: string;
 };

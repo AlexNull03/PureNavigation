@@ -17,3 +17,6 @@ venv
 
 # deploy.sh 临时放待上传 env 片段的地方，里面可能有 Key
 .deploy-tmp
+
+# AI 协助安装的问答记录（按时间戳落盘，公开仓库不上传）
+ans/

@@ -16,7 +16,8 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from server import llm
-from server.catalog import catalog, search
+from server.anslog import record as record_advice
+from server.catalog import catalog, mentioned, search
 from server.netguard import TargetError
 from server.prompts import advise_system, inspect_system, refuse_notice
 from server.scan import scan
@@ -97,7 +98,18 @@ def advise(body: AdviseRequest) -> dict[str, object]:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     except llm.LlmError as exc:
         raise HTTPException(status_code=502, detail=str(exc)) from exc
-    return {"reply": reply, "disclaimer": refuse_notice()}
+
+    # 回答里提到的已登记工具 → 前端在回复旁挂出可点进详情页的简介卡片。
+    recommended = mentioned(reply)
+    # 问答按时间戳落盘 ans/（写盘失败不影响对话本身）。
+    conversation = [message.model_dump() for message in body.messages]
+    conversation.append({"role": "assistant", "content": reply})
+    record_advice(conversation, reply, [item.name for item in recommended])
+    return {
+        "reply": reply,
+        "disclaimer": refuse_notice(),
+        "recommended": [item.to_dict() for item in recommended],
+    }
 
 
 @app.post("/api/inspect")

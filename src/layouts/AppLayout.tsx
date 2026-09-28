@@ -4,7 +4,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import { DisclaimerBar } from "@/components/DisclaimerBar";
 
 const NAV = [
-  { to: "/", label: "官方导航", Icon: Compass },
+  { to: "/", label: "分区导航", Icon: Compass },
   { to: "/advise", label: "AI 安装建议", Icon: Sparkles },
   { to: "/inspect", label: "AI 网站判别", Icon: ShieldAlert },
 ];

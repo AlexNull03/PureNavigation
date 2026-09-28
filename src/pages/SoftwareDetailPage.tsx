@@ -1,10 +1,23 @@
-import { AlertTriangle, ArrowLeft, Copy, Download, ExternalLink, Sparkles } from "lucide-react";
-import { useEffect, useState } from "react";
+import {
+  AlertTriangle,
+  ArrowLeft,
+  BookOpenText,
+  CheckCircle2,
+  Copy,
+  Download,
+  ExternalLink,
+  Eye,
+  ShieldAlert,
+  Sparkles,
+  Wrench,
+} from "lucide-react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import { fetchSoftware } from "@/lib/api";
 import { IconGlyph, iconColor } from "@/lib/icons";
 import { hostLabel, linkKind } from "@/lib/routes";
+import { categoryById } from "@/lib/categories";
 import type { Software } from "@/types";
 
 function CopyButton({ text }: { text: string }) {
@@ -30,15 +43,7 @@ function CopyButton({ text }: { text: string }) {
   );
 }
 
-function Row({
-  label,
-  url,
-  badge,
-}: {
-  label: string;
-  url: string;
-  badge?: string;
-}) {
+function Row({ label, url, badge }: { label: string; url: string; badge?: string }) {
   return (
     <div className="panel flex flex-col gap-3 rounded-xl p-4 sm:flex-row sm:items-center">
       <div className="min-w-0 flex-1">
@@ -67,6 +72,59 @@ function Row({
         <CopyButton text={url} />
       </div>
     </div>
+  );
+}
+
+function Section({
+  icon,
+  title,
+  children,
+  tone = "default",
+}: {
+  icon: ReactNode;
+  title: string;
+  children: ReactNode;
+  tone?: "default" | "danger" | "ok";
+}) {
+  const frame =
+    tone === "danger"
+      ? "border-danger/30 bg-danger/5"
+      : tone === "ok"
+        ? "border-cyan/25 bg-cyan/4"
+        : undefined;
+  return (
+    <section
+      className={
+        frame ? `panel rounded-2xl border p-6 ${frame}` : "panel rounded-2xl p-6"
+      }
+    >
+      <h2 className="flex items-center gap-2 text-[14.5px] font-semibold text-ink">
+        <span className={tone === "danger" ? "text-danger" : tone === "ok" ? "text-cyan" : "text-faint"}>
+          {icon}
+        </span>
+        {title}
+      </h2>
+      <div className="mt-3 flex flex-col gap-3 text-[13.5px] leading-[1.85] text-muted">
+        {children}
+      </div>
+    </section>
+  );
+}
+
+/** CSV 单元格里的换行 → 逐段渲染；带 "数字." 前缀的按步骤行展示。 */
+function Steps({ text }: { text: string }) {
+  const lines = text.split("\n").map((line) => line.trim()).filter(Boolean);
+  return (
+    <ol className="flex flex-col gap-2">
+      {lines.map((line, index) => (
+        <li key={index} className="flex gap-2.5">
+          <span className="mt-0.5 shrink-0 font-mono text-[11px] text-cyan-dim">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <span className="whitespace-pre-wrap">{line.replace(/^\d+[.、]\s*/, "")}</span>
+        </li>
+      ))}
+    </ol>
   );
 }
 
@@ -106,7 +164,7 @@ export function SoftwareDetailPage() {
       <div className="panel flex flex-col items-start gap-3 rounded-2xl px-6 py-10">
         <p className="text-[15px] text-ink">数据库里没有「{name}」这一条。</p>
         <Link to="/" className="flex items-center gap-1.5 text-[13px] text-cyan">
-          <ArrowLeft size={14} /> 返回导航
+          <ArrowLeft size={14} /> 返回分区导航
         </Link>
       </div>
     );
@@ -121,7 +179,7 @@ export function SoftwareDetailPage() {
         to="/"
         className="flex w-fit items-center gap-1.5 font-mono text-[12px] text-faint hover:text-cyan"
       >
-        <ArrowLeft size={13} /> 官方导航
+        <ArrowLeft size={13} /> 分区导航
       </Link>
 
       <header className="panel flex flex-col gap-4 rounded-2xl p-6 sm:flex-row sm:items-center">
@@ -142,24 +200,79 @@ export function SoftwareDetailPage() {
               </>
             ) : null}
           </p>
+          <p className="mt-2 flex flex-wrap gap-1.5">
+            {item.categories.map((id) => (
+              <Link
+                key={id}
+                to={`/category/${encodeURIComponent(id)}`}
+                className="rounded border border-line bg-base-2 px-2 py-0.5 text-[11px] text-muted hover:border-cyan/40 hover:text-cyan"
+              >
+                {categoryById(id)?.name ?? id}
+              </Link>
+            ))}
+          </p>
         </div>
       </header>
 
-      <Row label="官方主页" url={item.homepage} />
-      <Row
-        label="下载直链"
-        url={item.download}
-        badge={direct ? "安装包直链" : "官方下载页"}
-      />
+      {/* （1）工具的简介 */}
+      <Section icon={<BookOpenText size={16} />} title="工具简介">
+        <p className="whitespace-pre-wrap">{item.description}</p>
+      </Section>
 
-      <section className="panel rounded-2xl p-6">
-        <h2 className="font-mono text-[11px] uppercase tracking-[0.2em] text-faint">
-          功能与注意事项
+      {/* （2）官网、下载直链、常见伪造官网与链接 */}
+      <div className="flex flex-col gap-3">
+        <h2 className="px-1 font-mono text-[11px] uppercase tracking-[0.2em] text-faint">
+          官方入口与防伪
         </h2>
-        <p className="mt-3 whitespace-pre-wrap text-[14px] leading-[1.85] text-muted">
-          {item.description}
-        </p>
-      </section>
+        <Row label="官方主页" url={item.homepage} />
+        <Row label="下载直链" url={item.download} badge={direct ? "安装包直链" : "官方下载页"} />
+        {item.fakes ? (
+          <Section icon={<ShieldAlert size={16} />} title="常见的伪造官网与链接" tone="danger">
+            <p className="whitespace-pre-wrap">{item.fakes}</p>
+          </Section>
+        ) : null}
+      </div>
+
+      {/* （3）通俗化解释 */}
+      {item.plain_explain ? (
+        <Section icon={<Eye size={16} />} title="通俗化解释（给初学者）">
+          <p className="whitespace-pre-wrap">{item.plain_explain}</p>
+        </Section>
+      ) : null}
+
+      {/* （4）安装：流程 / 注意事项 / 普遍错误 / 成功验证 */}
+      <div className="flex flex-col gap-3">
+        <h2 className="px-1 font-mono text-[11px] uppercase tracking-[0.2em] text-faint">
+          安装指引
+        </h2>
+        {item.install_steps ? (
+          <Section icon={<Wrench size={16} />} title="基本安装流程">
+            <Steps text={item.install_steps} />
+          </Section>
+        ) : null}
+        {item.cautions ? (
+          <Section icon={<AlertTriangle size={16} />} title="特别注意事项" tone="danger">
+            <p className="whitespace-pre-wrap">{item.cautions}</p>
+          </Section>
+        ) : null}
+        {item.common_errors ? (
+          <Section icon={<AlertTriangle size={16} />} title="普遍错误（以及会导致什么）">
+            <p className="whitespace-pre-wrap">{item.common_errors}</p>
+          </Section>
+        ) : null}
+        {item.verify ? (
+          <Section icon={<CheckCircle2 size={16} />} title="安装成功验证" tone="ok">
+            <p className="whitespace-pre-wrap">{item.verify}</p>
+          </Section>
+        ) : null}
+      </div>
+
+      {/* （5）使用简介 */}
+      {item.hello_world ? (
+        <Section icon={<Sparkles size={16} />} title="第一次使用：Hello World">
+          <p className="whitespace-pre-wrap">{item.hello_world}</p>
+        </Section>
+      ) : null}
 
       <div className="panel flex flex-col gap-3 rounded-2xl border-amber/25 bg-amber/5 p-5 sm:flex-row sm:items-center">
         <AlertTriangle size={17} className="shrink-0 text-amber" />

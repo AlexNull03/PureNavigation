@@ -124,3 +124,66 @@ CSS 无外部引用。后端用 `.venv` 起在 127.0.0.1:8027，`/api/health` �
 - `79f37d4 首页改为分区导航：data.csv 扩到十二列，详情页五板块，AI 问答落盘 ans/` —— 22 个文件，
   已推送 `origin/main`。`ans/`、`.deploy-tmp/` 未进提交（gitignore 生效）；仓库里另发现两个
   与本轮无关的杂散目录（根下的 `C:/`、`stream_pdf/`，疑似早先路径写错留下的），本轮没有动它们。
+
+---
+
+## 第二轮：触发一次部署（2026-09-28）
+
+### 一、用户提示词
+
+> 触发一次部署
+
+### 二、部署前的只读探测
+
+先摸清能不能由我这侧一路跑完，结论是**不能全自动**：
+
+- 用仓库里那份带心跳的 ssh 参数探了一把：key 免密已生效（返回 `ssh-ok`），
+  systemd 服务 `purenavigation` 是 `active`，但 `sudo -n true` 失败 —— 远端 sudo **要交互口令**。
+- 这一点决定了分工：上传、建 venv、装依赖、自检这些非 root 的活我能跑；
+  最后那下 `systemctl restart` 得你亲自输口令，我这侧的非交互终端打不进密码。
+
+### 三、实际执行了什么
+
+在开发机跑了 `bash scripts/deploy.sh --no-web`（刻意不带 root 阶段，避免卡在 sudo 口令上）：
+
+1. 本机 `pnpm build`：tsc 通过，vite 产出 `dist/`（index.js 395 KB / gzip 132 KB）。
+2. tar-over-ssh 上传 `dist db server scripts deploy` 到 `$HOME/purenavigation`；
+   远端已有 `.env`，脚本只补缺键、已有内容一个字没动（DeepSeek Key 保持）。
+3. 远端 `server-setup.sh`（非 root）：Python 3.12.3、建 venv、装依赖，**自检目录条数 24**。
+
+落盘后用只读 ssh 复核，新代码确实进了服务器磁盘：`server/anslog.py`、`server/catalog.py` 在位，
+`db/data.csv` 是十二列表头、97 个物理行（24 条逻辑记录，因为引号单元格内嵌了换行）。
+
+### 四、当前状态：新代码在盘上，服务还跑旧的
+
+对着公网 `GET /api/software` 验了一遍，返回里**没有** `categories` / `fakes` 字段 ——
+即线上仍是旧后端。原因很实在：`deploy.sh --no-web` 走的是非 root 段，而 `systemctl restart`
+只在 `--root` 段里；systemd 服务还驻着改代码之前的进程。新前端依赖后端这些新字段，
+所以这次更新**必须重启一次**才对得上。
+
+### 五、需要你做的一步（就差 sudo 重启）
+
+在开发机粘贴这一条，输一次你的 sudo 口令即可：
+
+```bash
+ssh -t ${DEPLOY_USER}@${DEPLOY_HOST} 'sudo systemctl restart purenavigation'
+```
+
+重启后复验（判据：出现 `categories` 字段即新代码已上线）：
+
+```bash
+curl -s --resolve ${WEB_DOMAIN}:443:${DEPLOY_HOST} \
+  https://${WEB_DOMAIN}/PureNavigation/main/api/software | tr ',' '\n' | grep -m1 categories
+```
+
+或直接开 `https://${WEB_DOMAIN}/PureNavigation/main/` 看首页分区卡片、搜索框、详情五板块是否生效。
+
+⚠️ 别为了这次更新去走完整 `deploy.bat` 的 `[y]` root 段：那会连带重跑 nginx 配置，而 certbot 把 443 块
+写进了同一份 `conf.d` 文件，`server-web.sh` 的覆盖护栏会主动中止（这是设计如此）。systemd 单元早就装好了，
+这次只差一次 `restart`，上面那条命令就够。
+
+（host/user/domain 用占位符写，仓库是公开的，不把公网 IP 与 SSH 用户名字面提交进来。）
+
+### 六、本轮提交
+
+本轮只改 `log/progress1.md`（把这次部署的过程、结果、和「等你重启」这一步记下来），代码零改动。
